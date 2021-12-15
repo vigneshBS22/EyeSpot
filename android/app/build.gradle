@@ -198,6 +198,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
     }

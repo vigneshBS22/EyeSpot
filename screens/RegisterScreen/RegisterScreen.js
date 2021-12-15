@@ -8,6 +8,7 @@ import {
   Box,
 } from 'native-base';
 import auth from '@react-native-firebase/auth';
+//create more fields
 
 export const Form = () => {
   const [details, setDetails] = useState({email: '', password: ''});

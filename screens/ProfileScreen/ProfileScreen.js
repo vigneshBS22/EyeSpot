@@ -1,14 +1,11 @@
 import React from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 
-const ProfileScreen = ({navigation, setLogin}) => {
+const ProfileScreen = ({navigation}) => {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>This is the profile screen</Text>
-      <TouchableOpacity
-        onPress={() => {
-          setLogin(true);
-        }}>
+      <TouchableOpacity>
         <Text>Continue</Text>
       </TouchableOpacity>
     </View>

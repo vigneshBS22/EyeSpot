@@ -1,22 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import auth from '@react-native-firebase/auth';
+
 import {
   // HomeDrawer,
   HomeStack,
   HomeTab,
   LoginTab,
   RegisterStack,
-  WelcomeStack,
+  AuthStack,
 } from './constants';
-import WelcomeScreen from './screens/WelcomeScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import LoginScreen from './screens/LoginScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import HomeScreen from './screens/HomeScreen';
-// import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import WelcomeScreen from './screens/WelcomeScreen/WelcomeScreen';
+import RegisterScreen from './screens/RegisterScreen/RegisterScreen';
+import LoginScreen from './screens/LoginScreen/LoginScreen';
+import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
+import HomeScreen from './screens/HomeScreen/HomeScreen';
+import SettingScreen from './screens/SettingsScreen/SettingScreen';
 
-const LoginStackScreen = ({setLogin}) => {
+const LoginStackScreen = () => {
   return (
     <RegisterStack.Navigator>
       <RegisterStack.Screen
@@ -24,20 +26,20 @@ const LoginStackScreen = ({setLogin}) => {
         options={{
           headerShown: false,
         }}>
-        {props => <LoginTabScreen {...props} setLogin={setLogin} />}
+        {props => <LoginTabScreen {...props} />}
       </RegisterStack.Screen>
       <RegisterStack.Screen
         name="Profile"
         options={{
           headerShown: false,
         }}>
-        {props => <ProfileScreen {...props} setLogin={setLogin} />}
+        {props => <ProfileScreen {...props} />}
       </RegisterStack.Screen>
     </RegisterStack.Navigator>
   );
 };
 
-const LoginTabScreen = ({setLogin}) => {
+const LoginTabScreen = () => {
   return (
     <LoginTab.Navigator>
       <LoginTab.Screen
@@ -49,7 +51,7 @@ const LoginTabScreen = ({setLogin}) => {
             <Icon name="login" color={color} size={size} />
           ),
         }}>
-        {props => <LoginScreen {...props} setLogin={setLogin} />}
+        {props => <LoginScreen {...props} />}
       </LoginTab.Screen>
       <LoginTab.Screen
         name="Register"
@@ -82,32 +84,47 @@ const HomeTabScreen = () => {
       />
       <HomeTab.Screen name="Anime" component={HomeScreen} />
       <HomeTab.Screen name="Games" component={HomeScreen} />
-      <HomeTab.Screen name="Settings" component={HomeScreen} />
+      <HomeTab.Screen
+        name="Settings"
+        component={SettingScreen}
+        options={{
+          tabBarLabel: 'Settings',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="setting" color={color} size={size} />
+          ),
+        }}
+      />
     </HomeTab.Navigator>
   );
 };
 
-// GoogleSignin.configure({
-//   webClientId:
-//     '808934789184-5b2tv6gqiop60ltiovld6go3aape04kp.apps.googleusercontent.com',
-// });
-
 export default function App() {
-  const [login, setLogin] = useState(false);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    console.log(user);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
   return (
     <NavigationContainer>
-      {login === false ? (
-        <WelcomeStack.Navigator>
-          <WelcomeStack.Screen
+      {user === null ? (
+        <AuthStack.Navigator>
+          <AuthStack.Screen
             name="WelcomeScreen"
             options={{headerShown: false}}
             component={WelcomeScreen}
           />
-          <WelcomeStack.Screen name="Login" options={{headerShown: false}}>
-            {props => <LoginStackScreen {...props} setLogin={setLogin} />}
-          </WelcomeStack.Screen>
-        </WelcomeStack.Navigator>
+          <AuthStack.Screen name="Login" options={{headerShown: false}}>
+            {props => <LoginStackScreen {...props} />}
+          </AuthStack.Screen>
+        </AuthStack.Navigator>
       ) : (
         <HomeStack.Navigator>
           <HomeStack.Screen
