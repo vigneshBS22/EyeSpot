@@ -1,7 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import auth from '@react-native-firebase/auth';
+import {NativeBaseProvider, extendTheme, themeTools} from 'native-base';
 
 import {
   // HomeDrawer,
@@ -17,6 +22,7 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
 import HomeScreen from './screens/HomeScreen/HomeScreen';
 import SettingScreen from './screens/SettingsScreen/SettingScreen';
+import {useColor, ColorProvider} from './Context/ColorContext';
 
 const LoginStackScreen = () => {
   return (
@@ -101,10 +107,51 @@ const HomeTabScreen = () => {
 export default function App() {
   const [user, setUser] = useState();
 
+  const theme = extendTheme({
+    components: {
+      Heading: {
+        baseStyle: props => {
+          return {
+            color: themeTools.mode('red.300', 'blue.300')(props),
+          };
+        },
+      },
+    },
+  });
+
+  function RootNavigator() {
+    const {
+      state: {color},
+    } = useColor();
+    return (
+      <NavigationContainer theme={color === 'light' ? DefaultTheme : DarkTheme}>
+        {user === null ? (
+          <AuthStack.Navigator>
+            <AuthStack.Screen
+              name="WelcomeScreen"
+              options={{headerShown: false}}
+              component={WelcomeScreen}
+            />
+            <AuthStack.Screen name="Login" options={{headerShown: false}}>
+              {props => <LoginStackScreen {...props} />}
+            </AuthStack.Screen>
+          </AuthStack.Navigator>
+        ) : (
+          <HomeStack.Navigator>
+            <HomeStack.Screen
+              name="HomeScreen"
+              options={{headerShown: false}}
+              component={HomeTabScreen}
+            />
+          </HomeStack.Navigator>
+        )}
+      </NavigationContainer>
+    );
+  }
+
   // Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
-    console.log(user);
   }
 
   useEffect(() => {
@@ -113,27 +160,10 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      {user === null ? (
-        <AuthStack.Navigator>
-          <AuthStack.Screen
-            name="WelcomeScreen"
-            options={{headerShown: false}}
-            component={WelcomeScreen}
-          />
-          <AuthStack.Screen name="Login" options={{headerShown: false}}>
-            {props => <LoginStackScreen {...props} />}
-          </AuthStack.Screen>
-        </AuthStack.Navigator>
-      ) : (
-        <HomeStack.Navigator>
-          <HomeStack.Screen
-            name="HomeScreen"
-            options={{headerShown: false}}
-            component={HomeTabScreen}
-          />
-        </HomeStack.Navigator>
-      )}
-    </NavigationContainer>
+    <ColorProvider>
+      <NativeBaseProvider theme={theme}>
+        <RootNavigator />
+      </NativeBaseProvider>
+    </ColorProvider>
   );
 }

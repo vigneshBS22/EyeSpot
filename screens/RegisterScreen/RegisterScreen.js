@@ -8,15 +8,31 @@ import {
   Box,
 } from 'native-base';
 import auth from '@react-native-firebase/auth';
-//create more fields
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import firestore from '@react-native-firebase/firestore';
 
 export const Form = () => {
-  const [details, setDetails] = useState({email: '', password: ''});
+  const [details, setDetails] = useState({
+    email: '',
+    password: '',
+    name: '',
+    confirmPassword: '',
+  });
 
   const submit = () => {
     auth()
       .createUserWithEmailAndPassword(details.email, details.password)
       .then(() => {
+        firestore()
+          .collection('Users')
+          .add({
+            name: details.name,
+            email: details.email,
+            isAdmin: false,
+          })
+          .then(() => {
+            console.log('User added!');
+          });
         console.log('User account created & signed in!');
       })
       .catch(error => {
@@ -32,39 +48,69 @@ export const Form = () => {
   };
 
   return (
-    <Box width={'100%'} px={'3'}>
-      <FormControl
-        w={{
-          base: '100%',
-        }}>
-        <FormControl.Label>Email</FormControl.Label>
-        <Input
-          value={details.username}
-          onChangeText={text => {
-            setDetails({...details, email: text});
-          }}
-          placeholder="Enter Email"
-        />
-      </FormControl>
-      <FormControl
-        w={{
-          base: '100%',
-          md: '30%',
-        }}>
-        <FormControl.Label>Password</FormControl.Label>
-        <Input
-          type="password"
-          value={details.password}
-          onChangeText={text => {
-            setDetails({...details, password: text});
-          }}
-          placeholder="Enter password"
-        />
-      </FormControl>
-      <Button mt="2" colorScheme="indigo" onPress={submit}>
-        Signup
-      </Button>
-    </Box>
+    <KeyboardAwareScrollView style={{width: '100%'}}>
+      <Box width={'100%'} px={'3'} py={'50%'}>
+        <FormControl
+          w={{
+            base: '100%',
+          }}>
+          <FormControl.Label>Email</FormControl.Label>
+          <Input
+            value={details.username}
+            onChangeText={text => {
+              setDetails({...details, email: text});
+            }}
+            placeholder="Enter Email"
+          />
+        </FormControl>
+        <FormControl
+          w={{
+            base: '100%',
+          }}>
+          <FormControl.Label>Name</FormControl.Label>
+          <Input
+            value={details.name}
+            onChangeText={text => {
+              setDetails({...details, name: text});
+            }}
+            placeholder="Enter Name"
+          />
+        </FormControl>
+        <FormControl
+          w={{
+            base: '100%',
+            md: '30%',
+          }}>
+          <FormControl.Label>Password</FormControl.Label>
+          <Input
+            type="password"
+            value={details.password}
+            onChangeText={text => {
+              setDetails({...details, password: text});
+            }}
+            placeholder="Enter password"
+          />
+        </FormControl>
+        <FormControl
+          w={{
+            base: '100%',
+            md: '30%',
+          }}>
+          <FormControl.Label>Confirm Password</FormControl.Label>
+          <Input
+            type="password"
+            value={details.confirmPassword}
+            onChangeText={text => {
+              setDetails({...details, confirmPassword: text});
+            }}
+            placeholder="Confirm password"
+          />
+        </FormControl>
+        <Button mt="2" colorScheme="indigo" onPress={submit}>
+          Signup
+        </Button>
+      </Box>
+    </KeyboardAwareScrollView>
   );
 };
 

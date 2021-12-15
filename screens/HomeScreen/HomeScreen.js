@@ -1,11 +1,18 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {NativeBaseProvider, useColorMode, Box, Text} from 'native-base';
+import {StyleSheet} from 'react-native';
+import {useColor} from '../../Context/ColorContext';
 
 const HomeScreen = ({navigation}) => {
+  const {
+    state: {theme},
+  } = useColor();
   return (
-    <View style={styles.container}>
-      <Text>Home Screen</Text>
-    </View>
+    <NativeBaseProvider>
+      <Box style={styles.container}>
+        <Text color={theme.text}>Home Screen</Text>
+      </Box>
+    </NativeBaseProvider>
   );
 };
 

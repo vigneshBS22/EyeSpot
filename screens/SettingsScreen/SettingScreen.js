@@ -1,22 +1,50 @@
-import {Button, NativeBaseProvider} from 'native-base';
+import {
+  Button,
+  HStack,
+  Switch,
+  useColorMode,
+  NativeBaseProvider,
+  Stack,
+  useColorModeValue,
+  Text,
+  Heading,
+} from 'native-base';
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import auth from '@react-native-firebase/auth';
+import {useColor} from '../../Context/ColorContext';
 
-const SettingScreen = ({navigation}) => {
+const SettingScreen = () => {
+  const {
+    dispatch,
+    state: {color, theme},
+  } = useColor();
+  const {colorMode, toggleColorMode} = useColorMode();
   return (
     <NativeBaseProvider>
-      <Text>Setting Screen</Text>
-      <Button
-        mt="2"
-        colorScheme="indigo"
-        onPress={() => {
-          auth()
-            .signOut()
-            .then(() => console.log('User signed out!'));
-        }}>
-        Log out
-      </Button>
+      <Stack>
+        <Button
+          mt="2"
+          onPress={() => {
+            auth()
+              .signOut()
+              .then(() => console.log('User signed out!'));
+          }}
+          bg={theme.button}>
+          Log out
+        </Button>
+        <HStack alignItems="center" space={4} justifyContent={'space-between'}>
+          <Text color={theme.text}>Dark mode</Text>
+          <Switch
+            size="sm"
+            isChecked={color === 'dark'}
+            onToggle={() => {
+              dispatch({type: 'TOGGLE_COLOR'});
+              toggleColorMode();
+            }}
+          />
+        </HStack>
+      </Stack>
     </NativeBaseProvider>
   );
 };

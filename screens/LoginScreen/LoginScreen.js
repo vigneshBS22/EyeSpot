@@ -14,6 +14,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import firestore from '@react-native-firebase/firestore';
 
 async function onFacebookButtonPress() {
   // Attempt login with permissions
@@ -39,7 +41,23 @@ async function onFacebookButtonPress() {
   );
 
   // Sign-in the user with the credential
-  return auth().signInWithCredential(facebookCredential);
+  auth()
+    .signInWithCredential(facebookCredential)
+    .then(result =>
+      result.additionalUserInfo.isNewUser
+        ? firestore()
+            .collection('Users')
+            .add({
+              name: result.additionalUserInfo.profile.name,
+              email: result.additionalUserInfo.profile.email,
+              isAdmin: false,
+            })
+            .then(() => {
+              console.log('User signed in and added!');
+            })
+        : console.log('user already present'),
+    )
+    .catch(err => console.log(err));
 }
 
 GoogleSignin.configure({
@@ -53,29 +71,45 @@ async function onGoogleButtonPress() {
 
   // Create a Google credential with the token
   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
   // Sign-in the user with the credential
-  return auth().signInWithCredential(googleCredential);
+  auth()
+    .signInWithCredential(googleCredential)
+    .then(result =>
+      result.additionalUserInfo.isNewUser
+        ? firestore()
+            .collection('Users')
+            .add({
+              name: result.additionalUserInfo.profile.name,
+              email: result.additionalUserInfo.profile.email,
+              isAdmin: false,
+            })
+            .then(() => {
+              console.log('User signed in and added!');
+            })
+        : console.log('user already present'),
+    )
+    .catch(err => console.log(err));
 }
 
 export const Form = () => {
   return (
-    <Box width={'100%'} px={'3'}>
-      <FormControl
-        w={{
-          base: '100%',
-        }}>
-        <FormControl.Label>Username</FormControl.Label>
-        <Input placeholder="Enter Username" />
-      </FormControl>
-      <FormControl
-        w={{
-          base: '100%',
-          md: '30%',
-        }}>
-        <FormControl.Label>Password</FormControl.Label>
-        <Input placeholder="Enter password" />
-        {/* <Link
+    <KeyboardAwareScrollView style={{width: '100%', maxHeight: '50%'}}>
+      <Box py={'50%'}>
+        <FormControl
+          w={{
+            base: '100%',
+          }}>
+          <FormControl.Label>Username</FormControl.Label>
+          <Input placeholder="Enter Username" />
+        </FormControl>
+        <FormControl
+          w={{
+            base: '100%',
+            md: '30%',
+          }}>
+          <FormControl.Label>Password</FormControl.Label>
+          <Input placeholder="Enter password" />
+          {/* <Link
           _text={{
             fontSize: 'xs',
             fontWeight: '500',
@@ -85,11 +119,12 @@ export const Form = () => {
           mt="1">
           Forgot password?
         </Link> */}
-      </FormControl>
-      <Button mt="2" colorScheme="indigo">
-        Log in
-      </Button>
-    </Box>
+        </FormControl>
+        <Button mt="2" colorScheme="indigo">
+          Log in
+        </Button>
+      </Box>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -99,11 +134,7 @@ const SocialMediaSignup = () => {
       <Icon.Button
         name="google"
         backgroundColor="#FFA500"
-        onPress={() =>
-          onGoogleButtonPress()
-            .then(() => console.log('Signed in with Google!'))
-            .catch(err => console.log(err))
-        }>
+        onPress={() => onGoogleButtonPress()}>
         Login with Google
       </Icon.Button>
       <Divider bg="indigo.500" thickness="1" orientation="vertical" />
@@ -111,9 +142,7 @@ const SocialMediaSignup = () => {
         name="facebook"
         backgroundColor="#4285F4"
         onPress={() =>
-          onFacebookButtonPress().then(() =>
-            console.log('Signed in with Facebook!'),
-          )
+          onFacebookButtonPress().then(result => console.log(result))
         }>
         Login with Facebook
       </Icon.Button>
@@ -124,7 +153,7 @@ const SocialMediaSignup = () => {
 const LoginScreen = () => {
   return (
     <NativeBaseProvider>
-      <Center flex={1} px="3">
+      <Center flex={1} px="3" justifyContent={'flex-start'}>
         <Form />
         <Divider bg="indigo.500" thickness="2" my="5" />
         <SocialMediaSignup />
