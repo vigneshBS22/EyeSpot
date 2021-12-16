@@ -19,7 +19,6 @@ const SettingScreen = () => {
     dispatch,
     state: {color, theme},
   } = useColor();
-  const {colorMode, toggleColorMode} = useColorMode();
   return (
     <NativeBaseProvider>
       <Stack>
@@ -40,7 +39,6 @@ const SettingScreen = () => {
             isChecked={color === 'dark'}
             onToggle={() => {
               dispatch({type: 'TOGGLE_COLOR'});
-              toggleColorMode();
             }}
           />
         </HStack>

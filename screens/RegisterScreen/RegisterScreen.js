@@ -16,7 +16,6 @@ export const Form = () => {
     email: '',
     password: '',
     name: '',
-    confirmPassword: '',
   });
 
   const submit = () => {
@@ -89,21 +88,6 @@ export const Form = () => {
               setDetails({...details, password: text});
             }}
             placeholder="Enter password"
-          />
-        </FormControl>
-        <FormControl
-          w={{
-            base: '100%',
-            md: '30%',
-          }}>
-          <FormControl.Label>Confirm Password</FormControl.Label>
-          <Input
-            type="password"
-            value={details.confirmPassword}
-            onChangeText={text => {
-              setDetails({...details, confirmPassword: text});
-            }}
-            placeholder="Confirm password"
           />
         </FormControl>
         <Button mt="2" colorScheme="indigo" onPress={submit}>

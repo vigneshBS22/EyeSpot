@@ -1,16 +1,21 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Text, Button} from 'native-base';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {useColor} from '../../Context/ColorContext';
 
 const WelcomeScreen = ({navigation}) => {
+  const {
+    state: {theme},
+  } = useColor();
   return (
     <View style={styles.container}>
-      <Text>Welcome Screen</Text>
-      <TouchableOpacity
+      <Text color={theme.text}>Welcome Screen</Text>
+      <Button
         onPress={() => {
           navigation.navigate('Login');
         }}>
-        <Text>Go to Login</Text>
-      </TouchableOpacity>
+        Go to Login
+      </Button>
     </View>
   );
 };

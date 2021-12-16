@@ -4,12 +4,12 @@ import {
   DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
 import {NativeBaseProvider, extendTheme, themeTools} from 'native-base';
 
 import {
-  // HomeDrawer,
   HomeStack,
   HomeTab,
   LoginTab,
@@ -54,7 +54,7 @@ const LoginTabScreen = () => {
           headerShown: false,
           tabBarLabel: 'Login',
           tabBarIcon: ({color, size}) => (
-            <Icon name="login" color={color} size={size} />
+            <AntDesign name="login" color={color} size={size} />
           ),
         }}>
         {props => <LoginScreen {...props} />}
@@ -66,7 +66,7 @@ const LoginTabScreen = () => {
           headerShown: false,
           tabBarLabel: 'Register',
           tabBarIcon: ({color, size}) => (
-            <Icon name="adduser" color={color} size={size} />
+            <AntDesign name="adduser" color={color} size={size} />
           ),
         }}
       />
@@ -84,19 +84,39 @@ const HomeTabScreen = () => {
           headerShown: false,
           tabBarLabel: 'Home',
           tabBarIcon: ({color, size}) => (
-            <Icon name="home" color={color} size={size} />
+            <AntDesign name="home" color={color} size={size} />
           ),
         }}
       />
-      <HomeTab.Screen name="Anime" component={HomeScreen} />
-      <HomeTab.Screen name="Games" component={HomeScreen} />
+      <HomeTab.Screen
+        name="Anime"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <AntDesign name="eyeo" color={color} size={size} />
+          ),
+        }}
+      />
+      <HomeTab.Screen
+        name="Games"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Ionicons
+              name="ios-game-controller-outline"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
       <HomeTab.Screen
         name="Settings"
         component={SettingScreen}
         options={{
           tabBarLabel: 'Settings',
           tabBarIcon: ({color, size}) => (
-            <Icon name="setting" color={color} size={size} />
+            <AntDesign name="setting" color={color} size={size} />
           ),
         }}
       />

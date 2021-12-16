@@ -1,106 +1,60 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Input,
   FormControl,
   Center,
   NativeBaseProvider,
   Button,
-  Link,
   HStack,
   Box,
   Divider,
 } from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import firestore from '@react-native-firebase/firestore';
-
-async function onFacebookButtonPress() {
-  // Attempt login with permissions
-  const result = await LoginManager.logInWithPermissions([
-    'public_profile',
-    'email',
-  ]);
-
-  if (result.isCancelled) {
-    throw 'User cancelled the login process';
-  }
-
-  // Once signed in, get the users AccesToken
-  const data = await AccessToken.getCurrentAccessToken();
-
-  if (!data) {
-    throw 'Something went wrong obtaining access token';
-  }
-
-  // Create a Firebase credential with the AccessToken
-  const facebookCredential = auth.FacebookAuthProvider.credential(
-    data.accessToken,
-  );
-
-  // Sign-in the user with the credential
-  auth()
-    .signInWithCredential(facebookCredential)
-    .then(result =>
-      result.additionalUserInfo.isNewUser
-        ? firestore()
-            .collection('Users')
-            .add({
-              name: result.additionalUserInfo.profile.name,
-              email: result.additionalUserInfo.profile.email,
-              isAdmin: false,
-            })
-            .then(() => {
-              console.log('User signed in and added!');
-            })
-        : console.log('user already present'),
-    )
-    .catch(err => console.log(err));
-}
-
-GoogleSignin.configure({
-  webClientId:
-    '808934789184-5b2tv6gqiop60ltiovld6go3aape04kp.apps.googleusercontent.com',
-});
-
-async function onGoogleButtonPress() {
-  // Get the users ID token
-  const {idToken} = await GoogleSignin.signIn();
-
-  // Create a Google credential with the token
-  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  // Sign-in the user with the credential
-  auth()
-    .signInWithCredential(googleCredential)
-    .then(result =>
-      result.additionalUserInfo.isNewUser
-        ? firestore()
-            .collection('Users')
-            .add({
-              name: result.additionalUserInfo.profile.name,
-              email: result.additionalUserInfo.profile.email,
-              isAdmin: false,
-            })
-            .then(() => {
-              console.log('User signed in and added!');
-            })
-        : console.log('user already present'),
-    )
-    .catch(err => console.log(err));
-}
-
+import {onFacebookButtonPress} from '../../utils/facebookLogin';
+import {onGoogleButtonPress} from '../../utils/googleLogin';
+import {styles} from './styles';
 export const Form = () => {
+  const [details, setDetails] = useState({
+    email: '',
+    password: '',
+  });
+
+  const submit = () => {
+    auth()
+      .signInWithEmailAndPassword(details.email, details.password)
+      .then(() => {
+        console.log('logged in');
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+        console.error(error);
+      });
+  };
+
   return (
-    <KeyboardAwareScrollView style={{width: '100%', maxHeight: '50%'}}>
+    <KeyboardAwareScrollView style={styles.scroll} scrollEnabled={false}>
       <Box py={'50%'}>
         <FormControl
           w={{
             base: '100%',
           }}>
           <FormControl.Label>Username</FormControl.Label>
-          <Input placeholder="Enter Username" />
+          <Input
+            value={details.email}
+            onChangeText={text => {
+              setDetails({...details, email: text});
+            }}
+            placeholder="Enter Email"
+          />
         </FormControl>
         <FormControl
           w={{
@@ -108,19 +62,16 @@ export const Form = () => {
             md: '30%',
           }}>
           <FormControl.Label>Password</FormControl.Label>
-          <Input placeholder="Enter password" />
-          {/* <Link
-          _text={{
-            fontSize: 'xs',
-            fontWeight: '500',
-            color: 'indigo.500',
-          }}
-          alignSelf="flex-end"
-          mt="1">
-          Forgot password?
-        </Link> */}
+          <Input
+            type="password"
+            value={details.password}
+            onChangeText={text => {
+              setDetails({...details, password: text});
+            }}
+            placeholder="Enter password"
+          />
         </FormControl>
-        <Button mt="2" colorScheme="indigo">
+        <Button mt="2" colorScheme="indigo" onPress={submit}>
           Log in
         </Button>
       </Box>
