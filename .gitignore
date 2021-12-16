@@ -29,7 +29,7 @@ build/
 local.properties
 *.iml
 *.hprof
-android/app/google-services.json
+/android/app/google-services.json
 # node.js
 #
 node_modules/
@@ -58,5 +58,5 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
-ios/GoogleService-Info.plist
-ios/Mini_project/Info.plist
+/ios/GoogleService-Info.plist
+/ios/Mini_project/Info.plist
