@@ -44,7 +44,7 @@ async function onFacebookButtonPress() {
 
 GoogleSignin.configure({
   webClientId:
-    '808934789184-5b2tv6gqiop60ltiovld6go3aape04kp.apps.googleusercontent.com',
+    '',
 });
 
 async function onGoogleButtonPress() {
