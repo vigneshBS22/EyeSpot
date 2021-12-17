@@ -13,8 +13,9 @@ export const authSlice = createSlice({
   },
   reducers: {
     setUser: (state, action) => {
-      state.name = action.name;
-      state.isAdmin = action.isAdmin;
+      console.log(action);
+      state.name = action.payload.name;
+      state.isAdmin = action.payload.isAdmin;
     },
   },
   extraReducers: {
@@ -25,7 +26,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const {setUser, logout} = authSlice.actions;
+export const {setUser} = authSlice.actions;
 
 export const selectAuth = state => state.auth;
 

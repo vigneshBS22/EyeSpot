@@ -10,7 +10,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {useColor} from '../../Context/ColorContext';
 import {useDispatch} from 'react-redux';
-import {logout, logoutAsync} from '../../features/authSlice';
+import {logoutAsync} from '../../features/authSlice';
 
 const SettingScreen = () => {
   const {
