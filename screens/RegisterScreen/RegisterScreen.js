@@ -37,11 +37,11 @@ export const Form = () => {
             bg={theme.inputbg}
             variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
             p={4}
-            value={details.username}
+            value={details.name}
             onChangeText={text => {
-              setDetails({...details, email: text});
+              setDetails({...details, name: text});
             }}
-            placeholder="Enter Email"
+            placeholder="Enter Name"
           />
         </FormControl>
         <FormControl
@@ -55,11 +55,11 @@ export const Form = () => {
             bg={theme.inputbg}
             variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
             p={4}
-            value={details.name}
+            value={details.username}
             onChangeText={text => {
-              setDetails({...details, name: text});
+              setDetails({...details, email: text});
             }}
-            placeholder="Enter Name"
+            placeholder="Enter Email"
           />
         </FormControl>
         <FormControl

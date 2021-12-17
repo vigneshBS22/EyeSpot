@@ -8,17 +8,13 @@ import {
   HStack,
   Box,
   Text,
-  Icon,
 } from 'native-base';
-import {Path, G} from 'react-native-svg';
-
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {onFacebookButtonPress} from '../../utils/facebookLogin';
-import {onGoogleButtonPress} from '../../utils/googleLogin';
 import {OnLoginButtonPress} from '../../utils/emailLogin';
 import {styles} from './styles';
 import {useColor} from '../../Context/ColorContext';
+import GoogleIcon from '../../components/GoogleIcon';
+import FacebookIcon from '../../components/FacebookIcon';
 
 export const Form = () => {
   const [details, setDetails] = useState({
@@ -87,35 +83,8 @@ export const Form = () => {
 const SocialMediaSignup = () => {
   return (
     <HStack space={3}>
-      <Box shadow={9}>
-        <Icon.Button
-          name="google"
-          backgroundColor="white"
-          onPress={() => onGoogleButtonPress()}
-          color={'#FFA500'}
-          light
-          size={30}
-          style={{
-            width: 150,
-          }}>
-          <Text fontSize={18} style={{width: 80}} bold>
-            Google
-          </Text>
-        </Icon.Button>
-      </Box>
-      <Box shadow={9}>
-        <Icon.Button
-          name="facebook"
-          backgroundColor="#4285F4"
-          style={{width: 150, height: 47}}
-          onPress={() =>
-            onFacebookButtonPress().then(result => console.log(result))
-          }>
-          <Text fontSize={18} color={'white'} style={{width: 90}} bold>
-            Facebook
-          </Text>
-        </Icon.Button>
-      </Box>
+      <GoogleIcon />
+      <FacebookIcon />
     </HStack>
   );
 };
