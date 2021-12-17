@@ -60,3 +60,4 @@ buck-out/
 ios/Pods/
 ios/GoogleService-Info.plist
 ios/Mini_project/Info.plist
+ios/Mini_project/GoogleService-Info.plist
