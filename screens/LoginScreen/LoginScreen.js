@@ -7,71 +7,76 @@ import {
   Button,
   HStack,
   Box,
-  Divider,
+  Text,
+  Icon,
 } from 'native-base';
-import auth from '@react-native-firebase/auth';
+import {Path, G} from 'react-native-svg';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {onFacebookButtonPress} from '../../utils/facebookLogin';
 import {onGoogleButtonPress} from '../../utils/googleLogin';
+import {OnLoginButtonPress} from '../../utils/emailLogin';
 import {styles} from './styles';
+import {useColor} from '../../Context/ColorContext';
+
 export const Form = () => {
   const [details, setDetails] = useState({
     email: '',
     password: '',
   });
 
-  const submit = () => {
-    auth()
-      .signInWithEmailAndPassword(details.email, details.password)
-      .then(() => {
-        console.log('logged in');
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-        }
-
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
-        console.error(error);
-      });
-  };
+  const {
+    state: {theme},
+  } = useColor();
 
   return (
     <KeyboardAwareScrollView style={styles.scroll} scrollEnabled={false}>
-      <Box py={'50%'}>
+      <Box>
         <FormControl
           w={{
-            base: '100%',
-          }}>
-          <FormControl.Label>Username</FormControl.Label>
+            base: '90%',
+          }}
+          mx={'5%'}>
           <Input
+            shadow={theme.shadow}
+            bg={theme.inputbg}
+            variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
+            p={4}
             value={details.email}
             onChangeText={text => {
               setDetails({...details, email: text});
             }}
-            placeholder="Enter Email"
+            placeholder="Email"
           />
         </FormControl>
         <FormControl
+          py={5}
           w={{
-            base: '100%',
-            md: '30%',
-          }}>
-          <FormControl.Label>Password</FormControl.Label>
+            base: '90%',
+          }}
+          mx={'5%'}>
           <Input
+            shadow={theme.shadow}
+            bg={theme.inputbg}
+            variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
+            p={4}
             type="password"
             value={details.password}
             onChangeText={text => {
               setDetails({...details, password: text});
             }}
-            placeholder="Enter password"
+            placeholder="Password"
           />
         </FormControl>
-        <Button mt="2" colorScheme="indigo" onPress={submit}>
+        <Button
+          shadow={theme.shadow}
+          mt="2"
+          w="90%"
+          p={3}
+          colorScheme="indigo"
+          onPress={OnLoginButtonPress}
+          mx={'5%'}>
           Log in
         </Button>
       </Box>
@@ -81,33 +86,61 @@ export const Form = () => {
 
 const SocialMediaSignup = () => {
   return (
-    <HStack py={'5'} space={3}>
-      <Icon.Button
-        name="google"
-        backgroundColor="#FFA500"
-        onPress={() => onGoogleButtonPress()}>
-        Login with Google
-      </Icon.Button>
-      <Divider bg="indigo.500" thickness="1" orientation="vertical" />
-      <Icon.Button
-        name="facebook"
-        backgroundColor="#4285F4"
-        onPress={() =>
-          onFacebookButtonPress().then(result => console.log(result))
-        }>
-        Login with Facebook
-      </Icon.Button>
+    <HStack space={3}>
+      <Box shadow={9}>
+        <Icon.Button
+          name="google"
+          backgroundColor="white"
+          onPress={() => onGoogleButtonPress()}
+          color={'#FFA500'}
+          light
+          size={30}
+          style={{
+            width: 150,
+          }}>
+          <Text fontSize={18} style={{width: 80}} bold>
+            Google
+          </Text>
+        </Icon.Button>
+      </Box>
+      <Box shadow={9}>
+        <Icon.Button
+          name="facebook"
+          backgroundColor="#4285F4"
+          style={{width: 150, height: 47}}
+          onPress={() =>
+            onFacebookButtonPress().then(result => console.log(result))
+          }>
+          <Text fontSize={18} color={'white'} style={{width: 90}} bold>
+            Facebook
+          </Text>
+        </Icon.Button>
+      </Box>
     </HStack>
   );
 };
 
 const LoginScreen = () => {
+  const {
+    state: {theme},
+  } = useColor();
+
   return (
     <NativeBaseProvider>
+      <Box mx={10} my={5} mt={20}>
+        <Text fontSize={40} bold color={theme.text}>
+          Log in
+        </Text>
+      </Box>
       <Center flex={1} px="3" justifyContent={'flex-start'}>
-        <Form />
-        <Divider bg="indigo.500" thickness="2" my="5" />
         <SocialMediaSignup />
+        <Box my={10} fontSize={20}>
+          <Text color={theme.text} bold>
+            Or login using
+          </Text>
+        </Box>
+        <Form />
+        {/* <Divider bg="indigo.500" thickness="2" my="5" /> */}
       </Center>
     </NativeBaseProvider>
   );

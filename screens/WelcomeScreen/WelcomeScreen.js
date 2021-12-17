@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Button} from 'native-base';
+import {Text, Button, Image, Center, Box} from 'native-base';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useColor} from '../../Context/ColorContext';
 
@@ -8,20 +8,17 @@ const WelcomeScreen = ({navigation}) => {
     state: {theme},
   } = useColor();
   return (
-    <View style={styles.container}>
-      <Text color={theme.text}>Welcome Screen</Text>
-      <Button
-        onPress={() => {
-          navigation.navigate('Login');
-        }}>
-        Go to Login
-      </Button>
-    </View>
+    <Center flex={1} bg={theme.bg}>
+      <Center px="3" py="1.5">
+        <Button
+          onPress={() => {
+            navigation.navigate('Login');
+          }}>
+          <Text fontSize={20}>Get Started</Text>
+        </Button>
+      </Center>
+    </Center>
   );
 };
 
 export default WelcomeScreen;
-
-const styles = StyleSheet.create({
-  container: {flex: 1, justifyContent: 'center', alignItems: 'center'},
-});
