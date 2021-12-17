@@ -4,17 +4,20 @@ import firestore from '@react-native-firebase/firestore';
 export const onSignUpButtonPress = details => {
   auth()
     .createUserWithEmailAndPassword(details.email, details.password)
-    .then(() => {
-      firestore()
-        .collection('Users')
-        .add({
-          name: details.name,
-          email: details.email,
-          isAdmin: false,
-        })
-        .then(() => {
-          console.log('User added!');
-        });
+    .then(result => {
+      result.additionalUserInfo.isNewUser
+        ? firestore()
+            .collection('Users')
+            .doc(result.user.uid)
+            .set({
+              name: details.name,
+              email: details.email,
+              isAdmin: false,
+            })
+            .then(() => {
+              console.log('User added!');
+            })
+        : null;
       console.log('User account created & signed in!');
     })
     .catch(error => {

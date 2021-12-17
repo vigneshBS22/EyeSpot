@@ -71,7 +71,7 @@ export const Form = () => {
           w="90%"
           p={3}
           colorScheme="indigo"
-          onPress={OnLoginButtonPress}
+          onPress={() => OnLoginButtonPress(details)}
           mx={'5%'}>
           Log in
         </Button>

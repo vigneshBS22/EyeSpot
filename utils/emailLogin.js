@@ -1,6 +1,6 @@
 import auth from '@react-native-firebase/auth';
 
-export const OnLoginButtonPress = () => {
+export const OnLoginButtonPress = details => {
   auth()
     .signInWithEmailAndPassword(details.email, details.password)
     .then(() => {

@@ -1,10 +1,14 @@
 import React, {createContext, useContext, useReducer} from 'react';
+import {useColorScheme} from 'react-native';
+
 export const ColorContext = createContext();
 export function useColor() {
   return useContext(ColorContext);
 }
 
 export function ColorProvider({children}) {
+  const scheme = useColorScheme();
+
   const lightTheme = {
     bg: 'white',
     text: 'black',
@@ -44,7 +48,7 @@ export function ColorProvider({children}) {
   }
 
   const [state, dispatch] = useReducer(reducerFunc, {
-    color: 'light',
+    color: scheme,
     theme: lightTheme,
   });
 

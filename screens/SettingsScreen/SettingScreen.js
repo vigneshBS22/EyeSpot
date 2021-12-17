@@ -2,32 +2,30 @@ import {
   Button,
   HStack,
   Switch,
-  useColorMode,
   NativeBaseProvider,
   Stack,
-  useColorModeValue,
   Text,
-  Heading,
 } from 'native-base';
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import auth from '@react-native-firebase/auth';
 import {useColor} from '../../Context/ColorContext';
+import {useDispatch} from 'react-redux';
+import {logout, logoutAsync} from '../../features/authSlice';
 
 const SettingScreen = () => {
   const {
     dispatch,
     state: {color, theme},
   } = useColor();
+
+  const dispatch_redux = useDispatch();
   return (
     <NativeBaseProvider>
       <Stack>
         <Button
           mt="2"
           onPress={() => {
-            auth()
-              .signOut()
-              .then(() => console.log('User signed out!'));
+            dispatch_redux(logoutAsync());
           }}
           bg={theme.button}>
           Log out

@@ -18,15 +18,16 @@ export async function onGoogleButtonPress() {
       result.additionalUserInfo.isNewUser
         ? firestore()
             .collection('Users')
-            .add({
+            .doc(result.user.uid)
+            .set({
               name: result.additionalUserInfo.profile.name,
               email: result.additionalUserInfo.profile.email,
               isAdmin: false,
             })
             .then(() => {
-              console.log('User signed in and added!');
+              console.log('User added!');
             })
-        : console.log('user already present'),
+        : null,
     )
-    .catch(err => console.log(err));
+    .catch(err => console.log('logging error:', err));
 }

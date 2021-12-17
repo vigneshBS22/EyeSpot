@@ -35,6 +35,7 @@ export const Form = () => {
           <Input
             shadow={theme.shadow}
             bg={theme.inputbg}
+            color={theme.text}
             variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
             p={4}
             value={details.name}
@@ -59,6 +60,7 @@ export const Form = () => {
             onChangeText={text => {
               setDetails({...details, email: text});
             }}
+            color={theme.text}
             placeholder="Enter Email"
           />
         </FormControl>
@@ -78,6 +80,7 @@ export const Form = () => {
             onChangeText={text => {
               setDetails({...details, password: text});
             }}
+            color={theme.text}
             placeholder="Enter password"
           />
         </FormControl>
