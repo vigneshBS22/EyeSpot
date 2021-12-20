@@ -6,7 +6,7 @@ import {setUser, selectAuth, loginAsync} from '../../features/authSlice';
 import {HomeStack, AuthStack} from '../../constants';
 import WelcomeScreen from '../../screens/WelcomeScreen/WelcomeScreen';
 
-import {LoginStackScreen} from '../LoginNavigator/LoginNavigators';
+import {LoginTabScreen} from '../LoginNavigator/LoginNavigators';
 import {HomeTabScreen} from '../AuthNavigator/AuthNavigator';
 import {useColor} from '../../Context/ColorContext';
 import auth from '@react-native-firebase/auth';
@@ -47,7 +47,7 @@ export const RootNavigator = () => {
           <AuthStack.Screen
             name={ScreenName.LOGIN_SCREEN}
             options={{headerShown: false}}
-            component={LoginStackScreen}
+            component={LoginTabScreen}
           />
         </AuthStack.Navigator>
       ) : (

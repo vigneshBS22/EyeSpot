@@ -10,7 +10,7 @@ GoogleSignin.configure({
 });
 
 export const logoutAsync = createAsyncThunk('auth/logoutUser', async () => {
-  auth().signOut();
+  return auth().signOut();
 });
 
 export const loginAsync = createAsyncThunk('auth/loginUser', async user => {

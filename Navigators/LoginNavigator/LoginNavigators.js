@@ -1,13 +1,12 @@
 import React from 'react';
 import RegisterScreen from '../../screens/RegisterScreen/RegisterScreen';
 import LoginScreen from '../../screens/LoginScreen/LoginScreen';
-import ProfileScreen from '../../screens/ProfileScreen/ProfileScreen';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import {LoginTab, RegisterStack} from '../../constants';
+import {LoginTab} from '../../constants';
 import {ScreenName} from './constants';
 
-const LoginTabScreen = () => {
+export const LoginTabScreen = () => {
   return (
     <LoginTab.Navigator>
       <LoginTab.Screen
@@ -31,26 +30,5 @@ const LoginTabScreen = () => {
         }}
       />
     </LoginTab.Navigator>
-  );
-};
-
-export const LoginStackScreen = () => {
-  return (
-    <RegisterStack.Navigator>
-      <RegisterStack.Screen
-        name={ScreenName.LOGIN_TAB_SCREEN}
-        options={{
-          headerShown: false,
-        }}
-        component={LoginTabScreen}
-      />
-      <RegisterStack.Screen
-        name={ScreenName.PROFILE_SCREEN}
-        options={{
-          headerShown: false,
-        }}
-        component={ProfileScreen}
-      />
-    </RegisterStack.Navigator>
   );
 };
