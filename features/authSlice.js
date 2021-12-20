@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 export const logoutAsync = createAsyncThunk('auth/logoutUser', async () => {
-  return auth().signOut();
+  auth().signOut();
 });
 
 export const loginAsync = createAsyncThunk('auth/loginUser', async user => {

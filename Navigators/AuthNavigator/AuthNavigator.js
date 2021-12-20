@@ -7,23 +7,24 @@ import HomeScreen from '../../screens/HomeScreen/HomeScreen';
 import SettingScreen from '../../screens/SettingsScreen/SettingScreen';
 import AnimeScreen from '../../screens/AnimeScreen/AnimeScreen';
 import GamesScreen from '../../screens/GameScreen/GamesScreen';
+import {ScreenName} from './constants';
 
 export const HomeTabScreen = () => {
   return (
     <HomeTab.Navigator>
       <HomeTab.Screen
-        name="Home"
+        name={ScreenName.HOME_SCREEN}
         component={HomeScreen}
         options={{
           headerShown: false,
-          tabBarLabel: 'Home',
+
           tabBarIcon: ({color, size}) => (
             <AntDesign name="home" color={color} size={size} />
           ),
         }}
       />
       <HomeTab.Screen
-        name="Anime"
+        name={ScreenName.ANIME_SCREEN}
         component={AnimeScreen}
         options={{
           tabBarIcon: ({color, size}) => (
@@ -32,7 +33,7 @@ export const HomeTabScreen = () => {
         }}
       />
       <HomeTab.Screen
-        name="Games"
+        name={ScreenName.GAMES_SCREEN}
         component={GamesScreen}
         options={{
           tabBarIcon: ({color, size}) => (
@@ -45,10 +46,9 @@ export const HomeTabScreen = () => {
         }}
       />
       <HomeTab.Screen
-        name="Settings"
+        name={ScreenName.SETTING_SCREEN}
         component={SettingScreen}
         options={{
-          tabBarLabel: 'Settings',
           tabBarIcon: ({color, size}) => (
             <AntDesign name="setting" color={color} size={size} />
           ),

@@ -5,15 +5,15 @@ import ProfileScreen from '../../screens/ProfileScreen/ProfileScreen';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {LoginTab, RegisterStack} from '../../constants';
+import {ScreenName} from './constants';
 
 const LoginTabScreen = () => {
   return (
     <LoginTab.Navigator>
       <LoginTab.Screen
-        name="Login"
+        name={ScreenName.LOGIN_SCREEN}
         options={{
           headerShown: false,
-          tabBarLabel: 'Login',
           tabBarIcon: ({color, size}) => (
             <AntDesign name="login" color={color} size={size} />
           ),
@@ -21,11 +21,10 @@ const LoginTabScreen = () => {
         {props => <LoginScreen {...props} />}
       </LoginTab.Screen>
       <LoginTab.Screen
-        name="Register"
+        name={ScreenName.REGISTER_SCREEN}
         component={RegisterScreen}
         options={{
           headerShown: false,
-          tabBarLabel: 'Register',
           tabBarIcon: ({color, size}) => (
             <AntDesign name="adduser" color={color} size={size} />
           ),
@@ -39,19 +38,19 @@ export const LoginStackScreen = () => {
   return (
     <RegisterStack.Navigator>
       <RegisterStack.Screen
-        name="LoginScreen"
+        name={ScreenName.LOGIN_TAB_SCREEN}
         options={{
           headerShown: false,
-        }}>
-        {props => <LoginTabScreen {...props} />}
-      </RegisterStack.Screen>
+        }}
+        component={LoginTabScreen}
+      />
       <RegisterStack.Screen
-        name="Profile"
+        name={ScreenName.PROFILE_SCREEN}
         options={{
           headerShown: false,
-        }}>
-        {props => <ProfileScreen {...props} />}
-      </RegisterStack.Screen>
+        }}
+        component={ProfileScreen}
+      />
     </RegisterStack.Navigator>
   );
 };
