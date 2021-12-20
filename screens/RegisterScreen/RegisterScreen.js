@@ -9,8 +9,9 @@ import {
   Text,
 } from 'native-base';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {onSignUpButtonPress} from '../../utils/emailSignup';
 import {useColor} from '../../Context/ColorContext';
+import {useDispatch} from 'react-redux';
+import {emailSignupAsync, updateEnteredName} from '../../features/authSlice';
 
 export const Form = () => {
   const [details, setDetails] = useState({
@@ -18,6 +19,8 @@ export const Form = () => {
     password: '',
     name: '',
   });
+
+  const dispatch = useDispatch();
 
   const {
     state: {theme},
@@ -92,7 +95,8 @@ export const Form = () => {
           colorScheme="indigo"
           mx={'5%'}
           onPress={() => {
-            onSignUpButtonPress(details);
+            dispatch(updateEnteredName(details.name));
+            dispatch(emailSignupAsync(details));
           }}>
           Signup
         </Button>

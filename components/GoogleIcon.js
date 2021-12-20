@@ -1,17 +1,18 @@
 import {Box, Text, Icon} from 'native-base';
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
-import {Path} from 'react-native-svg';
+import {useDispatch} from 'react-redux';
 import {GoogleIconSVG} from '../constants';
 import {useColor} from '../Context/ColorContext';
-import {onGoogleButtonPress} from '../utils/googleLogin';
+import {googleLoginAsync} from '../features/authSlice';
 
 const GoogleIcon = () => {
   const {
     state: {theme},
   } = useColor();
+  const dispatch = useDispatch();
   return (
-    <TouchableOpacity onPress={onGoogleButtonPress}>
+    <TouchableOpacity onPress={() => dispatch(googleLoginAsync())}>
       <Box
         flexDirection={'row'}
         pr={4}

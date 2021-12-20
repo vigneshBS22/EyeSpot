@@ -10,11 +10,12 @@ import {
   Text,
 } from 'native-base';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {OnLoginButtonPress} from '../../utils/emailLogin';
 import {styles} from './styles';
 import {useColor} from '../../Context/ColorContext';
 import GoogleIcon from '../../components/GoogleIcon';
 import FacebookIcon from '../../components/FacebookIcon';
+import {useDispatch} from 'react-redux';
+import {emailLoginAsync} from '../../features/authSlice';
 
 export const Form = () => {
   const [details, setDetails] = useState({
@@ -25,6 +26,7 @@ export const Form = () => {
   const {
     state: {theme},
   } = useColor();
+  const dispatch = useDispatch();
 
   return (
     <KeyboardAwareScrollView style={styles.scroll} scrollEnabled={false}>
@@ -71,7 +73,7 @@ export const Form = () => {
           w="90%"
           p={3}
           colorScheme="indigo"
-          onPress={() => OnLoginButtonPress(details)}
+          onPress={() => dispatch(emailLoginAsync(details))}
           mx={'5%'}>
           Log in
         </Button>
