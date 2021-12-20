@@ -15,6 +15,8 @@
 		32B06439631836497E88493B /* libPods-Mini_project-Mini_projectTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 192D00E1EB646F8AA586C910 /* libPods-Mini_project-Mini_projectTests.a */; };
 		351020102767681100C0BDE4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3510200F2767681100C0BDE4 /* GoogleService-Info.plist */; };
 		351020112767681100C0BDE4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3510200F2767681100C0BDE4 /* GoogleService-Info.plist */; };
+		353C410927706F2100CBA751 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 353C410827706F2100CBA751 /* Config.xcconfig */; };
+		353C410A27706F2100CBA751 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 353C410827706F2100CBA751 /* Config.xcconfig */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +42,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Mini_project/main.m; sourceTree = "<group>"; };
 		192D00E1EB646F8AA586C910 /* libPods-Mini_project-Mini_projectTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mini_project-Mini_projectTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3510200F2767681100C0BDE4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		353C410827706F2100CBA751 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		3A69B5C7EC504C752CE98D61 /* Pods-Mini_project-Mini_projectTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mini_project-Mini_projectTests.debug.xcconfig"; path = "Target Support Files/Pods-Mini_project-Mini_projectTests/Pods-Mini_project-Mini_projectTests.debug.xcconfig"; sourceTree = "<group>"; };
 		49A672A3D0485AD65C296593 /* Pods-Mini_project.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mini_project.release.xcconfig"; path = "Target Support Files/Pods-Mini_project/Pods-Mini_project.release.xcconfig"; sourceTree = "<group>"; };
 		6E02016C517DB6497E215320 /* Pods-Mini_project.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mini_project.debug.xcconfig"; path = "Target Support Files/Pods-Mini_project/Pods-Mini_project.debug.xcconfig"; sourceTree = "<group>"; };
@@ -130,6 +133,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				353C410827706F2100CBA751 /* Config.xcconfig */,
 				3510200F2767681100C0BDE4 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Mini_project */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -189,6 +193,7 @@
 				786DBD1B129929A6E0F784EB /* [CP] Embed Pods Frameworks */,
 				43EA325F63D6969AC5CD4D1F /* [CP] Copy Pods Resources */,
 				099DD6CF2716B3E40F29990A /* [CP-User] [RNFB] Core Configuration */,
+				353C410B2770703100CBA751 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -240,6 +245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				353C410A27706F2100CBA751 /* Config.xcconfig in Resources */,
 				351020112767681100C0BDE4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -248,6 +254,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				353C410927706F2100CBA751 /* Config.xcconfig in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				351020102767681100C0BDE4 /* GoogleService-Info.plist in Resources */,
@@ -300,6 +307,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mini_project-Mini_projectTests/Pods-Mini_project-Mini_projectTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		353C410B2770703100CBA751 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${SRCROOT}/../node_modules/react-native-config/ios/ReactNativeConfig/BuildXCConfig.rb\" \"${SRCROOT}/..\" \"${SRCROOT}/tmp.xcconfig\"\n\n";
 		};
 		43EA325F63D6969AC5CD4D1F /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -549,6 +573,7 @@
 		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 353C410827706F2100CBA751 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -615,6 +640,7 @@
 		};
 		83CBBA211A601CBA00E9B192 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 353C410827706F2100CBA751 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
