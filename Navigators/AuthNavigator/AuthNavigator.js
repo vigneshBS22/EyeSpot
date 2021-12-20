@@ -1,12 +1,12 @@
 import React from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {HomeTab} from '../constants';
+import {HomeTab} from '../../constants';
 
-import HomeScreen from '../screens/HomeScreen/HomeScreen';
-import SettingScreen from '../screens/SettingsScreen/SettingScreen';
-import AnimeScreen from '../screens/AnimeScreen/AnimeScreen';
-import GamesScreen from '../screens/GameScreen/GamesScreen';
+import HomeScreen from '../../screens/HomeScreen/HomeScreen';
+import SettingScreen from '../../screens/SettingsScreen/SettingScreen';
+import AnimeScreen from '../../screens/AnimeScreen/AnimeScreen';
+import GamesScreen from '../../screens/GameScreen/GamesScreen';
 
 export const HomeTabScreen = () => {
   return (

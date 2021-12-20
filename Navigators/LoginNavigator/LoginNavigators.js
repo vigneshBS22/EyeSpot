@@ -1,10 +1,10 @@
 import React from 'react';
-import RegisterScreen from '../screens/RegisterScreen/RegisterScreen';
-import LoginScreen from '../screens/LoginScreen/LoginScreen';
-import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
+import RegisterScreen from '../../screens/RegisterScreen/RegisterScreen';
+import LoginScreen from '../../screens/LoginScreen/LoginScreen';
+import ProfileScreen from '../../screens/ProfileScreen/ProfileScreen';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import {LoginTab, RegisterStack} from '../constants';
+import {LoginTab, RegisterStack} from '../../constants';
 
 const LoginTabScreen = () => {
   return (
