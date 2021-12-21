@@ -14,9 +14,11 @@ export const logoutAsync = createAsyncThunk('auth/logoutUser', async () => {
 });
 
 export const loginAsync = createAsyncThunk('auth/loginUser', async user => {
+  console.log('starting auth check');
   const docRef = firestore().collection('Users').doc(user.uid);
   const doc = await docRef.get();
-  return doc.data();
+  if (doc.exists) return doc.data();
+  else return {name: '', isAdmin: false};
 });
 
 export const emailLoginAsync = createAsyncThunk(
@@ -28,16 +30,37 @@ export const emailLoginAsync = createAsyncThunk(
 
 export const googleLoginAsync = createAsyncThunk(
   'auth/googleLogin',
-  async () => {
+  async (_, ThunkApi) => {
     const {idToken} = await GoogleSignin.signIn();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    return auth().signInWithCredential(googleCredential);
+    try {
+      let result = await auth().signInWithCredential(googleCredential);
+      if (result.additionalUserInfo.isNewUser) {
+        try {
+          let user = await firestore()
+            .collection('Users')
+            .doc(result.user.uid)
+            .set({
+              name: result.additionalUserInfo.profile.name,
+              email: result.additionalUserInfo.profile.email,
+              isAdmin: false,
+            });
+          ThunkApi.dispatch(
+            updateEnteredName(result.additionalUserInfo.profile.name),
+          );
+        } catch (err) {
+          throw err;
+        }
+      } else console.log('not added');
+    } catch (err) {
+      throw err;
+    }
   },
 );
 
 export const facebookLoginAsync = createAsyncThunk(
   'auth/facebookLogin',
-  async () => {
+  async (_, ThunkApi) => {
     const result = await LoginManager.logInWithPermissions([
       'public_profile',
       'email',
@@ -57,17 +80,51 @@ export const facebookLoginAsync = createAsyncThunk(
       data.accessToken,
     );
 
-    return auth().signInWithCredential(facebookCredential);
+    try {
+      let result = await auth().signInWithCredential(facebookCredential);
+      if (result.additionalUserInfo.isNewUser) {
+        try {
+          await firestore().collection('Users').doc(result.user.uid).set({
+            name: result.additionalUserInfo.profile.name,
+            email: result.additionalUserInfo.profile.email,
+            isAdmin: false,
+          });
+          ThunkApi.dispatch(
+            updateEnteredName(result.additionalUserInfo.profile.name),
+          );
+        } catch (err) {
+          return err;
+        }
+      } else console.log('not added');
+    } catch (err) {
+      return err;
+    }
   },
 );
 
 export const emailSignupAsync = createAsyncThunk(
   'auth/emailSignup',
   async details => {
-    return auth().createUserWithEmailAndPassword(
-      details.email,
-      details.password,
-    );
+    try {
+      let result = await auth().createUserWithEmailAndPassword(
+        details.email,
+        details.password,
+      );
+      if (result.additionalUserInfo.isNewUser) {
+        try {
+          await firestore().collection('Users').doc(result.user.uid).set({
+            name: details.name,
+            email: details.email,
+            isAdmin: false,
+          });
+          ThunkApi.dispatch(updateEnteredName(details.name));
+        } catch (err) {
+          return err;
+        }
+      } else console.log('not added');
+    } catch (err) {
+      return err;
+    }
   },
 );
 
@@ -75,95 +132,47 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState: {
     name: '',
-    enteredName: '',
     isAdmin: false,
+    status: 'success',
+    login: false,
   },
   reducers: {
     updateEnteredName: (state, action) => {
-      state.enteredName = action.payload;
+      console.log(action.payload);
+      state.name = action.payload;
     },
   },
   extraReducers: {
     [logoutAsync.fulfilled]: state => {
       state.name = '';
       state.isAdmin = false;
+      state.login = false;
+    },
+    [loginAsync.pending]: (state, action) => {
+      state.status = 'loading';
     },
     [loginAsync.fulfilled]: (state, action) => {
+      state.status = 'success';
       state.name = action.payload.name;
+      state.login = true;
       state.isAdmin = action.payload.isAdmin;
     },
-    [emailLoginAsync.fulfilled]: (state, action) => {
-      console.log('logged in');
+    [loginAsync.rejected]: (state, action) => {
+      state.status = 'success';
+      state.login = false;
+      state.name = '';
+      state.isAdmin = false;
     },
     [emailLoginAsync.rejected]: (state, action) => {
-      if (action.payload.error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
-      if (action.payload.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
-      console.error(action.error);
-    },
-    [googleLoginAsync.fulfilled]: (state, action) => {
-      action.payload.additionalUserInfo.isNewUser
-        ? firestore()
-            .collection('Users')
-            .doc(action.payload.user.uid)
-            .set({
-              name: action.payload.additionalUserInfo.profile.name,
-              email: action.payload.additionalUserInfo.profile.email,
-              isAdmin: false,
-            })
-            .then(() => {
-              console.log('User added!');
-            })
-        : console.log('User not added!');
+      console.log('this', action.error);
     },
     [googleLoginAsync.rejected]: (state, action) => {
-      console.log('logging error:', action.error);
-    },
-    [facebookLoginAsync.fulfilled]: (state, action) => {
-      action.payload.additionalUserInfo.isNewUser
-        ? firestore()
-            .collection('Users')
-            .doc(action.payload.user.uid)
-            .set({
-              name: action.payload.additionalUserInfo.profile.name,
-              email: action.payload.additionalUserInfo.profile.email,
-              isAdmin: false,
-            })
-            .then(() => {
-              console.log('User added!');
-            })
-        : null;
+      console.log('this', action.error);
     },
     [facebookLoginAsync.rejected]: (state, action) => {
       console.log('logging error:', action.error);
     },
-    [emailSignupAsync.fulfilled]: (state, action) => {
-      action.payload.additionalUserInfo.isNewUser
-        ? firestore()
-            .collection('Users')
-            .doc(action.payload.user.uid)
-            .set({
-              name: state.enteredName,
-              email: action.payload.user.email,
-              isAdmin: false,
-            })
-            .then(() => {
-              console.log('User added!');
-            })
-        : null;
-      console.log('User account created & signed in!');
-    },
     [emailSignupAsync.rejected]: (state, action) => {
-      if (action.payload.error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
-
-      if (action.payload.error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
       console.error(action.error);
     },
   },
