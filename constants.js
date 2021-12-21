@@ -5,7 +5,8 @@ import {Icon} from 'native-base';
 import React from 'react';
 
 export const AuthStack = createNativeStackNavigator();
-export const RegisterStack = createNativeStackNavigator();
+export const GameStack = createNativeStackNavigator();
+export const AnimeStack = createNativeStackNavigator();
 export const HomeStack = createNativeStackNavigator();
 export const LoginTab = createBottomTabNavigator();
 export const HomeTab = createBottomTabNavigator();

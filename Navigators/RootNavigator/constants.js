@@ -18,6 +18,6 @@ export const MyDarkTheme = {
 
 export const ScreenName = {
   WELCOME_SCREEN: 'WelcomeScreen',
-  LOGIN_SCREEN: 'Login',
+  LOGIN_SCREEN: 'LoginScreen',
   HOME_SCREEN: 'HomeScreen',
 };
