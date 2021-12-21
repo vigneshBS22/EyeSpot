@@ -1,10 +1,19 @@
 import React from 'react';
-import {NativeBaseProvider, Box} from 'native-base';
+
+import {NativeBaseProvider} from 'native-base';
+import {Provider} from 'react-redux';
+import {store} from './store/store';
+import {RootNavigator} from './Navigators/RootNavigator/RootNavigator';
+import {ColorProvider} from './Context/ColorContext';
 
 export default function App() {
   return (
-    <NativeBaseProvider>
-      <Box>Hello</Box>
-    </NativeBaseProvider>
+    <Provider store={store}>
+      <ColorProvider>
+        <NativeBaseProvider>
+          <RootNavigator />
+        </NativeBaseProvider>
+      </ColorProvider>
+    </Provider>
   );
 }

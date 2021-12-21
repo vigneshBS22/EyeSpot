@@ -20,7 +20,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-
+.env
 # Android/IntelliJ
 #
 build/
@@ -29,7 +29,7 @@ build/
 local.properties
 *.iml
 *.hprof
-
+android/app/google-services.json
 # node.js
 #
 node_modules/
@@ -57,4 +57,6 @@ buck-out/
 *.jsbundle
 
 # CocoaPods
-/ios/Pods/
+ios/Pods/
+ios/GoogleService-Info.plist
+ios/Mini_project/GoogleService-Info.plist
