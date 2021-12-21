@@ -1,7 +1,8 @@
 import React from 'react';
-import {NativeBaseProvider, useColorMode, Box, Text} from 'native-base';
-import {StyleSheet} from 'react-native';
+import {NativeBaseProvider, FlatList} from 'native-base';
 import {useColor} from '../../Context/ColorContext';
+import Card from '../../components/GameCard';
+import {gamesData} from '../../data';
 
 const GamesScreen = ({navigation}) => {
   const {
@@ -9,15 +10,13 @@ const GamesScreen = ({navigation}) => {
   } = useColor();
   return (
     <NativeBaseProvider>
-      <Box style={styles.container}>
-        <Text color={theme.text}>Game Screen</Text>
-      </Box>
+      <FlatList
+        data={gamesData}
+        renderItem={({item}) => <Card navigation={navigation} item={item} />}
+        keyExtractor={item => item.id}
+      />
     </NativeBaseProvider>
   );
 };
 
 export default GamesScreen;
-
-const styles = StyleSheet.create({
-  container: {flex: 1, justifyContent: 'center', alignItems: 'center'},
-});
