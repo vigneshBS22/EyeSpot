@@ -5,9 +5,9 @@ import {HomeTab} from '../../constants';
 
 import HomeScreen from '../../screens/HomeScreen/HomeScreen';
 import SettingScreen from '../../screens/SettingsScreen/SettingScreen';
-import AnimeScreen from '../../screens/AnimeScreen/AnimeScreen';
-import GamesScreen from '../../screens/GameScreen/GamesScreen';
-import {ScreenName} from './constants';
+import {ScreenName, TabLabel} from './constants';
+import GameNavigator from '../GameNavigator/GameNavigator';
+import AnimeNavigator from '../AnimeNavigator/AnimeNavgator';
 
 export const HomeTabScreen = () => {
   return (
@@ -25,8 +25,10 @@ export const HomeTabScreen = () => {
       />
       <HomeTab.Screen
         name={ScreenName.ANIME_SCREEN}
-        component={AnimeScreen}
+        component={AnimeNavigator}
         options={{
+          tabBarLabel: TabLabel.ANIME,
+          headerShown: false,
           tabBarIcon: ({color, size}) => (
             <AntDesign name="eyeo" color={color} size={size} />
           ),
@@ -34,8 +36,10 @@ export const HomeTabScreen = () => {
       />
       <HomeTab.Screen
         name={ScreenName.GAMES_SCREEN}
-        component={GamesScreen}
+        component={GameNavigator}
         options={{
+          headerShown: false,
+          tabBarLabel: TabLabel.GAMES,
           tabBarIcon: ({color, size}) => (
             <Ionicons
               name="ios-game-controller-outline"

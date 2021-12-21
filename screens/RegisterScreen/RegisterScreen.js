@@ -19,12 +19,21 @@ export const Form = () => {
     password: '',
     name: '',
   });
+  const [error, setError] = useState('');
 
   const dispatch = useDispatch();
 
   const {
     state: {theme},
   } = useColor();
+
+  const submit = () => {
+    if (details.email !== '' && details.password !== '' && details.name !== '')
+      dispatch(emailSignupAsync(details));
+    else if (details.email === '') setError('asd');
+    else if (details.password === '') setError('asd');
+    else if (details.name === '') setError('asd');
+  };
 
   return (
     <KeyboardAwareScrollView style={{width: '100%'}}>
@@ -47,6 +56,11 @@ export const Form = () => {
             }}
             placeholder="Enter Name"
           />
+          {error !== '' && (
+            <FormControl.ErrorMessage>
+              Please enter name
+            </FormControl.ErrorMessage>
+          )}
         </FormControl>
         <FormControl
           py={5}
@@ -66,13 +80,19 @@ export const Form = () => {
             color={theme.text}
             placeholder="Enter Email"
           />
+          {error !== '' && (
+            <FormControl.ErrorMessage>
+              Please enter name
+            </FormControl.ErrorMessage>
+          )}
         </FormControl>
         <FormControl
           py={5}
           w={{
             base: '90%',
           }}
-          mx={'5%'}>
+          mx={'5%'}
+          isInvalid={error === '' ? false : true}>
           <Input
             shadow={theme.shadow}
             bg={theme.inputbg}
@@ -86,6 +106,8 @@ export const Form = () => {
             color={theme.text}
             placeholder="Enter password"
           />
+
+          <FormControl.ErrorMessage>Please enter name</FormControl.ErrorMessage>
         </FormControl>
         <Button
           shadow={8}
@@ -96,7 +118,7 @@ export const Form = () => {
           mx={'5%'}
           onPress={() => {
             dispatch(updateEnteredName(details.name));
-            dispatch(emailSignupAsync(details));
+            submit();
           }}>
           Signup
         </Button>

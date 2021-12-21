@@ -3,7 +3,6 @@ import {NativeBaseProvider, Box, Center, Avatar, Text} from 'native-base';
 import {useColor} from '../../Context/ColorContext';
 import {useSelector} from 'react-redux';
 import {selectAuth} from '../../features/authSlice';
-import Card from '../../components/Card';
 
 const HomeScreen = ({navigation}) => {
   const {
@@ -41,7 +40,6 @@ const HomeScreen = ({navigation}) => {
           </Avatar>
         </Center>
       </Box>
-      <Card />
     </NativeBaseProvider>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, Button, Image, Center, Box} from 'native-base';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useColor} from '../../Context/ColorContext';
+import {ScreenName} from '../../Navigators/RootNavigator/constants';
 
 const WelcomeScreen = ({navigation}) => {
   const {
@@ -12,7 +12,7 @@ const WelcomeScreen = ({navigation}) => {
       <Center px="3" py="1.5">
         <Button
           onPress={() => {
-            navigation.navigate('Login');
+            navigation.navigate(ScreenName.LOGIN_SCREEN);
           }}>
           <Text fontSize={20}>Get Started</Text>
         </Button>

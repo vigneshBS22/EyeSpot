@@ -22,11 +22,19 @@ export const Form = () => {
     email: '',
     password: '',
   });
+  const [error, setError] = useState('');
 
   const {
     state: {theme},
   } = useColor();
   const dispatch = useDispatch();
+
+  const submit = () => {
+    if (details.email !== '' && details.password !== '')
+      dispatch(emailLoginAsync(details));
+    else if (details.email === '') setError('asd');
+    else if (details.password === '') setError('asd');
+  };
 
   return (
     <KeyboardAwareScrollView style={styles.scroll} scrollEnabled={false}>
@@ -73,7 +81,7 @@ export const Form = () => {
           w="90%"
           p={3}
           colorScheme="indigo"
-          onPress={() => dispatch(emailLoginAsync(details))}
+          onPress={() => submit()}
           mx={'5%'}>
           Log in
         </Button>
