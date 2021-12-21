@@ -43,7 +43,8 @@ export const Form = () => {
           w={{
             base: '90%',
           }}
-          mx={'5%'}>
+          mx={'5%'}
+          isInvalid>
           <Input
             shadow={theme.shadow}
             bg={theme.inputbg}
@@ -106,7 +107,6 @@ export const Form = () => {
             color={theme.text}
             placeholder="Enter password"
           />
-
           <FormControl.ErrorMessage>Please enter name</FormControl.ErrorMessage>
         </FormControl>
         <Button

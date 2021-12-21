@@ -1,7 +1,7 @@
 import React from 'react';
 import {NativeBaseProvider} from 'native-base';
 import {useColor} from '../../Context/ColorContext';
-import Card from '../../components/AnimeCard';
+import AnimeInfoCard from '../../components/AnimeInfoCard';
 
 const AnimeInfoScreen = ({route}) => {
   const {
@@ -10,7 +10,7 @@ const AnimeInfoScreen = ({route}) => {
   const {item} = route.params;
   return (
     <NativeBaseProvider>
-      <Card item={item} />
+      <AnimeInfoCard item={item} />
     </NativeBaseProvider>
   );
 };

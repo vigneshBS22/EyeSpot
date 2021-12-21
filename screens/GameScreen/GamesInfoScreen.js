@@ -2,6 +2,7 @@ import React from 'react';
 import {NativeBaseProvider} from 'native-base';
 import {useColor} from '../../Context/ColorContext';
 import Card from '../../components/GameCard';
+import GameInfoCard from '../../components/GameInfoCard';
 
 const GameInfoScreen = ({route}) => {
   const {
@@ -10,7 +11,7 @@ const GameInfoScreen = ({route}) => {
   const {item} = route.params;
   return (
     <NativeBaseProvider>
-      <Card item={item} />
+      <GameInfoCard item={item} />
     </NativeBaseProvider>
   );
 };

@@ -24,6 +24,7 @@ export function ColorProvider({children}) {
       shadowRadius: 6.27,
       elevation: 10,
     },
+    infoCardbg: 'indigo.100',
   };
 
   const darkTheme = {
@@ -32,6 +33,7 @@ export function ColorProvider({children}) {
     button: 'muted.200',
     inputbg: '#404040',
     shadow: {},
+    infoCardbg: 'indigo.400',
   };
 
   function reducerFunc(state, action) {

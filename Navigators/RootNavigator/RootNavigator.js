@@ -17,13 +17,14 @@ import {COLOR_MODE} from '../../constants';
 
 export const RootNavigator = () => {
   const dispatch = useDispatch();
-  const {name} = useSelector(selectAuth);
+  const {login, status} = useSelector(selectAuth);
   const {
     state: {color},
   } = useColor();
 
   // Handle user state changes
   function onAuthStateChanged(user) {
+    console.log(user);
     if (user) {
       dispatch(loginAsync(user));
     }
@@ -37,7 +38,7 @@ export const RootNavigator = () => {
   return (
     <NavigationContainer
       theme={color === COLOR_MODE.LIGHT ? MyTheme : MyDarkTheme}>
-      {name === '' ? (
+      {!login ? (
         <AuthStack.Navigator>
           <AuthStack.Screen
             name={ScreenName.WELCOME_SCREEN}
