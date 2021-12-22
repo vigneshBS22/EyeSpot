@@ -16,24 +16,22 @@ import GoogleIcon from '../../components/GoogleIcon';
 import FacebookIcon from '../../components/FacebookIcon';
 import {useDispatch} from 'react-redux';
 import {emailLoginAsync} from '../../features/authSlice';
-
+import {emailValidator, passwordValidator} from '../../utils/validators';
+import useFieldUpdate from '../../utils/useFieldUpdate';
 export const Form = () => {
-  const [details, setDetails] = useState({
-    email: '',
-    password: '',
-  });
-  const [error, setError] = useState('');
-
   const {
     state: {theme},
   } = useColor();
   const dispatch = useDispatch();
 
+  const email = useFieldUpdate('', emailValidator);
+  const password = useFieldUpdate('', passwordValidator);
+  const [submitForm, setSubmitForm] = useState(false);
   const submit = () => {
-    if (details.email !== '' && details.password !== '')
-      dispatch(emailLoginAsync(details));
-    else if (details.email === '') setError('asd');
-    else if (details.password === '') setError('asd');
+    if (!email.error && !password.error)
+      dispatch(emailLoginAsync({email: email.value, password: password.value}));
+    else console.log('Validation Failed');
+    setSubmitForm(true);
   };
 
   return (
@@ -43,37 +41,37 @@ export const Form = () => {
           w={{
             base: '90%',
           }}
-          mx={'5%'}>
+          mx={'5%'}
+          isInvalid={submitForm && !!email.error}>
           <Input
             shadow={theme.shadow}
             bg={theme.inputbg}
             variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
             p={4}
-            value={details.email}
-            onChangeText={text => {
-              setDetails({...details, email: text});
-            }}
+            value={email.value}
+            onChangeText={email.changeHandler}
             placeholder="Email"
           />
+          <FormControl.ErrorMessage>{email.error}</FormControl.ErrorMessage>
         </FormControl>
         <FormControl
           py={5}
           w={{
             base: '90%',
           }}
-          mx={'5%'}>
+          mx={'5%'}
+          isInvalid={submitForm && !!password.error}>
           <Input
             shadow={theme.shadow}
             bg={theme.inputbg}
             variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
             p={4}
             type="password"
-            value={details.password}
-            onChangeText={text => {
-              setDetails({...details, password: text});
-            }}
+            value={password.value}
+            onChangeText={password.changeHandler}
             placeholder="Password"
           />
+          <FormControl.ErrorMessage>{password.error}</FormControl.ErrorMessage>
         </FormControl>
         <Button
           shadow={theme.shadow}

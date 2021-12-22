@@ -12,27 +12,36 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useColor} from '../../Context/ColorContext';
 import {useDispatch} from 'react-redux';
 import {emailSignupAsync, updateEnteredName} from '../../features/authSlice';
+import {
+  emailValidator,
+  nameValidator,
+  passwordValidator,
+} from '../../utils/validators';
+import useFieldUpdate from '../../utils/useFieldUpdate';
 
 export const Form = () => {
-  const [details, setDetails] = useState({
-    email: '',
-    password: '',
-    name: '',
-  });
-  const [error, setError] = useState('');
-
   const dispatch = useDispatch();
 
   const {
     state: {theme},
   } = useColor();
 
-  const submit = () => {
-    if (details.email !== '' && details.password !== '' && details.name !== '')
-      dispatch(emailSignupAsync(details));
-    else if (details.email === '') setError('asd');
-    else if (details.password === '') setError('asd');
-    else if (details.name === '') setError('asd');
+  const email = useFieldUpdate('', emailValidator);
+  const password = useFieldUpdate('', passwordValidator);
+  const name = useFieldUpdate('', nameValidator);
+  const [submitForm, setSubmitForm] = useState(false);
+  const onSubmit = () => {
+    if (!email.error && !password.error && !name.error) {
+      dispatch(updateEnteredName(name.value));
+      dispatch(
+        emailSignupAsync({
+          email: email.value,
+          password: password.value,
+          name: name.value,
+        }),
+      );
+    } else console.log('Validation Failed');
+    setSubmitForm(true);
   };
 
   return (
@@ -44,48 +53,19 @@ export const Form = () => {
             base: '90%',
           }}
           mx={'5%'}
-          isInvalid>
+          isInvalid={submitForm && !!name.error}>
           <Input
             shadow={theme.shadow}
             bg={theme.inputbg}
             color={theme.text}
             variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
             p={4}
-            value={details.name}
-            onChangeText={text => {
-              setDetails({...details, name: text});
-            }}
+            value={name.value}
+            onChangeText={name.changeHandler}
             placeholder="Enter Name"
           />
-          {error !== '' && (
-            <FormControl.ErrorMessage>
-              Please enter name
-            </FormControl.ErrorMessage>
-          )}
-        </FormControl>
-        <FormControl
-          py={5}
-          w={{
-            base: '90%',
-          }}
-          mx={'5%'}>
-          <Input
-            shadow={theme.shadow}
-            bg={theme.inputbg}
-            variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
-            p={4}
-            value={details.username}
-            onChangeText={text => {
-              setDetails({...details, email: text});
-            }}
-            color={theme.text}
-            placeholder="Enter Email"
-          />
-          {error !== '' && (
-            <FormControl.ErrorMessage>
-              Please enter name
-            </FormControl.ErrorMessage>
-          )}
+
+          <FormControl.ErrorMessage>{name.error}</FormControl.ErrorMessage>
         </FormControl>
         <FormControl
           py={5}
@@ -93,21 +73,39 @@ export const Form = () => {
             base: '90%',
           }}
           mx={'5%'}
-          isInvalid={error === '' ? false : true}>
+          isInvalid={submitForm && !!email.error}>
+          <Input
+            shadow={theme.shadow}
+            bg={theme.inputbg}
+            variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
+            p={4}
+            value={email.value}
+            onChangeText={email.changeHandler}
+            color={theme.text}
+            placeholder="Enter Email"
+          />
+
+          <FormControl.ErrorMessage>{email.error}</FormControl.ErrorMessage>
+        </FormControl>
+        <FormControl
+          py={5}
+          w={{
+            base: '90%',
+          }}
+          mx={'5%'}
+          isInvalid={submitForm && !!password.error}>
           <Input
             shadow={theme.shadow}
             bg={theme.inputbg}
             variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
             p={4}
             type="password"
-            value={details.password}
-            onChangeText={text => {
-              setDetails({...details, password: text});
-            }}
+            value={password.value}
+            onChangeText={password.changeHandler}
             color={theme.text}
             placeholder="Enter password"
           />
-          <FormControl.ErrorMessage>Please enter name</FormControl.ErrorMessage>
+          <FormControl.ErrorMessage>{password.error}</FormControl.ErrorMessage>
         </FormControl>
         <Button
           shadow={8}
@@ -117,8 +115,7 @@ export const Form = () => {
           colorScheme="indigo"
           mx={'5%'}
           onPress={() => {
-            dispatch(updateEnteredName(details.name));
-            submit();
+            onSubmit();
           }}>
           Signup
         </Button>
