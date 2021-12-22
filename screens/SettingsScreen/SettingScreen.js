@@ -5,12 +5,13 @@ import {
   NativeBaseProvider,
   Stack,
   Text,
+  useToast,
 } from 'native-base';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {useColor} from '../../Context/ColorContext';
-import {useDispatch} from 'react-redux';
-import {logoutAsync} from '../../features/authSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {logoutAsync, selectAuth} from '../../features/authSlice';
 
 const SettingScreen = () => {
   const {

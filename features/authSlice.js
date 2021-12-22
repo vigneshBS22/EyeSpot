@@ -131,15 +131,20 @@ export const emailSignupAsync = createAsyncThunk(
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    name: '',
+    name: null,
     isAdmin: false,
     status: 'success',
     login: false,
+    error: false,
+    error_msg: '',
   },
   reducers: {
     updateEnteredName: (state, action) => {
-      console.log(action.payload);
       state.name = action.payload;
+    },
+    updateError: state => {
+      state.error = false;
+      state.error_msg = '';
     },
   },
   extraReducers: {
@@ -156,6 +161,7 @@ export const authSlice = createSlice({
       state.name = action.payload.name;
       state.login = true;
       state.isAdmin = action.payload.isAdmin;
+      state.error_msg = '';
     },
     [loginAsync.rejected]: (state, action) => {
       state.status = 'success';
@@ -164,21 +170,25 @@ export const authSlice = createSlice({
       state.isAdmin = false;
     },
     [emailLoginAsync.rejected]: (state, action) => {
-      console.log('this', action.error);
+      state.error = true;
+      if (action.error.code === 'auth/user-not-found')
+        state.error_msg = "please register if you have't yet.";
+      else if (action.error.code === 'auth/wrong-password')
+        state.error_msg = 'wrong password, please try again.';
     },
     [googleLoginAsync.rejected]: (state, action) => {
-      console.log('this', action.error);
+      state.error = true;
     },
     [facebookLoginAsync.rejected]: (state, action) => {
-      console.log('logging error:', action.error);
+      state.error = true;
     },
     [emailSignupAsync.rejected]: (state, action) => {
-      console.error(action.error);
+      state.error = true;
     },
   },
 });
 
-export const {updateEnteredName} = authSlice.actions;
+export const {updateEnteredName, updateError} = authSlice.actions;
 
 export const selectAuth = state => state.auth;
 
