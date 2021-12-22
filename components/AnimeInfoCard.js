@@ -7,13 +7,12 @@ import {
   Center,
   ScrollView,
 } from 'native-base';
-import React, {useState} from 'react';
+import React from 'react';
 import {useColor} from '../Context/ColorContext';
+import {ScreenName} from '../Navigators/AnimeNavigator/constants';
 import ItemInfo from './AnimeItemInfo';
-import ItemReplies from './ItemReplies';
 
-export default function AnimeInfoCard({item}) {
-  const [component, setComponent] = useState('Info');
+export default function AnimeInfoCard({item, navigation}) {
   const {
     state: {theme},
   } = useColor();
@@ -29,30 +28,33 @@ export default function AnimeInfoCard({item}) {
           />
         </AspectRatio>
       </Box>
+
       <Box bg={theme.infoCardbg} h={'full'}>
         <Center>
           <HStack mt={5} p={3} bg={'indigo.300'} borderRadius={'30'}>
             <Button
-              onPress={() => setComponent('Info')}
-              bg={component === 'Info' ? theme.bg : 'indigo.400'}
+              bg={'indigo.400'}
               borderRadius={'20'}
-              shadow={component === 'Info' ? 9 : 2}
+              shadow={9}
               mr={3}
               p={3}>
-              Informations
+              Information
             </Button>
             <Button
-              onPress={() => setComponent('Replies')}
-              bg={component === 'Replies' ? theme.bg : 'indigo.400'}
+              bg={theme.bg}
               borderRadius={'20'}
-              shadow={component === 'Replies' ? 9 : 2}
+              shadow={2}
               ml={3}
-              p={3}>
-              Replies
+              p={3}
+              onPress={() =>
+                navigation.navigate(ScreenName.ANIME_REVIEW_SCREEN, {
+                  item,
+                })
+              }>
+              Discussion
             </Button>
           </HStack>
-
-          {component === 'Info' ? <ItemInfo item={item} /> : <ItemReplies />}
+          <ItemInfo item={item} />
         </Center>
       </Box>
     </ScrollView>

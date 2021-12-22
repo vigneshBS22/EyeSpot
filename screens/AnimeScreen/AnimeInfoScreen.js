@@ -3,14 +3,14 @@ import {NativeBaseProvider} from 'native-base';
 import {useColor} from '../../Context/ColorContext';
 import AnimeInfoCard from '../../components/AnimeInfoCard';
 
-const AnimeInfoScreen = ({route}) => {
+const AnimeInfoScreen = ({route, navigation}) => {
   const {
     state: {theme},
   } = useColor();
   const {item} = route.params;
   return (
     <NativeBaseProvider>
-      <AnimeInfoCard item={item} />
+      <AnimeInfoCard item={item} navigation={navigation} />
     </NativeBaseProvider>
   );
 };

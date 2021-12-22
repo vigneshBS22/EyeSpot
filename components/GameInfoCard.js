@@ -7,13 +7,12 @@ import {
   Center,
   ScrollView,
 } from 'native-base';
-import React, {useState} from 'react';
+import React from 'react';
 import {useColor} from '../Context/ColorContext';
+import {ScreenName} from '../Navigators/GameNavigator/constants';
 import GameItemInfo from './GameItemInfo';
-import ItemReplies from './ItemReplies';
 
-export default function GameInfoCard({item}) {
-  const [component, setComponent] = useState('Info');
+export default function GameInfoCard({item, navigation}) {
   const {
     state: {theme},
   } = useColor();
@@ -33,30 +32,28 @@ export default function GameInfoCard({item}) {
         <Center>
           <HStack mt={5} p={3} bg={'indigo.300'} borderRadius={'30'}>
             <Button
-              onPress={() => setComponent('Info')}
-              bg={component === 'Info' ? theme.bg : 'indigo.400'}
+              bg={theme.primary}
               borderRadius={'20'}
-              shadow={component === 'Info' ? 9 : 2}
+              shadow={theme.shadow}
               mr={3}
               p={3}>
-              Informations
+              Information
             </Button>
             <Button
-              onPress={() => setComponent('Replies')}
-              bg={component === 'Replies' ? theme.bg : 'indigo.400'}
+              bg={theme.bg}
               borderRadius={'20'}
-              shadow={component === 'Replies' ? 9 : 2}
+              shadow={theme.shadow}
               ml={3}
-              p={3}>
-              Replies
+              p={3}
+              onPress={() =>
+                navigation.navigate(ScreenName.GAME_REVIEW_SCREEN, {
+                  item,
+                })
+              }>
+              Discussion
             </Button>
           </HStack>
-
-          {component === 'Info' ? (
-            <GameItemInfo item={item} />
-          ) : (
-            <ItemReplies />
-          )}
+          <GameItemInfo item={item} />
         </Center>
       </Box>
     </ScrollView>

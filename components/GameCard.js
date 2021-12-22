@@ -18,11 +18,12 @@ export default function Card({navigation, item}) {
       onPress={() =>
         navigation.navigate(ScreenName.GAMES_INFO_SCREEN, {
           item,
+          name: item.name,
         })
       }>
       <Box bg={theme.bg}>
         <Box mt={3}>
-          <AspectRatio w="90%" mx={5}>
+          <AspectRatio w="90%" mx={5} ratio={20 / 9}>
             <Image
               source={{
                 uri: item.imageUrl,

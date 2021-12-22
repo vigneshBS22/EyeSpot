@@ -12,6 +12,7 @@ export function ColorProvider({children}) {
   const lightTheme = {
     bg: 'white',
     text: 'black',
+    primary: 'indigo.400',
     button: 'muted.700',
     inputbg: 'white',
     shadow: {
@@ -34,6 +35,7 @@ export function ColorProvider({children}) {
     inputbg: '#404040',
     shadow: {},
     infoCardbg: 'indigo.400',
+    primary: 'indigo.400',
   };
 
   function reducerFunc(state, action) {

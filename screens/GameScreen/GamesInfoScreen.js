@@ -4,14 +4,14 @@ import {useColor} from '../../Context/ColorContext';
 import Card from '../../components/GameCard';
 import GameInfoCard from '../../components/GameInfoCard';
 
-const GameInfoScreen = ({route}) => {
+const GameInfoScreen = ({route, navigation}) => {
   const {
     state: {theme},
   } = useColor();
   const {item} = route.params;
   return (
     <NativeBaseProvider>
-      <GameInfoCard item={item} />
+      <GameInfoCard item={item} navigation={navigation} />
     </NativeBaseProvider>
   );
 };

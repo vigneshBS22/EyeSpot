@@ -8,6 +8,17 @@ export const animeData = [
     rating: '5',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed quam tincidunt mi convallis fermentum. Phasellus rutrum massa dolor, in feugiat odio convallis nec. Curabitur et purus ac erat tincidunt placerat. Curabitur imperdiet ullamcorper tellus eget maximus. Vestibulum ac ullamcorper elit. Nullam pretium condimentum tortor, vel porttitor turpis tempor a. Sed vehicula tellus id nulla ultrices tempor eu vel leo. Integer ut maximus sapien.',
+    comments: [
+      {id: 1, name: 'Vignesh', content: 'Its good', rating: 4},
+      {id: 2, name: 'Vignesh', content: 'Its good', rating: 4},
+      {id: 3, name: 'Vignesh', content: 'Its good', rating: 4},
+      {id: 4, name: 'Vignesh', content: 'Its good', rating: 4},
+      {id: 5, name: 'Vignesh', content: 'Its good', rating: 4},
+      {id: 6, name: 'Vignesh', content: 'Its good', rating: 4},
+      {id: 7, name: 'Vignesh', content: 'Its good', rating: 4},
+      // {id: 8, name: 'Vignesh', content: 'Its good'},
+      // {id: 9, name: 'Vignesh', content: 'Its good'},
+    ],
   },
   {
     id: 2,
@@ -40,6 +51,15 @@ export const gamesData = [
     rating: '5',
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed quam tincidunt mi convallis fermentum. Phasellus rutrum massa dolor, in feugiat odio convallis nec. Curabitur et purus ac erat tincidunt placerat. Curabitur imperdiet ullamcorper tellus eget maximus. Vestibulum ac ullamcorper elit. Nullam pretium condimentum tortor, vel porttitor turpis tempor a. Sed vehicula tellus id nulla ultrices tempor eu vel leo. Integer ut maximus sapien.',
+    comments: [
+      {id: 1, name: 'Vignesh', content: 'Its good', rating: 4},
+      {id: 2, name: 'Vignesh', content: 'Its good', rating: 4},
+      {id: 3, name: 'Vignesh', content: 'Its good', rating: 4},
+      {id: 4, name: 'Vignesh', content: 'Its good', rating: 4},
+      {id: 5, name: 'Vignesh', content: 'Its good', rating: 4},
+      {id: 6, name: 'Vignesh', content: 'Its good', rating: 4},
+      {id: 7, name: 'Vignesh', content: 'Its good', rating: 4},
+    ],
   },
   {
     id: 2,

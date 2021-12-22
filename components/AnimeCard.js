@@ -1,5 +1,4 @@
 import {Box, AspectRatio, Center, Image, Text, Pressable} from 'native-base';
-import {background} from 'native-base/lib/typescript/theme/styled-system';
 import React from 'react';
 import {useColor} from '../Context/ColorContext';
 import {ScreenName} from '../Navigators/AnimeNavigator/constants';
@@ -14,16 +13,17 @@ export default function Card({navigation, item}) {
       mx={2}
       shadow={9}
       rounded={'xl'}
-      mt={5}
+      mt={2}
       bg={theme.bg}
       onPress={() =>
         navigation.navigate(ScreenName.ANIME_INFO_SCREEN, {
           item,
+          name: item.name,
         })
       }>
       <Box bg={theme.bg}>
         <Box mt={3}>
-          <AspectRatio w="90%" mx={5}>
+          <AspectRatio w="90%" mx={5} ratio={20 / 9}>
             <Image
               source={{
                 uri: item.imageUrl,

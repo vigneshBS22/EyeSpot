@@ -22,6 +22,9 @@ export default function AnimeItemInfo({item}) {
       <Text color={theme.text} lineHeight={20} mx={3} mt={5}>
         {item.description}
       </Text>
+      <Text color={theme.text} lineHeight={20} mx={3} mt={5}>
+        {item.description}
+      </Text>
     </Stack>
   );
 }
