@@ -5,6 +5,7 @@ const useFieldUpdate = (
   validator = value => {
     return false;
   },
+  component,
 ) => {
   const [value, setValue] = useState(initialValue);
   const [error, setError] = useState('');
@@ -14,7 +15,7 @@ const useFieldUpdate = (
 
   // validator must return the message if its not valid
   useEffect(() => {
-    let stateError = validator(value);
+    let stateError = validator(value, component);
     setError(stateError);
   }, [value]);
 

@@ -26,9 +26,9 @@ export const Form = () => {
     state: {theme},
   } = useColor();
 
-  const email = useFieldUpdate('', emailValidator);
-  const password = useFieldUpdate('', passwordValidator);
-  const name = useFieldUpdate('', nameValidator);
+  const email = useFieldUpdate('', emailValidator, 'register');
+  const password = useFieldUpdate('', passwordValidator, 'register');
+  const name = useFieldUpdate('', nameValidator, 'register');
   const [submitForm, setSubmitForm] = useState(false);
   const onSubmit = () => {
     if (!email.error && !password.error && !name.error) {
@@ -88,12 +88,16 @@ export const Form = () => {
           <FormControl.ErrorMessage>{email.error}</FormControl.ErrorMessage>
         </FormControl>
         <FormControl
-          py={5}
+          py={4}
           w={{
             base: '90%',
           }}
           mx={'5%'}
           isInvalid={submitForm && !!password.error}>
+          <FormControl.HelperText mb={2}>
+            Password must be at least 6 characters and include at least one of
+            each small,capital, numeric and symbol
+          </FormControl.HelperText>
           <Input
             shadow={theme.shadow}
             bg={theme.inputbg}
@@ -105,6 +109,7 @@ export const Form = () => {
             color={theme.text}
             placeholder="Enter password"
           />
+
           <FormControl.ErrorMessage>{password.error}</FormControl.ErrorMessage>
         </FormControl>
         <Button

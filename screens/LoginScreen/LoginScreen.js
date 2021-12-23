@@ -24,8 +24,8 @@ export const Form = () => {
   } = useColor();
   const dispatch = useDispatch();
 
-  const email = useFieldUpdate('', emailValidator);
-  const password = useFieldUpdate('', passwordValidator);
+  const email = useFieldUpdate('', emailValidator, 'login');
+  const password = useFieldUpdate('', passwordValidator, 'login');
   const [submitForm, setSubmitForm] = useState(false);
   const submit = () => {
     if (!email.error && !password.error)
