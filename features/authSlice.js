@@ -43,7 +43,8 @@ export const googleLoginAsync = createAsyncThunk(
             .set({
               name: result.additionalUserInfo.profile.name,
               email: result.additionalUserInfo.profile.email,
-              isAdmin: false,
+              is_admin: false,
+              created_at: firestore.FieldValue.serverTimestamp(),
             });
           ThunkApi.dispatch(
             updateEnteredName(result.additionalUserInfo.profile.name),
@@ -87,7 +88,8 @@ export const facebookLoginAsync = createAsyncThunk(
           await firestore().collection('Users').doc(result.user.uid).set({
             name: result.additionalUserInfo.profile.name,
             email: result.additionalUserInfo.profile.email,
-            isAdmin: false,
+            is_admin: false,
+            created_at: firestore.FieldValue.serverTimestamp(),
           });
           ThunkApi.dispatch(
             updateEnteredName(result.additionalUserInfo.profile.name),
@@ -115,7 +117,8 @@ export const emailSignupAsync = createAsyncThunk(
           await firestore().collection('Users').doc(result.user.uid).set({
             name: details.name,
             email: details.email,
-            isAdmin: false,
+            is_admin: false,
+            created_at: firestore.FieldValue.serverTimestamp(),
           });
           ThunkApi.dispatch(updateEnteredName(details.name));
         } catch (err) {
