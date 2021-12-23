@@ -13,13 +13,16 @@ export const logoutAsync = createAsyncThunk('auth/logoutUser', async () => {
   return auth().signOut();
 });
 
-export const loginAsync = createAsyncThunk('auth/loginUser', async user => {
-  console.log('starting auth check');
-  const docRef = firestore().collection('Users').doc(user.uid);
-  const doc = await docRef.get();
-  if (doc.exists) return doc.data();
-  else return {name: '', isAdmin: false};
-});
+export const loginAsync = createAsyncThunk(
+  'auth/loginUser',
+  async (user, ThunkApi) => {
+    ThunkApi.dispatch(updateUserId(user.uid));
+    const docRef = firestore().collection('Users').doc(user.uid);
+    const doc = await docRef.get();
+    if (doc.exists) return doc.data();
+    else return {name: '', isAdmin: false};
+  },
+);
 
 export const emailLoginAsync = createAsyncThunk(
   'auth/emailLogin',
@@ -52,7 +55,7 @@ export const googleLoginAsync = createAsyncThunk(
         } catch (err) {
           throw err;
         }
-      } else console.log('not added');
+      }
     } catch (err) {
       throw err;
     }
@@ -97,7 +100,7 @@ export const facebookLoginAsync = createAsyncThunk(
         } catch (err) {
           return err;
         }
-      } else console.log('not added');
+      }
     } catch (err) {
       return err;
     }
@@ -124,7 +127,7 @@ export const emailSignupAsync = createAsyncThunk(
         } catch (err) {
           return err;
         }
-      } else console.log('not added');
+      }
     } catch (err) {
       return err;
     }
@@ -140,6 +143,7 @@ export const authSlice = createSlice({
     login: false,
     error: false,
     error_msg: '',
+    user_id: '',
   },
   reducers: {
     updateEnteredName: (state, action) => {
@@ -148,6 +152,9 @@ export const authSlice = createSlice({
     updateError: state => {
       state.error = false;
       state.error_msg = '';
+    },
+    updateUserId: (state, action) => {
+      state.user_id = action.payload;
     },
   },
   extraReducers: {
@@ -174,10 +181,6 @@ export const authSlice = createSlice({
     },
     [emailLoginAsync.rejected]: (state, action) => {
       state.error = true;
-      if (action.error.code === 'auth/user-not-found')
-        state.error_msg = "please register if you have't yet.";
-      else if (action.error.code === 'auth/wrong-password')
-        state.error_msg = 'wrong password, please try again.';
     },
     [googleLoginAsync.rejected]: (state, action) => {
       state.error = true;
@@ -191,7 +194,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const {updateEnteredName, updateError} = authSlice.actions;
+export const {updateEnteredName, updateError, updateUserId} = authSlice.actions;
 
 export const selectAuth = state => state.auth;
 

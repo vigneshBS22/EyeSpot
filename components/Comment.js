@@ -16,18 +16,20 @@ export default function Comment({comment}) {
       borderColor={'indigo.100'}>
       <HStack>
         <Avatar bg="indigo.500" size="md">
-          {comment.name.charAt(0)}
+          {comment.user_name.charAt(0)}
         </Avatar>
         <VStack ml={2}>
           <Text color={theme.text} bold>
-            {comment.name}
+            {comment.user_name}
           </Text>
-          <UserRating avgRatings={comment.rating} size={4} />
+          {!comment ? null : (
+            <UserRating avgRatings={comment.rating} size={4} />
+          )}
         </VStack>
       </HStack>
 
       <Text pt={3} color={theme.text} ml={1}>
-        {comment.content}
+        {comment.message}
       </Text>
     </Box>
   );
