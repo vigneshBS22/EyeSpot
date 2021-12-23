@@ -1,15 +1,29 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {NativeBaseProvider, FlatList} from 'native-base';
-import {useColor} from '../../Context/ColorContext';
 import Card from '../../components/GameCard';
-import {gamesData} from '../../data';
+import Searchbar from '../../components/Searchbar';
+import firestore from '@react-native-firebase/firestore';
 
 const GamesScreen = ({navigation}) => {
-  const {
-    state: {theme},
-  } = useColor();
+  const [gamesData, setGamesData] = useState({});
+
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('Items')
+      .where('type', '==', 'game')
+      .onSnapshot(snapshot => {
+        const data = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setGamesData(data);
+      });
+    return subscriber;
+  }, []);
+
   return (
     <NativeBaseProvider>
+      <Searchbar />
       <FlatList
         data={gamesData}
         renderItem={({item}) => <Card navigation={navigation} item={item} />}

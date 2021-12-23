@@ -26,7 +26,7 @@ export default function Card({navigation, item}) {
           <AspectRatio w="90%" mx={5} ratio={20 / 9}>
             <Image
               source={{
-                uri: item.imageUrl,
+                uri: item.image_url,
               }}
               alt="image"
               rounded={'xl'}
@@ -60,7 +60,7 @@ export default function Card({navigation, item}) {
             px="3"
             py="1.5"
             borderRadius={5}>
-            <Text>{item.rating}*</Text>
+            <Text>{item.critics_rating}*</Text>
           </Center>
         </Box>
         <Center py={2}>

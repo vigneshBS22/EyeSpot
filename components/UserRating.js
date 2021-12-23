@@ -9,6 +9,7 @@ export default function UserRating({avgRatings, size, comp}) {
         <HStack>
           {[...Array(avgRatings)].map((e, i) => (
             <Icon
+              key={i}
               ml="1"
               size={size}
               color="yellow.500"
@@ -18,6 +19,7 @@ export default function UserRating({avgRatings, size, comp}) {
           {comp === 'avg' ? (
             [...Array(5 - avgRatings)].map((e, i) => (
               <Icon
+                key={i}
                 ml="1"
                 size={size}
                 color="gray.500"

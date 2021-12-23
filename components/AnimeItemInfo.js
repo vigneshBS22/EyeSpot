@@ -14,14 +14,11 @@ export default function AnimeItemInfo({item}) {
       </Text>
       <Center>
         <HStack space={10} mt={5}>
-          <InfoBox info={'Rating'} number={item.rating} />
+          <InfoBox info={'Rating'} number={item.critics_rating} />
           <InfoBox info={'Episodes'} number={item.episodes} />
           <InfoBox info={'Language'} number={'ENG'} />
         </HStack>
       </Center>
-      <Text color={theme.text} lineHeight={20} mx={3} mt={5}>
-        {item.description}
-      </Text>
       <Text color={theme.text} lineHeight={20} mx={3} mt={5}>
         {item.description}
       </Text>

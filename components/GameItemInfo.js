@@ -15,7 +15,7 @@ export default function GameItemInfo({item}) {
       {console.log(item)}
       <Center>
         <HStack space={10} mt={5}>
-          <InfoBox info={'Rating'} number={item.rating} />
+          <InfoBox info={'Rating'} number={item.critics_rating} />
           <InfoBox info={'Language'} number={'ENG'} />
         </HStack>
       </Center>

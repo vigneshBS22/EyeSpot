@@ -22,7 +22,7 @@ export default function GameInfoCard({item, navigation}) {
         <AspectRatio ratio={16 / 9}>
           <Image
             source={{
-              uri: item.imageUrl,
+              uri: item.image_url,
             }}
             alt="image"
           />
