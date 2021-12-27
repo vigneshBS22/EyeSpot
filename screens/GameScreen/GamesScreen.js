@@ -1,69 +1,59 @@
 import React, {useState, useEffect} from 'react';
-import {NativeBaseProvider, FlatList, Text} from 'native-base';
+import {
+  NativeBaseProvider,
+  FlatList,
+  Center,
+  Icon,
+  IconButton,
+  Spinner,
+} from 'native-base';
 import Card from '../../components/GameCard';
 import Searchbar from '../../components/Searchbar';
-import firestore from '@react-native-firebase/firestore';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchItemData, searchData, selectItem} from '../../features/itemSlice';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {selectAuth} from '../../features/authSlice';
+import ItemModal from '../../components/itemModal';
 
 const GamesScreen = ({navigation}) => {
-  const [gamesData, setGamesData] = useState([]);
   const [search, setSearch] = useState('');
-  useEffect(() => {
-    let subscriber;
-    if (search === '') {
-      subscriber = firestore()
-        .collection('Items')
-        .where('type', '==', 'game')
-        .onSnapshot(snapshot => {
-          const data = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-          setGamesData(data);
-        });
-    }
+  const dispatch = useDispatch();
+  const {status, gamesData} = useSelector(selectItem);
+  const {isAdmin} = useSelector(selectAuth);
 
-    return subscriber;
+  useEffect(() => {
+    if (search === '') {
+      dispatch(fetchItemData({type: 'game'}));
+    }
   }, [search]);
 
   useEffect(() => {
-    let subscriber;
     let timerId;
     if (search !== '') {
       timerId = setTimeout(() => {
-        subscriber = firestore()
-          .collection('Items')
-          .where('name', '>=', search)
-          .where('name', '<=', search + 'z')
-          .onSnapshot(snapshot => {
-            if (snapshot !== null) {
-              const data = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data(),
-              }));
-              setGamesData(data);
-              console.log(Date.now(), 'changed');
-            }
-          });
+        dispatch(searchData({type: 'game', search: search}));
       }, 300);
     }
     return () => {
       clearTimeout(timerId);
-      subscriber;
     };
   }, [search]);
 
   return (
     <NativeBaseProvider>
       <Searchbar search={search} setSearch={setSearch} />
-      {gamesData.length !== 0 ? (
+      {status === 'loading' ? (
+        <Spinner />
+      ) : gamesData.length !== 0 ? (
         <FlatList
           data={gamesData}
           renderItem={({item}) => <Card navigation={navigation} item={item} />}
           keyExtractor={item => item.id}
         />
       ) : (
-        <Text>No results found</Text>
+        <Center>No results found</Center>
       )}
+      {isAdmin ? <ItemModal type={'game'} /> : null}
     </NativeBaseProvider>
   );
 };

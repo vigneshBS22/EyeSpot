@@ -7,25 +7,29 @@ export default function UserRating({avgRatings, size, comp}) {
     <Box>
       <Center>
         <HStack>
-          {[...Array(avgRatings)].map((e, i) => (
-            <Icon
-              key={i}
-              ml="1"
-              size={size}
-              color="yellow.500"
-              as={<FontAwesome name="star" />}
-            />
-          ))}
-          {comp === 'avg' ? (
-            [...Array(5 - avgRatings)].map((e, i) => (
+          {[...Array(avgRatings)].map((e, index) => {
+            return (
               <Icon
-                key={i}
+                key={index + 'full'}
                 ml="1"
                 size={size}
-                color="gray.500"
+                color="yellow.500"
                 as={<FontAwesome name="star" />}
               />
-            ))
+            );
+          })}
+          {comp === 'avg' ? (
+            avgRatings !== 5 ? (
+              [...Array(5 - avgRatings)].map(index => (
+                <Icon
+                  key={index + 'empty'}
+                  ml="1"
+                  size={size}
+                  color="gray.500"
+                  as={<FontAwesome name="star" />}
+                />
+              ))
+            ) : null
           ) : (
             <Center>
               <Text ml={2} my={-2} bold>

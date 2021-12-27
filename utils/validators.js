@@ -38,3 +38,26 @@ export function passwordValidator(value, ...rest) {
     }
   }
 }
+
+export function URLValidator(string) {
+  var res = string.match(
+    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g,
+  );
+  if (!res) {
+    return 'Not valid URL';
+  }
+}
+
+export function emptyValidator(value) {
+  if (value === '') {
+    return 'name should not be empty';
+  }
+}
+
+export function numberValidator(value) {
+  const number = /^[0-9]+$/;
+
+  if (!number.test(value)) {
+    return 'episodes must be a number';
+  }
+}
