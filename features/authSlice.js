@@ -109,7 +109,7 @@ export const facebookLoginAsync = createAsyncThunk(
 
 export const emailSignupAsync = createAsyncThunk(
   'auth/emailSignup',
-  async details => {
+  async (details, ThunkApi) => {
     try {
       let result = await auth().createUserWithEmailAndPassword(
         details.email,
@@ -170,7 +170,7 @@ export const authSlice = createSlice({
       state.status = 'success';
       state.name = action.payload.name;
       state.login = true;
-      state.isAdmin = action.payload.isAdmin;
+      state.isAdmin = action.payload.is_admin;
       state.error_msg = '';
     },
     [loginAsync.rejected]: (state, action) => {
