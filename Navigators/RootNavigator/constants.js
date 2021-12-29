@@ -20,4 +20,6 @@ export const ScreenName = {
   WELCOME_SCREEN: 'WelcomeScreen',
   LOGIN_SCREEN: 'LoginScreen',
   HOME_SCREEN: 'HomeScreen',
+  PASSWORD_SCREEN: 'Password',
+  EMAIL_SCREEN: 'Email',
 };

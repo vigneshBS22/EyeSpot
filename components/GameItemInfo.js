@@ -12,7 +12,6 @@ export default function GameItemInfo({item}) {
       <Text bold fontSize={25} color={theme.text} mx={3} mt={5}>
         {item.name}
       </Text>
-      {console.log(item)}
       <Center>
         <HStack space={10} mt={5}>
           <InfoBox info={'Rating'} number={item.critics_rating} />

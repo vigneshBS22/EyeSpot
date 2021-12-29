@@ -7,7 +7,7 @@ export default function UserRating({avgRatings, size, comp}) {
     <Box>
       <Center>
         <HStack>
-          {[...Array(avgRatings)].map((e, index) => {
+          {[...Array(Math.floor(avgRatings))].map((e, index) => {
             return (
               <Icon
                 key={index + 'full'}
@@ -20,7 +20,7 @@ export default function UserRating({avgRatings, size, comp}) {
           })}
           {comp === 'avg' ? (
             avgRatings !== 5 ? (
-              [...Array(5 - avgRatings)].map(index => (
+              [...Array(5 - Math.floor(avgRatings))].map((e, index) => (
                 <Icon
                   key={index + 'empty'}
                   ml="1"

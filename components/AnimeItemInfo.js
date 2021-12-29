@@ -3,7 +3,7 @@ import React from 'react';
 import {useColor} from '../Context/ColorContext';
 import InfoBox from './InfoBox';
 
-export default function AnimeItemInfo({item}) {
+export default function AnimeItemInfo({item, navigation}) {
   const {
     state: {theme},
   } = useColor();

@@ -16,11 +16,13 @@ export default function AnimeInfoCard({item, navigation}) {
   const {
     state: {theme},
   } = useColor();
+  console.log(item.image_url);
   return (
     <ScrollView>
       <Box>
         <AspectRatio ratio={16 / 9}>
           <Image
+            key={new Date().getTime()}
             source={{
               uri: item.image_url,
             }}

@@ -67,7 +67,6 @@ const AnimeScreen = ({navigation}) => {
       ) : (
         <Center>No results found</Center>
       )}
-      {console.log(isAdmin)}
       {isAdmin ? <ItemModal type={'anime'} /> : null}
     </NativeBaseProvider>
   );

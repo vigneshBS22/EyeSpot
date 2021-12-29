@@ -1,8 +1,17 @@
-import React from 'react';
-import {NativeBaseProvider, Box, Center, Avatar, Text} from 'native-base';
+import React, {useEffect} from 'react';
+import {
+  NativeBaseProvider,
+  Box,
+  Center,
+  Avatar,
+  Text,
+  FlatList,
+} from 'native-base';
 import {useColor} from '../../Context/ColorContext';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {selectAuth} from '../../features/authSlice';
+import HorizontalCard from '../../components/HorizontalCard';
+import {fetchHomeItemData, selectItem} from '../../features/itemSlice';
 
 const HomeScreen = ({navigation}) => {
   const {
@@ -14,7 +23,15 @@ const HomeScreen = ({navigation}) => {
     },
   };
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchHomeItemData({type: 'anime'}));
+    dispatch(fetchHomeItemData({type: 'game'}));
+  }, []);
+
   const {name} = useSelector(selectAuth);
+  const {homeScreenAnimeData, homeScreenGamesData} = useSelector(selectItem);
   return (
     <NativeBaseProvider config={config}>
       <Box
@@ -39,6 +56,44 @@ const HomeScreen = ({navigation}) => {
             {name.charAt(0)}
           </Avatar>
         </Center>
+      </Box>
+      <Box
+        height={50}
+        width={'full'}
+        position={'absolute'}
+        top={'22%'}
+        borderTopRadius={20}
+        bg={'#f2f2f2'}></Box>
+
+      <Box height={'full'}>
+        <Box>
+          <Text my={4} fontSize={'md'} bold mx={2}>
+            Trending Animes
+          </Text>
+          <FlatList
+            data={homeScreenAnimeData}
+            renderItem={({item}) => (
+              <HorizontalCard navigation={navigation} item={item} />
+            )}
+            keyExtractor={item => item.id}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          />
+        </Box>
+        <Box>
+          <Text my={4} fontSize={'md'} bold mx={2}>
+            Trending Games
+          </Text>
+          <FlatList
+            data={homeScreenGamesData}
+            renderItem={({item}) => (
+              <HorizontalCard navigation={navigation} item={item} />
+            )}
+            keyExtractor={item => item.id}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          />
+        </Box>
       </Box>
     </NativeBaseProvider>
   );

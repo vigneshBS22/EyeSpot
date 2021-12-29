@@ -1,12 +1,13 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {Modal, Button, Input, FormControl, Text, Box} from 'native-base';
 import {useColor} from '../Context/ColorContext';
 import {Rating} from 'react-native-ratings';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectAuth} from '../features/authSlice';
-import {addReview} from '../features/itemSlice';
+import {updateItemData} from '../features/itemSlice';
+import {checkReview, addReview, selectReview} from '../features/reviewSlice';
 
-export default function CommentModal({id}) {
+export default function CommentModal({item}) {
   const [modalVisible, setModalVisible] = useState(false);
   const initialRef = useRef(null);
   const {
@@ -18,17 +19,31 @@ export default function CommentModal({id}) {
   const [review, setReview] = useState('');
   const [submit, setSubmit] = useState(false);
   const {name, user_id} = useSelector(selectAuth);
+  const {user} = useSelector(selectReview);
+
+  useEffect(() => {
+    dispatch(checkReview({item_id: item.id, user_id: user_id}));
+  }, [modalVisible]);
 
   const onSubmit = async () => {
     setSubmit(true);
     if (review !== '') {
       dispatch(
         addReview({
-          item_id: id,
+          item_id: item.id,
           user_id: user_id,
           user_name: name,
           message: review,
           rating: rating,
+        }),
+      );
+      dispatch(
+        updateItemData({
+          itemId: item.id,
+          rating: rating,
+          count: item.total_ratings,
+          avgRating: item.average_rating,
+          type: item.type,
         }),
       );
       setModalVisible(false);
@@ -95,21 +110,23 @@ export default function CommentModal({id}) {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-      <Button
-        position={'absolute'}
-        bottom={0}
-        colorScheme="indigo"
-        height={10}
-        width={'100%'}
-        onPress={() => {
-          setModalVisible(!modalVisible);
-        }}
-        _focusVisible={{background: theme.primary}}
-        shadow={theme.shadow}>
-        <Text color={'white'} bold>
-          Add review
-        </Text>
-      </Button>
+      {user.length === 0 && (
+        <Button
+          position={'absolute'}
+          bottom={0}
+          colorScheme="indigo"
+          height={10}
+          width={'100%'}
+          onPress={() => {
+            setModalVisible(!modalVisible);
+          }}
+          _focusVisible={{background: theme.primary}}
+          shadow={theme.shadow}>
+          <Text color={'white'} bold>
+            Add review
+          </Text>
+        </Button>
+      )}
     </>
   );
 }
