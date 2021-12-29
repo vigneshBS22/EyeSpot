@@ -32,6 +32,31 @@ export const fetchItemData = createAsyncThunk(
   },
 );
 
+export const fetchHomeItemData = createAsyncThunk(
+  'item/fetchHomeItemData',
+  async ({type, itemsPerLoad = 5}) => {
+    try {
+      let items = [];
+      const snapshot = await firestore()
+        .collection('Items')
+        .where('type', '==', type)
+        .orderBy('average_rating', 'desc')
+        .limit(itemsPerLoad)
+        .get();
+
+      snapshot.forEach(doc => {
+        let data = doc.data();
+        data.id = doc.id;
+        items.push(data);
+      });
+
+      return {items: items, type: type};
+    } catch (err) {
+      console.log(err);
+    }
+  },
+);
+
 export const fetchNextItemData = createAsyncThunk(
   'item/fetchNextItemData',
   async ({type, startAfter, lastItem, itemsPerLoad = 10}) => {
@@ -93,98 +118,6 @@ export const searchData = createAsyncThunk(
   },
 );
 
-export const fetchReviewData = createAsyncThunk(
-  'item/fetchReviewData',
-  async ({item_id, itemsPerLoad = 5}) => {
-    try {
-      let reviews = [];
-      const snapshot = await firestore()
-        .collection('Reviews')
-        .where('item_id', '==', item_id)
-        .orderBy('created_at', 'desc')
-        .limit(itemsPerLoad)
-        .get();
-
-      const lastVisible = snapshot.docs[snapshot.docs.length - 1];
-
-      snapshot.forEach(doc => {
-        let data = doc.data();
-        data.id = doc.id;
-        reviews.push(data);
-      });
-
-      if (reviews.length === 0) {
-        return {reviews, lastVisible: lastVisible, lastReview: true};
-      } else {
-        return {reviews, lastVisible: lastVisible, lastReview: false};
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  },
-);
-
-export const fetchNextReviewData = createAsyncThunk(
-  'item/fetchNextReviewData',
-  async ({item_id, startAfter, lastReview, itemsPerLoad = 5}) => {
-    try {
-      let reviews = [];
-      let lastVisible;
-      if (!lastReview) {
-        const snapshot = await firestore()
-          .collection('Reviews')
-          .where('item_id', '==', item_id)
-          .orderBy('created_at', 'desc')
-          .startAfter(startAfter)
-          .limit(itemsPerLoad)
-          .get();
-
-        snapshot.forEach(doc => {
-          let data = doc.data();
-          data.id = doc.id;
-          reviews.push(data);
-        });
-        lastVisible = snapshot.docs[snapshot.docs.length - 1];
-      }
-
-      if (reviews.length === 0)
-        return {
-          reviews,
-          lastVisible: lastVisible,
-          lastReview: true,
-        };
-      else {
-        return {
-          reviews,
-          lastVisible: lastVisible,
-          lastReview: false,
-        };
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  },
-);
-
-export const addReview = createAsyncThunk(
-  'item/addReview',
-  async ({item_id, user_id, user_name, message, rating}, ThunkApi) => {
-    try {
-      firestore().collection('Reviews').add({
-        item_id: item_id,
-        user_id: user_id,
-        user_name: user_name,
-        message: message,
-        rating: rating,
-        created_at: firestore.Timestamp.now(),
-      });
-      ThunkApi.dispatch(fetchReviewData({item_id}));
-    } catch (err) {
-      console.log(err);
-    }
-  },
-);
-
 export const addItem = createAsyncThunk(
   'item/addItem',
   async (
@@ -201,6 +134,8 @@ export const addItem = createAsyncThunk(
           episodes: episodes,
           critics_rating: rating,
           type: type,
+          average_rating: 0,
+          total_ratings: 0,
           created_at: firestore.Timestamp.now(),
         });
       } else {
@@ -211,9 +146,28 @@ export const addItem = createAsyncThunk(
           language: language,
           critics_rating: rating,
           type: type,
+          average_rating: 0,
+          total_ratings: 0,
           created_at: firestore.Timestamp.now(),
         });
       }
+      ThunkApi.dispatch(fetchItemData({type: type}));
+    } catch (err) {
+      console.log(err);
+    }
+  },
+);
+
+export const updateItemData = createAsyncThunk(
+  'item/updateItemData',
+  async ({rating, avgRating, count, itemId, type}, ThunkApi) => {
+    const average_rating = (+avgRating + +rating) / (+count + 1);
+    console.log(average_rating, count);
+    try {
+      firestore()
+        .collection('Items')
+        .doc(itemId)
+        .update({average_rating: average_rating, total_ratings: +count + 1});
       ThunkApi.dispatch(fetchItemData({type: type}));
     } catch (err) {
       console.log('here' + err);
@@ -226,60 +180,16 @@ export const itemSlice = createSlice({
   initialState: {
     animeData: [],
     gamesData: [],
-    reviews: [],
+    homeScreenAnimeData: [],
+    homeScreenGamesData: [],
     status: 'success',
     error: '',
     animeLastVisible: {},
     gameLastVisible: {},
-    reviewLastVisible: {},
     lastAnimeItem: false,
     lastGameItem: false,
-    lastReview: false,
   },
-  reducers: {
-    clearReviews: state => {
-      state.reviews = [];
-    },
-    updateReview: (state, action) => {
-      const newArray = [...state.reviews];
-      newArray.splice(0, 0, {
-        user_name: action.payload.user_name,
-        message: action.payload.message,
-        rating: action.payload.rating,
-        id: 1,
-        user_id: action.payload.user_id,
-      });
-      state.reviews = newArray;
-    },
-    updateItems: (state, action) => {
-      if (action.payload.type === 'game') {
-        const newArray = [...state.gamesData];
-        newArray.splice(0, 0, {
-          name: action.payload.name,
-          description: action.payload.description,
-          image_url: action.payload.image_url,
-          language: action.payload.language,
-          episodes: action.payload.episodes,
-          critics_rating: action.payload.critics_rating,
-          type: action.payload.type,
-        });
-        state.gamesData = newArray;
-      } else {
-        const newArray = [...state.animeData];
-        newArray.splice(0, 0, {
-          id: action.payload.name + 1,
-          name: action.payload.name,
-          description: action.payload.description,
-          image_url: action.payload.image_url,
-          language: action.payload.language,
-          episodes: action.payload.episodes,
-          critics_rating: action.payload.critics_rating,
-          type: action.payload.type,
-        });
-        state.animeData = newArray;
-      }
-    },
-  },
+  reducers: {},
   extraReducers: {
     [fetchItemData.pending]: (state, action) => {
       state.status = 'loading';
@@ -332,36 +242,23 @@ export const itemSlice = createSlice({
       state.status = 'success';
       state.error = action.error;
     },
-    [fetchReviewData.pending]: (state, action) => {
+    [fetchHomeItemData.pending]: (state, action) => {
       state.status = 'loading';
     },
-    [fetchReviewData.fulfilled]: (state, action) => {
-      state.reviews = action.payload.reviews;
-      state.reviewLastVisible = action.payload.lastVisible;
-      state.lastReview = action.payload.lastReview;
+    [fetchHomeItemData.fulfilled]: (state, action) => {
+      if (action.payload.type === 'anime') {
+        state.homeScreenAnimeData = action.payload.items;
+      } else {
+        state.homeScreenGamesData = action.payload.items;
+      }
       state.status = 'success';
     },
-    [fetchReviewData.rejected]: (state, action) => {
-      state.status = 'success';
-      state.error = action.error;
-    },
-    [fetchNextReviewData.pending]: (state, action) => {
-      state.status = 'loading';
-    },
-    [fetchNextReviewData.fulfilled]: (state, action) => {
-      state.reviews = [...state.reviews, ...action.payload.reviews];
-      state.reviewLastVisible = action.payload.lastVisible;
-      state.lastReview = action.payload.lastReview;
-      state.status = 'success';
-    },
-    [fetchNextReviewData.rejected]: (state, action) => {
+    [fetchHomeItemData.rejected]: (state, action) => {
       state.status = 'success';
       state.error = action.error;
     },
   },
 });
-
-export const {clearReviews, updateReview, updateItems} = itemSlice.actions;
 
 export const selectItem = state => state.item;
 

@@ -1,7 +1,7 @@
 #import <Firebase.h>
 #import "AppDelegate.h"
+#import <React/RCTLinkingManager.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -70,9 +70,15 @@ static void InitializeFlipper(UIApplication *application) {
             openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-  return [[FBSDKApplicationDelegate sharedInstance]application:app
-                                                       openURL:url
-                                                       options:options];
+  if ([[FBSDKApplicationDelegate sharedInstance] application:app openURL:url options:options]) {
+      return YES;
+    }
+
+    if ([RCTLinkingManager application:app openURL:url options:options]) {
+      return YES;
+    }
+
+    return NO;
 }
 
 @end

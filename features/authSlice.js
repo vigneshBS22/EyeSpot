@@ -13,6 +13,45 @@ export const logoutAsync = createAsyncThunk('auth/logoutUser', async () => {
   return auth().signOut();
 });
 
+export const sendEmailAsync = createAsyncThunk(
+  'auth/sendEmail',
+  async email => {
+    try {
+      await auth().sendPasswordResetEmail(email);
+    } catch (err) {
+      throw err;
+    }
+  },
+);
+
+export const resetPassword = createAsyncThunk(
+  'auth/resetPassword',
+  async ({oobCode, newPassword}) => {
+    try {
+      await auth().confirmPasswordReset(oobCode, newPassword);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+);
+
+export const resetUserPasswordAsync = createAsyncThunk(
+  'auth/restUserPassword',
+  async ({currentPassword, newPassword}) => {
+    try {
+      const user = auth().currentUser;
+      const credential = auth.EmailAuthProvider.credential(
+        user.email,
+        currentPassword,
+      );
+      await user.reauthenticateWithCredential(credential);
+      await user.updatePassword(newPassword);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+);
+
 export const loginAsync = createAsyncThunk(
   'auth/loginUser',
   async (user, ThunkApi) => {
@@ -26,7 +65,8 @@ export const loginAsync = createAsyncThunk(
 
 export const emailLoginAsync = createAsyncThunk(
   'auth/emailLogin',
-  async details => {
+  async (details, ThunkApi) => {
+    ThunkApi.dispatch(updateUser(details.email));
     return auth().signInWithEmailAndPassword(details.email, details.password);
   },
 );
@@ -124,12 +164,13 @@ export const emailSignupAsync = createAsyncThunk(
             created_at: firestore.FieldValue.serverTimestamp(),
           });
           ThunkApi.dispatch(updateEnteredName(details.name));
+          ThunkApi.dispatch(updateUser(details.email));
         } catch (err) {
           return err;
         }
       }
     } catch (err) {
-      return err;
+      throw err;
     }
   },
 );
@@ -137,24 +178,30 @@ export const emailSignupAsync = createAsyncThunk(
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    name: null,
+    name: '',
     isAdmin: false,
     status: 'success',
     login: false,
     error: false,
     error_msg: '',
     user_id: '',
+    email: '',
+    loginType: '',
+    click: false,
   },
   reducers: {
     updateEnteredName: (state, action) => {
       state.name = action.payload;
     },
-    updateError: state => {
-      state.error = false;
-      state.error_msg = '';
+    updateClick: state => {
+      state.click = true;
     },
     updateUserId: (state, action) => {
       state.user_id = action.payload;
+    },
+    updateUser: (state, action) => {
+      state.email = action.payload;
+      state.loginType = 'email';
     },
   },
   extraReducers: {
@@ -162,6 +209,8 @@ export const authSlice = createSlice({
       state.name = '';
       state.isAdmin = false;
       state.login = false;
+      state.email = '';
+      state.loginType = '';
     },
     [loginAsync.pending]: (state, action) => {
       state.status = 'loading';
@@ -172,6 +221,7 @@ export const authSlice = createSlice({
       state.login = true;
       state.isAdmin = action.payload.is_admin;
       state.error_msg = '';
+      state.error = 0;
     },
     [loginAsync.rejected]: (state, action) => {
       state.status = 'success';
@@ -179,22 +229,72 @@ export const authSlice = createSlice({
       state.name = '';
       state.isAdmin = false;
     },
+    [emailLoginAsync.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [emailLoginAsync.fulfilled]: (state, action) => {
+      state.status = 'success';
+      state.error = 0;
+    },
     [emailLoginAsync.rejected]: (state, action) => {
       state.error = true;
+      state.status = 'success';
+    },
+    [googleLoginAsync.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [googleLoginAsync.fulfilled]: (state, action) => {
+      state.status = 'success';
+      state.error = 0;
     },
     [googleLoginAsync.rejected]: (state, action) => {
       state.error = true;
+      state.status = 'success';
+    },
+    [facebookLoginAsync.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [facebookLoginAsync.fulfilled]: (state, action) => {
+      state.status = 'success';
+      state.error = 0;
     },
     [facebookLoginAsync.rejected]: (state, action) => {
       state.error = true;
+      state.status = 'success';
+    },
+    [emailSignupAsync.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [emailSignupAsync.fulfilled]: (state, action) => {
+      state.status = 'success';
+      state.error = 0;
     },
     [emailSignupAsync.rejected]: (state, action) => {
       state.error = true;
+      if (action.error.code === 'auth/email-already-in-use')
+        state.error_msg =
+          'The email address is already in use by another account';
+      state.status = 'success';
+    },
+    [sendEmailAsync.fulfilled]: (state, action) => {
+      state.error = false;
+    },
+    [sendEmailAsync.rejected]: (state, action) => {
+      console.log('coming');
+      state.error = true;
+      if (action.error.code === 'auth/user-not-found')
+        state.error_msg = 'There is no user with given email id';
     },
   },
 });
 
-export const {updateEnteredName, updateError, updateUserId} = authSlice.actions;
+export const {
+  updateEnteredName,
+  updateError,
+  updateUserId,
+  updateUser,
+  updateClick,
+} = authSlice.actions;
 
 export const selectAuth = state => state.auth;
 
