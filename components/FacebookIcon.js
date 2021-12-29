@@ -12,7 +12,10 @@ const FacebookIcon = () => {
         name="facebook"
         backgroundColor="#4285F4"
         style={{width: 150, height: 47}}
-        onPress={() => dispatch(facebookLoginAsync())}>
+        onPress={() => {
+          dispatch(facebookLoginAsync());
+          dispatch(updateClick());
+        }}>
         <Text fontSize={18} color={'white'} style={{width: 90}} bold>
           Facebook
         </Text>

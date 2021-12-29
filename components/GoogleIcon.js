@@ -4,15 +4,20 @@ import {TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {GoogleIconSVG} from '../constants';
 import {useColor} from '../Context/ColorContext';
-import {googleLoginAsync} from '../features/authSlice';
+import {googleLoginAsync, updateClick} from '../features/authSlice';
 
 const GoogleIcon = () => {
   const {
     state: {theme},
   } = useColor();
   const dispatch = useDispatch();
+
   return (
-    <TouchableOpacity onPress={() => dispatch(googleLoginAsync())}>
+    <TouchableOpacity
+      onPress={() => {
+        dispatch(googleLoginAsync());
+        dispatch(updateClick());
+      }}>
       <Box
         flexDirection={'row'}
         pr={4}

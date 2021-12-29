@@ -13,11 +13,13 @@ import {useColor} from '../../Context/ColorContext';
 import {useDispatch, useSelector} from 'react-redux';
 import {logoutAsync, selectAuth} from '../../features/authSlice';
 
-const SettingScreen = () => {
+const SettingScreen = ({navigation}) => {
   const {
     dispatch,
     state: {color, theme},
   } = useColor();
+
+  const {email, loginType} = useSelector(selectAuth);
 
   const dispatch_redux = useDispatch();
   return (
@@ -41,6 +43,17 @@ const SettingScreen = () => {
             }}
           />
         </HStack>
+        {loginType === 'email' && (
+          <Button
+            mt="2"
+            onPress={() => {
+              // dispatch_redux(resetPasswordAsync(email));
+              navigation.navigate('Password');
+            }}
+            bg={theme.button}>
+            Reset Password
+          </Button>
+        )}
       </Stack>
     </NativeBaseProvider>
   );

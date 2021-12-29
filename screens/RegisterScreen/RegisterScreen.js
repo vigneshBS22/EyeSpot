@@ -18,6 +18,7 @@ import {
   passwordValidator,
 } from '../../utils/validators';
 import useFieldUpdate from '../../utils/useFieldUpdate';
+import Overlay from '../../components/Overlay';
 
 export const Form = () => {
   const dispatch = useDispatch();
@@ -135,6 +136,7 @@ const RegisterScreen = ({navigation}) => {
   } = useColor();
   return (
     <NativeBaseProvider>
+      <Overlay />
       <Box mx={10} my={5} mt={20}>
         <Text fontSize={40} bold color={theme.text}>
           Sign Up

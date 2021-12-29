@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Input,
   FormControl,
@@ -8,17 +8,21 @@ import {
   HStack,
   Box,
   Text,
+  Link,
+  useToast,
 } from 'native-base';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {styles} from './styles';
 import {useColor} from '../../Context/ColorContext';
 import GoogleIcon from '../../components/GoogleIcon';
 import FacebookIcon from '../../components/FacebookIcon';
-import {useDispatch} from 'react-redux';
-import {emailLoginAsync} from '../../features/authSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {emailLoginAsync, selectAuth} from '../../features/authSlice';
 import {emailValidator, passwordValidator} from '../../utils/validators';
 import useFieldUpdate from '../../utils/useFieldUpdate';
-export const Form = () => {
+import Overlay from '../../components/Overlay';
+
+export const Form = ({navigation}) => {
   const {
     state: {theme},
   } = useColor();
@@ -33,6 +37,19 @@ export const Form = () => {
     else console.log('Validation Failed');
     setSubmitForm(true);
   };
+
+  const {error} = useSelector(selectAuth);
+  const toast = useToast();
+  useEffect(() => {
+    if (error === 0 && submitForm === true) {
+      toast.show({
+        title: 'Logged in successfully',
+        status: 'success',
+        duration: 2000,
+        placement: 'top',
+      });
+    }
+  }, [submitForm, error]);
 
   return (
     <KeyboardAwareScrollView style={styles.scroll} scrollEnabled={false}>
@@ -73,6 +90,17 @@ export const Form = () => {
           />
           <FormControl.ErrorMessage>{password.error}</FormControl.ErrorMessage>
         </FormControl>
+        <Link
+          _text={{
+            fontSize: 'xs',
+            fontWeight: '500',
+            color: 'indigo.500',
+          }}
+          alignSelf="flex-end"
+          mt="1"
+          onPress={() => navigation.navigate('Email')}>
+          Forgot password?
+        </Link>
         <Button
           shadow={theme.shadow}
           mt="2"
@@ -97,13 +125,14 @@ const SocialMediaSignup = () => {
   );
 };
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const {
     state: {theme},
   } = useColor();
 
   return (
     <NativeBaseProvider>
+      <Overlay />
       <Box mx={10} my={5} mt={20}>
         <Text fontSize={40} bold color={theme.text}>
           Log in
@@ -116,8 +145,7 @@ const LoginScreen = () => {
             Or login using
           </Text>
         </Box>
-        <Form />
-        {/* <Divider bg="indigo.500" thickness="2" my="5" /> */}
+        <Form navigation={navigation} />
       </Center>
     </NativeBaseProvider>
   );
