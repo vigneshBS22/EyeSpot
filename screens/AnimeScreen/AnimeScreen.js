@@ -52,7 +52,7 @@ const AnimeScreen = ({navigation}) => {
   return (
     <NativeBaseProvider>
       <Searchbar search={search} setSearch={setSearch} />
-      {status === 'loading' ? (
+      {status === 'loading' && animeData.length === 0 ? (
         <Spinner />
       ) : animeData.length !== 0 ? (
         <FlatList

@@ -4,8 +4,7 @@ import storage from '@react-native-firebase/storage';
 
 export const fetchItemData = createAsyncThunk(
   'item/fetchItemData',
-  async ({type, itemsPerLoad = 10}) => {
-    console.log('coming');
+  async ({type, itemsPerLoad = 3}) => {
     try {
       let items = [];
       const snapshot = await firestore()
@@ -99,7 +98,6 @@ export const searchData = createAsyncThunk(
   async ({type, search}) => {
     try {
       let items = [];
-
       // {todo:add type here and remove the resultSet filter}
       const snapshot = await firestore()
         .collection('Items')
@@ -113,7 +111,7 @@ export const searchData = createAsyncThunk(
         items.push(data);
       });
       let resultSet = items.filter(item => item.type === type);
-      return {resultSet, type: type};
+      return {resultSet: resultSet, type: type};
     } catch (err) {
       console.log(err);
     }
@@ -224,9 +222,11 @@ export const itemSlice = createSlice({
       if (action.payload.type === 'anime') {
         state.animeData = action.payload.items;
         state.animeLastVisible = action.payload.lastVisible;
+        state.lastAnimeItem = false;
       } else {
         state.gamesData = action.payload.items;
         state.gameLastVisible = action.payload.lastVisible;
+        state.lastGameItem = false;
       }
       state.status = 'success';
     },
@@ -243,7 +243,7 @@ export const itemSlice = createSlice({
         state.animeLastVisible = action.payload.lastVisible;
         state.lastAnimeItem = action.payload.lastItem;
       } else {
-        state.gameData = [...state.animeData, ...action.payload.items];
+        state.gamesData = [...state.gamesData, ...action.payload.items];
         state.gameLastVisible = action.payload.lastVisible;
         state.lastGameItem = action.payload.lastItem;
       }
@@ -260,7 +260,7 @@ export const itemSlice = createSlice({
       if (action.payload.type === 'anime') {
         state.animeData = action.payload.resultSet;
       } else {
-        state.gameData = action.payload.resultSet;
+        state.gamesData = action.payload.resultSet;
       }
       state.status = 'success';
     },

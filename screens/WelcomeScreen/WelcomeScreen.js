@@ -11,7 +11,7 @@ const WelcomeScreen = ({navigation}) => {
     state: {theme},
   } = useColor();
 
-  const {click, name} = useSelector(selectAuth);
+  const {click, name, status} = useSelector(selectAuth);
   const toast = useToast();
 
   useEffect(() => {
@@ -30,15 +30,17 @@ const WelcomeScreen = ({navigation}) => {
       resizeMode="cover"
       style={{flex: 1, justifyContent: 'flex-end'}}>
       <Center>
-        <Button
-          onPress={() => {
-            navigation.navigate(ScreenName.LOGIN_SCREEN);
-          }}
-          mb={10}
-          bg={theme.primary}
-          width={'80%'}>
-          <Text fontSize={20}>Get Started</Text>
-        </Button>
+        {status !== 'loading' && (
+          <Button
+            onPress={() => {
+              navigation.navigate(ScreenName.LOGIN_SCREEN);
+            }}
+            mb={10}
+            bg={theme.primary}
+            width={'80%'}>
+            <Text fontSize={20}>Get Started</Text>
+          </Button>
+        )}
       </Center>
     </ImageBackground>
   );

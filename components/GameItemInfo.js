@@ -15,7 +15,7 @@ export default function GameItemInfo({item}) {
       <Center>
         <HStack space={10} mt={5}>
           <InfoBox info={'Rating'} number={item.critics_rating} />
-          <InfoBox info={'Language'} number={'ENG'} />
+          <InfoBox info={'Language'} number={item.language} />
         </HStack>
       </Center>
       <Text color={theme.text} lineHeight={20} mx={3} mt={5}>
