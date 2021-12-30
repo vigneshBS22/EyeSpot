@@ -1,9 +1,11 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 
 export const fetchItemData = createAsyncThunk(
   'item/fetchItemData',
   async ({type, itemsPerLoad = 10}) => {
+    console.log('coming');
     try {
       let items = [];
       const snapshot = await firestore()
@@ -125,11 +127,12 @@ export const addItem = createAsyncThunk(
     ThunkApi,
   ) => {
     try {
+      const imageUri = await ThunkApi.dispatch(uploadImage(image_url));
       if (type === 'anime') {
-        firestore().collection('Items').add({
+        await firestore().collection('Items').add({
           name: name,
           description: description,
-          image_url: image_url,
+          image_url: imageUri.payload,
           language: language,
           episodes: episodes,
           critics_rating: rating,
@@ -139,10 +142,10 @@ export const addItem = createAsyncThunk(
           created_at: firestore.Timestamp.now(),
         });
       } else {
-        firestore().collection('Items').add({
+        await firestore().collection('Items').add({
           name: name,
           description: description,
-          image_url: image_url,
+          image_url: imageUri.payload,
           language: language,
           critics_rating: rating,
           type: type,
@@ -151,7 +154,7 @@ export const addItem = createAsyncThunk(
           created_at: firestore.Timestamp.now(),
         });
       }
-      ThunkApi.dispatch(fetchItemData({type: type}));
+      await ThunkApi.dispatch(fetchItemData({type: type}));
     } catch (err) {
       console.log(err);
     }
@@ -161,16 +164,39 @@ export const addItem = createAsyncThunk(
 export const updateItemData = createAsyncThunk(
   'item/updateItemData',
   async ({rating, avgRating, count, itemId, type}, ThunkApi) => {
-    const average_rating = (+avgRating + +rating) / (+count + 1);
-    console.log(average_rating, count);
+    const average_rating = (avgRating * count + rating) / (count + 1);
     try {
-      firestore()
+      await firestore()
         .collection('Items')
         .doc(itemId)
         .update({average_rating: average_rating, total_ratings: +count + 1});
-      ThunkApi.dispatch(fetchItemData({type: type}));
+      await ThunkApi.dispatch(fetchItemData({type: type}));
     } catch (err) {
       console.log('here' + err);
+    }
+  },
+);
+
+export const uploadImage = createAsyncThunk(
+  'item/uploadImage',
+  async image_url => {
+    const uploadUri = image_url;
+    let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+
+    // Add timestamp to File Name
+    const extension = filename.split('.').pop();
+    const name = filename.split('.').slice(0, -1).join('.');
+    filename = name + Date.now() + '.' + extension;
+    const storageRef = storage().ref(`photos/${filename}`);
+    const task = storageRef.putFile(uploadUri);
+    try {
+      await task;
+
+      const url = await storageRef.getDownloadURL();
+
+      return url;
+    } catch (err) {
+      throw err;
     }
   },
 );

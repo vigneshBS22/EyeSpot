@@ -5,7 +5,7 @@ const config = {
 };
 
 const linking = {
-  prefixes: ['demo://app'],
+  prefixes: ['demos://app', 'https://app'],
   config,
 };
 

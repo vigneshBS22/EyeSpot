@@ -21,6 +21,7 @@ import {
   URLValidator,
 } from '../utils/validators';
 import useFieldUpdate from '../utils/useFieldUpdate';
+import ImagePicker from 'react-native-image-crop-picker';
 
 export default function ItemModal({type}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -33,43 +34,55 @@ export default function ItemModal({type}) {
   const [rating, setRating] = useState(3);
   const name = useFieldUpdate('', nameValidator, 'register');
   const description = useFieldUpdate('', emptyValidator, 'register');
-  const image_url = useFieldUpdate('', URLValidator, 'register');
   const episodes = useFieldUpdate('', numberValidator, 'register');
   const language = useFieldUpdate('', emptyValidator, 'register');
 
   const [submit, setSubmit] = useState(false);
+  const [imageUri, setImageUri] = useState('');
+  const choosePhotoFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 1200,
+      height: 780,
+      cropping: true,
+    }).then(image => {
+      setImageUri(Platform.OS === 'ios' ? image.sourceURL : image.path);
+    });
+  };
 
   const onSubmit = async () => {
     if (type === 'game') {
       if (
         !name.error &&
-        !image_url.error &&
         !description.error &&
-        !language.error
+        !language.error &&
+        imageUri !== ''
       ) {
         dispatch(
           addItem({
             name: name.value,
-            image_url: image_url.value,
+            image_url: imageUri,
             description: description.value,
             language: language.value,
             type: type,
             rating: rating,
           }),
         );
+        setModalVisible(false);
+        name.changeHandler('');
       } else console.log('Validation Failed');
     } else {
+      console.log(imageUri);
       if (
         !name.error &&
-        !image_url.error &&
         !description.error &&
         !language.error &&
-        !episodes.error
+        !episodes.error &&
+        imageUri !== ''
       ) {
         dispatch(
           addItem({
             name: name.value,
-            image_url: image_url.value,
+            image_url: imageUri,
             description: description.value,
             language: language.value,
             type: type,
@@ -77,6 +90,8 @@ export default function ItemModal({type}) {
             episodes: episodes.value,
           }),
         );
+        setModalVisible(false);
+        name.changeHandler('');
       } else console.log('Validation Failed');
     }
     setSubmit(true);
@@ -121,20 +136,6 @@ export default function ItemModal({type}) {
                 {description.error}
               </FormControl.ErrorMessage>
             </FormControl>
-            <FormControl isInvalid={submit && !!image_url.error}>
-              <FormControl.Label>
-                <Text color={theme.text}>Image URL</Text>
-              </FormControl.Label>
-              <Input
-                _focus={{borderColor: theme.primary}}
-                color={theme.text}
-                value={image_url.value}
-                onChangeText={image_url.changeHandler}
-              />
-              <FormControl.ErrorMessage>
-                {image_url.error}
-              </FormControl.ErrorMessage>
-            </FormControl>
             <FormControl isInvalid={submit && !!language.error}>
               <FormControl.Label>
                 <Text color={theme.text}>Language</Text>
@@ -173,8 +174,20 @@ export default function ItemModal({type}) {
                 jumpValue={1}
                 startingValue={3}
                 onFinishRating={num => setRating(num)}
+                tintColor={theme.bg}
               />
             </Box>
+            <Button
+              mt="4"
+              onPress={() => choosePhotoFromLibrary()}
+              colorScheme="indigo">
+              Upload Image
+            </Button>
+            {imageUri === '' && submit === true && (
+              <Text color="red.400" fontSize={'sm'}>
+                No image uploaded
+              </Text>
+            )}
           </Modal.Body>
           <Modal.Footer bg={theme.bg}>
             <Button.Group space={2}>
