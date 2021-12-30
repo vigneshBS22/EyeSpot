@@ -6,8 +6,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {selectAuth} from '../features/authSlice';
 import {updateItemData} from '../features/itemSlice';
 import {checkReview, addReview, selectReview} from '../features/reviewSlice';
+import {Dimensions} from 'react-native';
 
-export default function CommentModal({item}) {
+export default function CommentModal({item, setClick, rating, setRating}) {
+  const windowHeight = Dimensions.get('window').height;
   const [modalVisible, setModalVisible] = useState(false);
   const initialRef = useRef(null);
   const {
@@ -15,7 +17,6 @@ export default function CommentModal({item}) {
   } = useColor();
   const dispatch = useDispatch();
 
-  const [rating, setRating] = useState(3);
   const [review, setReview] = useState('');
   const [submit, setSubmit] = useState(false);
   const {name, user_id} = useSelector(selectAuth);
@@ -46,6 +47,7 @@ export default function CommentModal({item}) {
           type: item.type,
         }),
       );
+      setClick(true);
       setModalVisible(false);
       setReview('');
     }
@@ -86,6 +88,7 @@ export default function CommentModal({item}) {
                 jumpValue={1}
                 startingValue={3}
                 onFinishRating={num => setRating(num)}
+                tintColor={theme.bg}
               />
             </Box>
           </Modal.Body>
@@ -113,7 +116,8 @@ export default function CommentModal({item}) {
       {user.length === 0 && (
         <Button
           position={'absolute'}
-          bottom={0}
+          _ios={{bottom: windowHeight * 0.01}}
+          _android={{bottom: windowHeight * 0.02}}
           colorScheme="indigo"
           height={10}
           width={'100%'}

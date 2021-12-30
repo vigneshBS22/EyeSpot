@@ -1,5 +1,5 @@
 import {Box, Center, FlatList, Spinner, Text} from 'native-base';
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useColor} from '../Context/ColorContext';
 import Comment from './Comment';
 import Modal from './reviewModal';
@@ -10,6 +10,7 @@ import {
   fetchNextReviewData,
   fetchReviewData,
 } from '../features/reviewSlice';
+import {Rating} from 'react-native-ratings';
 
 export default function ItemDiscussion({route}) {
   const {
@@ -17,6 +18,7 @@ export default function ItemDiscussion({route}) {
   } = useColor();
   const {item} = route.params;
   const {reviews, lastReview, reviewLastVisible} = useSelector(selectReview);
+
   const dispatch = useDispatch();
 
   const getNextReviews = async () => {
@@ -35,16 +37,39 @@ export default function ItemDiscussion({route}) {
     dispatch(fetchReviewData({item_id: item.id}));
   }, []);
 
+  const [click, setClick] = useState(false);
+  const [rating, setRating] = useState(3);
+
   return (
     <Box>
       <Box>
         <Center>
-          <Text fontSize={'6xl'} bold>
-            {item.average_rating}
+          <Text fontSize={'6xl'} bold color={theme.text}>
+            {!click === true
+              ? item.average_rating.toFixed(2)
+              : (
+                  (item.average_rating * item.total_ratings + rating) /
+                  (item.total_ratings + 1)
+                ).toFixed(2)}
           </Text>
-          <UserRating avgRatings={item.average_rating} size={5} comp={'avg'} />
+          <Rating
+            readonly={true}
+            startingValue={
+              !click
+                ? item.average_rating.toFixed(2)
+                : (
+                    (item.average_rating * item.total_ratings + rating) /
+                    (item.total_ratings + 1)
+                  ).toFixed(2)
+            }
+            imageSize={30}
+            tintColor={theme.itemDiscussionBg}
+            type={'custom'}
+            fractions={2}
+          />
           <Text fontSize={'xs'} color={theme.text}>
-            based on {item.total_ratings} reviews
+            based on {!click ? item.total_ratings : item.total_ratings + 1}{' '}
+            reviews
           </Text>
         </Center>
       </Box>
@@ -59,7 +84,12 @@ export default function ItemDiscussion({route}) {
         scrollEventThrottle={150}
         ListFooterComponent={!lastReview && <Spinner />}
       />
-      <Modal item={item} />
+      <Modal
+        item={item}
+        setClick={setClick}
+        rating={rating}
+        setRating={setRating}
+      />
     </Box>
   );
 }

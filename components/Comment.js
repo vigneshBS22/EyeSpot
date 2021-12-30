@@ -1,5 +1,6 @@
 import {Avatar, Box, Center, HStack, Text, VStack} from 'native-base';
 import React from 'react';
+import {Rating} from 'react-native-ratings';
 import {useColor} from '../Context/ColorContext';
 import UserRating from './UserRating';
 
@@ -23,7 +24,15 @@ export default function Comment({comment}) {
             {comment.user_name}
           </Text>
           {!comment ? null : (
-            <UserRating avgRatings={comment.rating} size={4} />
+            <Rating
+              readonly={true}
+              startingValue={comment.rating}
+              tintColor={theme.bg}
+              jumpValue={0}
+              imageSize={20}
+              type={'custom'}
+              fractions={2}
+            />
           )}
         </VStack>
       </HStack>
