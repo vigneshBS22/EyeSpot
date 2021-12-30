@@ -17,6 +17,7 @@
 		351020112767681100C0BDE4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3510200F2767681100C0BDE4 /* GoogleService-Info.plist */; };
 		353C410927706F2100CBA751 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 353C410827706F2100CBA751 /* Config.xcconfig */; };
 		353C410A27706F2100CBA751 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 353C410827706F2100CBA751 /* Config.xcconfig */; };
+		35DF0EF3277DB87200161CCC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -245,6 +246,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35DF0EF3277DB87200161CCC /* Images.xcassets in Resources */,
 				353C410A27706F2100CBA751 /* Config.xcconfig in Resources */,
 				351020112767681100C0BDE4 /* GoogleService-Info.plist in Resources */,
 			);

@@ -32,21 +32,6 @@ export default function Card({navigation, item}) {
               rounded={'xl'}
             />
           </AspectRatio>
-          {/* <Center
-            bg="violet.500"
-            _text={{
-              color: 'warmGray.50',
-              fontWeight: '700',
-              fontSize: 'xs',
-            }}
-            position="absolute"
-            bottom="5"
-            left="7"
-            px="3"
-            py="1.5"
-            borderRadius={5}>
-            something
-          </Center> */}
           <Center
             bg={theme.bg}
             _text={{
