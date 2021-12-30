@@ -1,23 +1,46 @@
-import React from 'react';
-import {Text, Button, Image, Center, Box} from 'native-base';
+import React, {useEffect} from 'react';
+import {Text, Button, Center, useToast} from 'native-base';
 import {useColor} from '../../Context/ColorContext';
 import {ScreenName} from '../../Navigators/RootNavigator/constants';
+import {useSelector} from 'react-redux';
+import {selectAuth} from '../../features/authSlice';
+import {ImageBackground} from 'react-native';
 
 const WelcomeScreen = ({navigation}) => {
   const {
     state: {theme},
   } = useColor();
+
+  const {click, name} = useSelector(selectAuth);
+  const toast = useToast();
+
+  useEffect(() => {
+    if (click === false && name === null) {
+      toast.show({
+        title: 'Logged out successfully',
+        status: 'success',
+        duration: 2000,
+        placement: 'top',
+      });
+    }
+  }, [click]);
   return (
-    <Center flex={1} bg={theme.bg}>
-      <Center px="3" py="1.5">
+    <ImageBackground
+      source={require('../../assets/games_animes.png')}
+      resizeMode="cover"
+      style={{flex: 1, justifyContent: 'flex-end'}}>
+      <Center>
         <Button
           onPress={() => {
             navigation.navigate(ScreenName.LOGIN_SCREEN);
-          }}>
+          }}
+          mb={10}
+          bg={theme.primary}
+          width={'80%'}>
           <Text fontSize={20}>Get Started</Text>
         </Button>
       </Center>
-    </Center>
+    </ImageBackground>
   );
 };
 

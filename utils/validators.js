@@ -1,16 +1,16 @@
 export function nameValidator(value, ...rest) {
   if (value === '') {
-    return 'name should not be empty';
+    return 'Name should not be empty';
   }
 }
 
 export function emailValidator(value, ...rest) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (value === '') {
-    return 'email should not be empty';
+    return 'Email should not be empty';
   }
   if (!re.test(value)) {
-    return 'invalid email address';
+    return 'Invalid email address';
   }
 }
 
@@ -20,11 +20,11 @@ export function passwordValidator(value, ...rest) {
   const numerical = /[0-9]/g;
   const symbol = /[^a-zA-Z\d]/g;
   if (value === '') {
-    return 'password should not be empty';
+    return 'Password should not be empty';
   }
   if (rest[0] === 'login') {
     if (value.length <= 6) {
-      return 'password must be atleast 6 characters';
+      return 'Password must be atleast 6 characters';
     }
   } else {
     if (
@@ -34,7 +34,7 @@ export function passwordValidator(value, ...rest) {
       !symbol.test(value) ||
       value.length <= 6
     ) {
-      return 'invalid password';
+      return 'Invalid password';
     }
   }
 }
@@ -50,7 +50,7 @@ export function URLValidator(string) {
 
 export function emptyValidator(value) {
   if (value === '') {
-    return 'name should not be empty';
+    return 'Name should not be empty';
   }
 }
 
@@ -58,6 +58,6 @@ export function numberValidator(value) {
   const number = /^[0-9]+$/;
 
   if (!number.test(value)) {
-    return 'episodes must be a number';
+    return 'Episodes must be a number';
   }
 }
