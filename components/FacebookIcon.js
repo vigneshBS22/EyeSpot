@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, Box} from 'native-base';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
-import {facebookLoginAsync} from '../features/authSlice';
+import {facebookLoginAsync, updateClick} from '../features/authSlice';
 
 const FacebookIcon = () => {
   const dispatch = useDispatch();

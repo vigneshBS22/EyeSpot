@@ -24,7 +24,7 @@ import EmailScreen from '../../screens/PasswordResetScreens/EmailScreen';
 
 export const RootNavigator = () => {
   const dispatch = useDispatch();
-  const {login, name, error, error_msg} = useSelector(selectAuth);
+  const {login, click, error, error_msg} = useSelector(selectAuth);
   const {
     state: {color},
   } = useColor();
@@ -53,13 +53,19 @@ export const RootNavigator = () => {
         duration: 3000,
         placement: 'top',
       });
+      dispatch(updateError());
     }
   }, [error]);
 
   const toast = useToast();
+  const config = {
+    dependencies: {
+      'linear-gradient': require('react-native-linear-gradient').default,
+    },
+  };
 
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider config={config}>
       <NavigationContainer
         linking={linking}
         theme={color === COLOR_MODE.LIGHT ? MyTheme : MyDarkTheme}>
@@ -92,7 +98,7 @@ export const RootNavigator = () => {
               component={HomeTabScreen}
             />
             <HomeStack.Screen
-              name={ScreenName.PASSWORD_SCREEN}
+              name={ScreenName.PASSWORD_RESET_SCREEN}
               component={PasswordScreen}
             />
           </HomeStack.Navigator>

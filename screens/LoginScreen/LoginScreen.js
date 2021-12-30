@@ -16,8 +16,8 @@ import {styles} from './styles';
 import {useColor} from '../../Context/ColorContext';
 import GoogleIcon from '../../components/GoogleIcon';
 import FacebookIcon from '../../components/FacebookIcon';
-import {useDispatch, useSelector} from 'react-redux';
-import {emailLoginAsync, selectAuth} from '../../features/authSlice';
+import {useDispatch} from 'react-redux';
+import {emailLoginAsync, updateClick} from '../../features/authSlice';
 import {emailValidator, passwordValidator} from '../../utils/validators';
 import useFieldUpdate from '../../utils/useFieldUpdate';
 import Overlay from '../../components/Overlay';
@@ -32,24 +32,12 @@ export const Form = ({navigation}) => {
   const password = useFieldUpdate('', passwordValidator, 'login');
   const [submitForm, setSubmitForm] = useState(false);
   const submit = () => {
-    if (!email.error && !password.error)
+    if (!email.error && !password.error) {
       dispatch(emailLoginAsync({email: email.value, password: password.value}));
-    else console.log('Validation Failed');
+      dispatch(updateClick());
+    } else console.log('Validation Failed');
     setSubmitForm(true);
   };
-
-  const {error} = useSelector(selectAuth);
-  const toast = useToast();
-  useEffect(() => {
-    if (error === 0 && submitForm === true) {
-      toast.show({
-        title: 'Logged in successfully',
-        status: 'success',
-        duration: 2000,
-        placement: 'top',
-      });
-    }
-  }, [submitForm, error]);
 
   return (
     <KeyboardAwareScrollView style={styles.scroll} scrollEnabled={false}>

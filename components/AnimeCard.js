@@ -60,11 +60,14 @@ export default function Card({navigation, item}) {
             px="3"
             py="1.5"
             borderRadius={5}>
-            <Text>{item.critics_rating}*</Text>
+            <Text color={theme.text}>{item.critics_rating}*</Text>
           </Center>
         </Box>
         <Center py={2}>
-          <Text fontWeight={'extrabold'} fontStyle={'italic'}>
+          <Text
+            fontWeight={'extrabold'}
+            fontStyle={'italic'}
+            color={theme.text}>
             {item.name}
           </Text>
         </Center>

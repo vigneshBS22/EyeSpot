@@ -45,7 +45,17 @@
 			<string>Mini_project</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>demo</string>
+				<string>demos</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Mini_project</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>https</string>
 			</array>
 		</dict>
 	</array>
@@ -89,6 +99,8 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>

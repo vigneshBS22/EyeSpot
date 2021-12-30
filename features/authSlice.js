@@ -203,14 +203,19 @@ export const authSlice = createSlice({
       state.email = action.payload;
       state.loginType = 'email';
     },
+    updateError: state => {
+      state.error = false;
+    },
   },
   extraReducers: {
     [logoutAsync.fulfilled]: state => {
-      state.name = '';
+      state.name = null;
       state.isAdmin = false;
       state.login = false;
       state.email = '';
       state.loginType = '';
+      state.user_id = '';
+      state.email = '';
     },
     [loginAsync.pending]: (state, action) => {
       state.status = 'loading';
@@ -221,20 +226,21 @@ export const authSlice = createSlice({
       state.login = true;
       state.isAdmin = action.payload.is_admin;
       state.error_msg = '';
-      state.error = 0;
+      state.error = false;
     },
     [loginAsync.rejected]: (state, action) => {
       state.status = 'success';
       state.login = false;
       state.name = '';
       state.isAdmin = false;
+      state.error = true;
     },
     [emailLoginAsync.pending]: (state, action) => {
       state.status = 'loading';
     },
     [emailLoginAsync.fulfilled]: (state, action) => {
       state.status = 'success';
-      state.error = 0;
+      state.error = false;
     },
     [emailLoginAsync.rejected]: (state, action) => {
       state.error = true;
@@ -245,7 +251,7 @@ export const authSlice = createSlice({
     },
     [googleLoginAsync.fulfilled]: (state, action) => {
       state.status = 'success';
-      state.error = 0;
+      state.error = false;
     },
     [googleLoginAsync.rejected]: (state, action) => {
       state.error = true;
@@ -267,7 +273,7 @@ export const authSlice = createSlice({
     },
     [emailSignupAsync.fulfilled]: (state, action) => {
       state.status = 'success';
-      state.error = 0;
+      state.error = false;
     },
     [emailSignupAsync.rejected]: (state, action) => {
       state.error = true;

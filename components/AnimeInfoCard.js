@@ -16,7 +16,6 @@ export default function AnimeInfoCard({item, navigation}) {
   const {
     state: {theme},
   } = useColor();
-  console.log(item.image_url);
   return (
     <ScrollView>
       <Box>
@@ -50,7 +49,7 @@ export default function AnimeInfoCard({item, navigation}) {
               p={3}
               onPress={() =>
                 navigation.navigate(ScreenName.ANIME_REVIEW_SCREEN, {
-                  item,
+                  item: item,
                 })
               }>
               Discussion

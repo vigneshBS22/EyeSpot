@@ -6,7 +6,7 @@ import {selectAuth, sendEmailAsync} from '../../features/authSlice';
 import useFieldUpdate from '../../utils/useFieldUpdate';
 import {emailValidator} from '../../utils/validators';
 
-export default function EmailScreen() {
+export default function EmailScreen({navigation}) {
   const email = useFieldUpdate('', emailValidator, 'register');
   const {
     state: {theme},
@@ -23,7 +23,8 @@ export default function EmailScreen() {
         duration: 2000,
         placement: 'top',
       });
-  }, [error]);
+    setSubmit(false);
+  }, [error, submit]);
 
   const Reset = async () => {
     setSubmit(true);

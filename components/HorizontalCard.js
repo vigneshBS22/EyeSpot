@@ -37,12 +37,13 @@ export default function HorizontalCard({navigation, item}) {
   return (
     <Pressable
       bg={theme.bg}
-      height={190}
-      width={200}
-      mx={1}
-      rounded={'xl'}
       onPress={() => navigate()}
-      mx={1}>
+      mx={1}
+      my={1}
+      shadow={5}
+      rounded={'xl'}
+      height={200}
+      width={200}>
       <Box bg={theme.bg} rounded={'xl'}>
         <Box mt={3} rounded={'xl'}>
           <AspectRatio w={'95%'} marginLeft={1}>
@@ -67,11 +68,14 @@ export default function HorizontalCard({navigation, item}) {
             px="3"
             py="1.5"
             borderRadius={5}>
-            <Text>{item.critics_rating}*</Text>
+            <Text color={theme.text}>{item.critics_rating}*</Text>
           </Center>
         </Box>
         <Center py={2} rounded={'xl'}>
-          <Text fontWeight={'extrabold'} fontStyle={'italic'}>
+          <Text
+            color={theme.text}
+            fontWeight={'extrabold'}
+            fontStyle={'italic'}>
             {item.name}
           </Text>
         </Center>

@@ -31,7 +31,7 @@ export default function PasswordScreen({navigation, route}) {
         duration: 2000,
         placement: 'top',
       });
-      navigation.navigate('Login');
+      navigation.navigate('LoginScreen');
     } else if (!currentPassword.error && !newPassword.error) {
       dispatch(
         resetUserPasswordAsync({
@@ -51,29 +51,31 @@ export default function PasswordScreen({navigation, route}) {
 
   return (
     <Box>
-      <FormControl
-        py={4}
-        w={{
-          base: '90%',
-        }}
-        mx={'5%'}
-        isInvalid={submit && !!currentPassword.error}>
-        <Input
-          shadow={theme.shadow}
-          bg={theme.inputbg}
-          variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
-          p={4}
-          type="password"
-          value={currentPassword.value}
-          onChangeText={currentPassword.changeHandler}
-          color={theme.text}
-          placeholder="Enter current password"
-        />
+      {!route.params && (
+        <FormControl
+          py={4}
+          w={{
+            base: '90%',
+          }}
+          mx={'5%'}
+          isInvalid={submit && !!currentPassword.error}>
+          <Input
+            shadow={theme.shadow}
+            bg={theme.inputbg}
+            variant={theme.bg === 'black' ? 'unstyled' : 'outline'}
+            p={4}
+            type="password"
+            value={currentPassword.value}
+            onChangeText={currentPassword.changeHandler}
+            color={theme.text}
+            placeholder="Enter current password"
+          />
 
-        <FormControl.ErrorMessage>
-          {currentPassword.error}
-        </FormControl.ErrorMessage>
-      </FormControl>
+          <FormControl.ErrorMessage>
+            {currentPassword.error}
+          </FormControl.ErrorMessage>
+        </FormControl>
+      )}
       <FormControl
         py={4}
         w={{

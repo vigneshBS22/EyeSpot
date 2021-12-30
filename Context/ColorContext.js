@@ -13,8 +13,9 @@ export function ColorProvider({children}) {
     bg: 'white',
     text: 'black',
     primary: 'indigo.400',
-    button: 'muted.700',
+    button: '#404040',
     inputbg: 'white',
+    homeScreenbg: 'white',
     shadow: {
       shadowColor: '#000',
       shadowOffset: {
@@ -26,16 +27,19 @@ export function ColorProvider({children}) {
       elevation: 10,
     },
     infoCardbg: 'indigo.100',
+    itemDiscussionBg: '#f2f2f2',
   };
 
   const darkTheme = {
-    bg: 'black',
+    homeScreenbg: 'black',
+    bg: '#262626',
     text: 'white',
-    button: 'muted.200',
+    button: '#e5e5e5',
     inputbg: '#404040',
     shadow: {},
     infoCardbg: 'indigo.400',
     primary: 'indigo.400',
+    itemDiscussionBg: 'black',
   };
 
   function reducerFunc(state, action) {

@@ -17,7 +17,7 @@ export default function GameInfoCard({item, navigation}) {
     state: {theme},
   } = useColor();
   return (
-    <ScrollView>
+    <ScrollView bg={theme.infoCardbg} height={'100%'} flex={1}>
       <Box>
         <AspectRatio ratio={16 / 9}>
           <Image
@@ -28,7 +28,7 @@ export default function GameInfoCard({item, navigation}) {
           />
         </AspectRatio>
       </Box>
-      <Box bg={theme.infoCardbg} h={'full'}>
+      <Box h={'full'}>
         <Center>
           <HStack mt={5} p={3} bg={'indigo.300'} borderRadius={'30'}>
             <Button

@@ -6,24 +6,38 @@ import {
   Avatar,
   Text,
   FlatList,
+  useToast,
+  ScrollView,
 } from 'native-base';
 import {useColor} from '../../Context/ColorContext';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectAuth} from '../../features/authSlice';
 import HorizontalCard from '../../components/HorizontalCard';
 import {fetchHomeItemData, selectItem} from '../../features/itemSlice';
+import {Dimensions} from 'react-native';
 
 const HomeScreen = ({navigation}) => {
+  const windowHeight = Dimensions.get('window').height;
+
   const {
     state: {theme},
   } = useColor();
-  const config = {
-    dependencies: {
-      'linear-gradient': require('react-native-linear-gradient').default,
-    },
-  };
 
   const dispatch = useDispatch();
+
+  const {click} = useSelector(selectAuth);
+  const toast = useToast();
+
+  useEffect(() => {
+    if (click === true) {
+      toast.show({
+        title: 'Logged in successfully',
+        status: 'success',
+        duration: 2000,
+        placement: 'top',
+      });
+    }
+  }, [click]);
 
   useEffect(() => {
     dispatch(fetchHomeItemData({type: 'anime'}));
@@ -33,7 +47,7 @@ const HomeScreen = ({navigation}) => {
   const {name} = useSelector(selectAuth);
   const {homeScreenAnimeData, homeScreenGamesData} = useSelector(selectItem);
   return (
-    <NativeBaseProvider config={config}>
+    <ScrollView flex={1} scrollEnabled={true} bg={theme.homeScreenbg}>
       <Box
         bg={{
           linearGradient: {
@@ -42,7 +56,8 @@ const HomeScreen = ({navigation}) => {
             end: [1, 0],
           },
         }}
-        p="12">
+        p="12"
+        flex={1}>
         <Center flexDir={'row'} justifyContent={'space-between'}>
           <Box width={'70%'}>
             <Text fontSize={'lg'} bold color={theme.bg}>
@@ -58,16 +73,14 @@ const HomeScreen = ({navigation}) => {
         </Center>
       </Box>
       <Box
-        height={50}
-        width={'full'}
-        position={'absolute'}
-        top={'22%'}
+        flex={1}
         borderTopRadius={20}
-        bg={'#f2f2f2'}></Box>
-
-      <Box height={'full'}>
+        bg={theme.homeScreenbg}
+        position={'relative'}
+        _ios={{bottom: windowHeight * 0.03}}
+        _android={{bottom: windowHeight * 0.04}}>
         <Box>
-          <Text my={4} fontSize={'md'} bold mx={2}>
+          <Text my={4} fontSize={'md'} bold mx={2} color={theme.text}>
             Trending Animes
           </Text>
           <FlatList
@@ -81,7 +94,7 @@ const HomeScreen = ({navigation}) => {
           />
         </Box>
         <Box>
-          <Text my={4} fontSize={'md'} bold mx={2}>
+          <Text my={4} fontSize={'md'} bold mx={2} color={theme.text}>
             Trending Games
           </Text>
           <FlatList
@@ -95,7 +108,7 @@ const HomeScreen = ({navigation}) => {
           />
         </Box>
       </Box>
-    </NativeBaseProvider>
+    </ScrollView>
   );
 };
 
