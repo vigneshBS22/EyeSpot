@@ -101,6 +101,7 @@ export const searchData = createAsyncThunk(
       // {todo:add type here and remove the resultSet filter}
       const snapshot = await firestore()
         .collection('Items')
+        .where('type', '==', type)
         .where('name', '>=', search)
         .where('name', '<=', search + 'z')
         .get();
@@ -110,8 +111,8 @@ export const searchData = createAsyncThunk(
         data.id = doc.id;
         items.push(data);
       });
-      let resultSet = items.filter(item => item.type === type);
-      return {resultSet: resultSet, type: type};
+      // let resultSet = items.filter(item => item.type === type);
+      return {resultSet: items, type: type};
     } catch (err) {
       console.log(err);
     }
