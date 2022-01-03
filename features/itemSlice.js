@@ -95,7 +95,7 @@ export const fetchNextItemData = createAsyncThunk(
 
 export const searchData = createAsyncThunk(
   'item/searchData',
-  async ({type, search}) => {
+  async ({type, search, itemsPerLoad = 3}) => {
     try {
       let items = [];
       // {todo:add type here and remove the resultSet filter}
@@ -104,7 +104,10 @@ export const searchData = createAsyncThunk(
         .where('type', '==', type)
         .where('name', '>=', search)
         .where('name', '<=', search + 'z')
+        .limit(itemsPerLoad)
         .get();
+
+      const lastVisible = snapshot.docs[snapshot.docs.length - 1];
 
       snapshot.forEach(doc => {
         let data = doc.data();
@@ -112,7 +115,70 @@ export const searchData = createAsyncThunk(
         items.push(data);
       });
       // let resultSet = items.filter(item => item.type === type);
-      return {resultSet: items, type: type};
+
+      if (items.length === 0) {
+        return {
+          resultSet: items,
+          type: type,
+          lastVisible: lastVisible,
+          lastItem: true,
+        };
+      } else {
+        return {
+          resultSet: items,
+          type: type,
+          lastVisible: lastVisible,
+          lastItem: false,
+        };
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  },
+);
+
+export const searchNextItems = createAsyncThunk(
+  'item/searchNextData',
+  async ({type, search, startAfter, lastItem, itemsPerLoad = 3}) => {
+    console.log(type);
+    try {
+      let items = [];
+      let lastVisible;
+      if (!lastItem) {
+        const snapshot = await firestore()
+          .collection('Items')
+          .where('type', '==', type)
+          .where('name', '>=', search)
+          .where('name', '<=', search + 'z')
+          .orderBy('name')
+          .startAfter(startAfter)
+          .limit(itemsPerLoad)
+          .get();
+
+        snapshot.forEach(doc => {
+          let data = doc.data();
+          data.id = doc.id;
+          items.push(data);
+        });
+
+        lastVisible = snapshot.docs[snapshot.docs.length - 1];
+      }
+
+      if (items.length === 0)
+        return {
+          resultSet: items,
+          type: type,
+          lastVisible: lastVisible,
+          lastItem: true,
+        };
+      else {
+        return {
+          resultSet: items,
+          type: type,
+          lastVisible: lastVisible,
+          lastItem: false,
+        };
+      }
     } catch (err) {
       console.log(err);
     }
@@ -211,8 +277,10 @@ export const itemSlice = createSlice({
     error: '',
     animeLastVisible: {},
     gameLastVisible: {},
+    searchLastVisible: {},
     lastAnimeItem: false,
     lastGameItem: false,
+    lastSearchItem: false,
   },
   reducers: {},
   extraReducers: {
@@ -263,9 +331,28 @@ export const itemSlice = createSlice({
       } else {
         state.gamesData = action.payload.resultSet;
       }
+      state.searchLastVisible = action.payload.lastVisible;
+      state.lastSearchItem = false;
       state.status = 'success';
     },
     [searchData.rejected]: (state, action) => {
+      state.status = 'success';
+      state.error = action.error;
+    },
+    [searchNextItems.pending]: (state, action) => {
+      state.status = 'loading';
+    },
+    [searchNextItems.fulfilled]: (state, action) => {
+      if (action.payload.type === 'anime') {
+        state.animeData = [...state.animeData, ...action.payload.resultSet];
+      } else {
+        state.gamesData = [...state.gamesData, ...action.payload.resultSet];
+      }
+      state.searchLastVisible = action.payload.lastVisible;
+      state.lastSearchItem = action.payload.lastItem;
+      state.status = 'success';
+    },
+    [searchNextItems.rejected]: (state, action) => {
       state.status = 'success';
       state.error = action.error;
     },

@@ -5,6 +5,7 @@ import {ScreenName} from '../../Navigators/RootNavigator/constants';
 import {useSelector} from 'react-redux';
 import {selectAuth} from '../../features/authSlice';
 import {ImageBackground} from 'react-native';
+import {styles} from './styles';
 
 const WelcomeScreen = ({navigation}) => {
   const {
@@ -28,7 +29,7 @@ const WelcomeScreen = ({navigation}) => {
     <ImageBackground
       source={require('../../assets/games_animes.png')}
       resizeMode="cover"
-      style={{flex: 1, justifyContent: 'flex-end'}}>
+      style={styles.container}>
       <Center>
         {status !== 'loading' && (
           <Button
