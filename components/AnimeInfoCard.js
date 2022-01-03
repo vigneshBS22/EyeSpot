@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from 'native-base';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
 import {useColor} from '../Context/ColorContext';
 import {ScreenName} from '../Navigators/AnimeNavigator/constants';
 import ItemInfo from './AnimeItemInfo';
@@ -20,7 +21,7 @@ export default function AnimeInfoCard({item, navigation}) {
     <ScrollView>
       <Box>
         <AspectRatio ratio={16 / 9}>
-          <Image
+          <FastImage
             key={new Date().getTime()}
             source={{
               uri: item.image_url,

@@ -1,5 +1,6 @@
 import {Box, AspectRatio, Center, Image, Text, Pressable} from 'native-base';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
 import {useColor} from '../Context/ColorContext';
 import {ScreenName} from '../Navigators/AnimeNavigator/constants';
 
@@ -24,7 +25,7 @@ export default function Card({navigation, item}) {
       <Box bg={theme.bg}>
         <Box mt={3}>
           <AspectRatio w="90%" mx={5} ratio={20 / 9}>
-            <Image
+            <FastImage
               source={{
                 uri: item.image_url,
               }}

@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from 'native-base';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
 import {useColor} from '../Context/ColorContext';
 import {ScreenName} from '../Navigators/GameNavigator/constants';
 import GameItemInfo from './GameItemInfo';
@@ -20,7 +21,7 @@ export default function GameInfoCard({item, navigation}) {
     <ScrollView bg={theme.infoCardbg} height={'100%'} flex={1}>
       <Box>
         <AspectRatio ratio={16 / 9}>
-          <Image
+          <FastImage
             source={{
               uri: item.image_url,
             }}
