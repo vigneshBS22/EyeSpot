@@ -3,7 +3,7 @@ import ItemDiscussion from '../../components/ItemDiscussion';
 import {AnimeStack} from '../../constants';
 import AnimeInfoScreen from '../../screens/AnimeScreen/AnimeInfoScreen';
 import AnimeScreen from '../../screens/AnimeScreen/AnimeScreen';
-import {ScreenName} from './constants';
+import {ScreenName, Title} from './constants';
 
 export default function AnimeNavigator() {
   return (
@@ -21,7 +21,7 @@ export default function AnimeNavigator() {
         name={ScreenName.ANIME_REVIEW_SCREEN}
         component={ItemDiscussion}
         options={{
-          title: 'Reviews',
+          title: Title.REVIEW,
         }}
       />
     </AnimeStack.Navigator>

@@ -21,7 +21,7 @@ export default function ItemDiscussion({route}) {
 
   const dispatch = useDispatch();
 
-  const getNextReviews = async () => {
+  const getNextReviews = () => {
     if (!lastReview) {
       dispatch(
         fetchNextReviewData({

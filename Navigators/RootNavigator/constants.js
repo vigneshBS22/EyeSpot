@@ -24,3 +24,9 @@ export const ScreenName = {
   PASSWORD_RESET_SCREEN: 'Password Reset',
   EMAIL_SCREEN: 'Email',
 };
+
+export const TOAST = {
+  TITLE: 'Login Failed',
+  ERROR: 'Please Try Again',
+  STATUS: 'error',
+};

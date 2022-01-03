@@ -15,7 +15,7 @@ import {LoginTabScreen} from '../LoginNavigator/LoginNavigators';
 import {HomeTabScreen} from '../AuthNavigator/AuthNavigator';
 import {useColor} from '../../Context/ColorContext';
 
-import {MyDarkTheme, MyTheme, ScreenName} from './constants';
+import {MyDarkTheme, MyTheme, ScreenName, Title, TOAST} from './constants';
 import {COLOR_MODE} from '../../constants';
 import {HomeStack, AuthStack} from '../../constants';
 import PasswordScreen from '../../screens/PasswordResetScreens/PasswordScreen';
@@ -45,11 +45,11 @@ export const RootNavigator = () => {
   }, []);
 
   useEffect(() => {
-    if (error === true) {
+    if (error) {
       toast.show({
-        title: 'Login failed',
-        status: 'error',
-        description: error_msg === '' ? 'Please login again' : error_msg,
+        title: TOAST.TITLE,
+        status: TOAST.STATUS,
+        description: error_msg === '' ? TOAST.ERROR : error_msg,
         duration: 3000,
         placement: 'top',
       });

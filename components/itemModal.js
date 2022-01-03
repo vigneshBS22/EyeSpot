@@ -18,7 +18,6 @@ import {
   emptyValidator,
   nameValidator,
   numberValidator,
-  URLValidator,
 } from '../utils/validators';
 import useFieldUpdate from '../utils/useFieldUpdate';
 import ImagePicker from 'react-native-image-crop-picker';

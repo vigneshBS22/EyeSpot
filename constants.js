@@ -11,6 +11,11 @@ export const HomeStack = createNativeStackNavigator();
 export const LoginTab = createBottomTabNavigator();
 export const HomeTab = createBottomTabNavigator();
 
+export const TYPE = {
+  ANIME: 'anime',
+  GAME: 'game',
+};
+
 export const GoogleIconSVG = (
   <Icon viewBox="0 0 48 48" m={2} mr={3}>
     <Path

@@ -140,7 +140,6 @@ export const searchData = createAsyncThunk(
 export const searchNextItems = createAsyncThunk(
   'item/searchNextData',
   async ({type, search, startAfter, lastItem, itemsPerLoad = 3}) => {
-    console.log(type);
     try {
       let items = [];
       let lastVisible;
@@ -221,7 +220,7 @@ export const addItem = createAsyncThunk(
       }
       await ThunkApi.dispatch(fetchItemData({type: type}));
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   },
 );
