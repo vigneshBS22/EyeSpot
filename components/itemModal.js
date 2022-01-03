@@ -69,6 +69,10 @@ export default function ItemModal({type}) {
         );
         setModalVisible(false);
         name.changeHandler('');
+        description.changeHandler('');
+        language.changeHandler('');
+        setRating(3);
+        setImageUri('');
       } else console.log('Validation Failed');
     } else {
       console.log(imageUri);
@@ -92,6 +96,11 @@ export default function ItemModal({type}) {
         );
         setModalVisible(false);
         name.changeHandler('');
+        description.changeHandler('');
+        language.changeHandler('');
+        episodes.changeHandler('');
+        setRating(3);
+        setImageUri('');
       } else console.log('Validation Failed');
     }
     setSubmit(true);

@@ -1,6 +1,7 @@
 import {CommonActions} from '@react-navigation/native';
 import {Box, AspectRatio, Center, Image, Text, Pressable} from 'native-base';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
 import {useColor} from '../Context/ColorContext';
 
 export default function HorizontalCard({navigation, item}) {
@@ -47,7 +48,7 @@ export default function HorizontalCard({navigation, item}) {
       <Box bg={theme.bg} rounded={'xl'}>
         <Box mt={3} rounded={'xl'}>
           <AspectRatio w={'95%'} marginLeft={1}>
-            <Image
+            <FastImage
               source={{
                 uri: item.image_url,
               }}
