@@ -4,6 +4,6 @@
    <item
      android:width="200dp"
      android:height="200dp"
-     android:drawable="@mipmap/ic_launcher"
+     android:drawable="@mipmap/eyespot"
      android:gravity="center" />
 </layer-list>
