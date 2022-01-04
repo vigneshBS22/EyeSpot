@@ -22,6 +22,7 @@ import {
 import useFieldUpdate from '../utils/useFieldUpdate';
 import ImagePicker from 'react-native-image-crop-picker';
 import {TYPE} from '../constants';
+import {BUTTON_NAME, ERROR_MESSAGE} from './constants';
 
 export default function ItemModal({type}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -196,11 +197,11 @@ export default function ItemModal({type}) {
               mt="4"
               onPress={() => choosePhotoFromLibrary()}
               colorScheme="indigo">
-              Upload Image
+              {BUTTON_NAME.IMAGE}
             </Button>
             {imageUri === '' && submit === true && (
               <Text color="red.400" fontSize={'sm'}>
-                No image uploaded
+                {ERROR_MESSAGE.IMAGE_URI}
               </Text>
             )}
           </Modal.Body>

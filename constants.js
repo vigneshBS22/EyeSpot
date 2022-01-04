@@ -15,6 +15,11 @@ export const TYPE = {
   ANIME: 'anime',
   GAME: 'game',
 };
+export const ERROR = {
+  USER_NOT_FOUND: 'There is no user with given email id',
+  EMAIL_ALREADY_IN_USE:
+    'The email address is already in use by another account',
+};
 
 export const GoogleIconSVG = (
   <Icon viewBox="0 0 48 48" m={2} mr={3}>

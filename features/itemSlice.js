@@ -219,7 +219,7 @@ export const addItem = createAsyncThunk(
           created_at: firestore.Timestamp.now(),
         });
       }
-      await ThunkApi.dispatch(fetchItemData({type: type}));
+      ThunkApi.dispatch(fetchItemData({type: type}));
     } catch (err) {
       throw err;
     }
@@ -237,7 +237,7 @@ export const updateItemData = createAsyncThunk(
         .update({average_rating: average_rating, total_ratings: +count + 1});
       ThunkApi.dispatch(fetchItemData({type: type}));
     } catch (err) {
-      console.log('here' + err);
+      throw err;
     }
   },
 );

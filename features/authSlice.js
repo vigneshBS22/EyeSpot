@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import Config from 'react-native-config';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
+import {ERROR} from '../constants';
 
 GoogleSignin.configure({
   webClientId: Config.GOOGLE_WEBCLIENT_ID,
@@ -30,7 +31,7 @@ export const resetPassword = createAsyncThunk(
     try {
       await auth().confirmPasswordReset(oobCode, newPassword);
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   },
 );
@@ -47,7 +48,7 @@ export const resetUserPasswordAsync = createAsyncThunk(
       await user.reauthenticateWithCredential(credential);
       await user.updatePassword(newPassword);
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   },
 );
@@ -278,18 +279,16 @@ export const authSlice = createSlice({
     [emailSignupAsync.rejected]: (state, action) => {
       state.error = true;
       if (action.error.code === 'auth/email-already-in-use')
-        state.error_msg =
-          'The email address is already in use by another account';
+        state.error_msg = ERROR.EMAIL_ALREADY_IN_USE;
       state.status = 'success';
     },
     [sendEmailAsync.fulfilled]: (state, action) => {
       state.error = false;
     },
     [sendEmailAsync.rejected]: (state, action) => {
-      console.log('coming');
       state.error = true;
       if (action.error.code === 'auth/user-not-found')
-        state.error_msg = 'There is no user with given email id';
+        state.error_msg = ERROR.USER_NOT_FOUND;
     },
   },
 });
