@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {searchNextItems, selectItem} from '../features/itemSlice';
 import GameCard from '../components/GameCard';
 import AnimeCard from '../components/AnimeCard';
+import {TYPE} from '../constants';
 
 export default function SearchItems({data, navigation, type, search}) {
   const {lastSearchItem, searchLastVisible} = useSelector(selectItem);
@@ -25,7 +26,7 @@ export default function SearchItems({data, navigation, type, search}) {
     <FlatList
       data={data}
       renderItem={({item}) =>
-        type === 'anime' ? (
+        type === TYPE.ANIME ? (
           <AnimeCard navigation={navigation} item={item} />
         ) : (
           <GameCard navigation={navigation} item={item} />

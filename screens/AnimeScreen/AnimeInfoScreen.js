@@ -3,6 +3,7 @@ import {NativeBaseProvider} from 'native-base';
 import {useColor} from '../../Context/ColorContext';
 import AnimeInfoCard from '../../components/AnimeInfoCard';
 import {CommonActions} from '@react-navigation/native';
+import {ScreenName} from '../../Navigators/AnimeNavigator/constants';
 let count = 1;
 const AnimeInfoScreen = ({route, navigation}) => {
   const {
@@ -14,7 +15,7 @@ const AnimeInfoScreen = ({route, navigation}) => {
       // adding anime home screen to history of navigator state so that back button is present.
       navigation.dispatch(state => {
         const routes = [
-          {name: 'Anime', stale: false, type: 'stack'},
+          {name: ScreenName.ANIME_SCREEN, stale: false, type: 'stack'},
           ...state.routes,
         ];
 

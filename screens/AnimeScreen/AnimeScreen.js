@@ -8,6 +8,7 @@ import {selectAuth} from '../../features/authSlice';
 import ItemModal from '../../components/itemModal';
 import DisplayAnime from '../../components/FetchNextItems';
 import SearchItems from '../../components/SearchItems';
+import {TYPE} from '../../constants';
 
 const AnimeScreen = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -17,7 +18,7 @@ const AnimeScreen = ({navigation}) => {
 
   useEffect(() => {
     if (search === '') {
-      dispatch(fetchItemData({type: 'anime'}));
+      dispatch(fetchItemData({type: TYPE.ANIME}));
     }
   }, [search]);
 
@@ -25,7 +26,7 @@ const AnimeScreen = ({navigation}) => {
     let timerId;
     if (search !== '') {
       timerId = setTimeout(() => {
-        dispatch(searchData({type: 'anime', search: search}));
+        dispatch(searchData({type: TYPE.ANIME, search: search}));
       }, 300);
     }
     return () => {
@@ -42,13 +43,13 @@ const AnimeScreen = ({navigation}) => {
         search === '' ? (
           <DisplayAnime
             data={animeData}
-            type={'anime'}
+            type={TYPE.ANIME}
             navigation={navigation}
           />
         ) : (
           <SearchItems
             data={animeData}
-            type={'anime'}
+            type={TYPE.ANIME}
             navigation={navigation}
             search={search}
           />
@@ -56,7 +57,7 @@ const AnimeScreen = ({navigation}) => {
       ) : (
         <Center>No results found</Center>
       )}
-      {isAdmin ? <ItemModal type={'anime'} /> : null}
+      {isAdmin ? <ItemModal type={TYPE.ANIME} /> : null}
     </NativeBaseProvider>
   );
 };

@@ -7,6 +7,7 @@ import {selectAuth} from '../../features/authSlice';
 import ItemModal from '../../components/itemModal';
 import DisplayGame from '../../components/FetchNextItems';
 import SearchItems from '../../components/SearchItems';
+import {TYPE} from '../../constants';
 
 const GamesScreen = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -17,7 +18,7 @@ const GamesScreen = ({navigation}) => {
 
   useEffect(() => {
     if (search === '') {
-      dispatch(fetchItemData({type: 'game'}));
+      dispatch(fetchItemData({type: TYPE.GAME}));
     }
   }, [search]);
 
@@ -25,7 +26,7 @@ const GamesScreen = ({navigation}) => {
     let timerId;
     if (search !== '') {
       timerId = setTimeout(() => {
-        dispatch(searchData({type: 'game', search: search}));
+        dispatch(searchData({type: TYPE.GAME, search: search}));
       }, 300);
     }
     return () => {
@@ -40,11 +41,15 @@ const GamesScreen = ({navigation}) => {
         <Spinner />
       ) : gamesData.length !== 0 ? (
         search === '' ? (
-          <DisplayGame data={gamesData} type={'game'} navigation={navigation} />
+          <DisplayGame
+            data={gamesData}
+            type={TYPE.GAME}
+            navigation={navigation}
+          />
         ) : (
           <SearchItems
             data={gamesData}
-            type={'game'}
+            type={TYPE.GAME}
             navigation={navigation}
             search={search}
           />
@@ -52,7 +57,7 @@ const GamesScreen = ({navigation}) => {
       ) : (
         <Center>No results found</Center>
       )}
-      {isAdmin ? <ItemModal type={'game'} /> : null}
+      {isAdmin ? <ItemModal type={TYPE.GAME} /> : null}
     </NativeBaseProvider>
   );
 };

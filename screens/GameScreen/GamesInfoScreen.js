@@ -3,6 +3,7 @@ import {NativeBaseProvider} from 'native-base';
 import {useColor} from '../../Context/ColorContext';
 import {CommonActions} from '@react-navigation/native';
 import GameInfoCard from '../../components/GameInfoCard';
+import {ScreenName} from '../../Navigators/GameNavigator/constants';
 let count = 1;
 
 const GameInfoScreen = ({route, navigation}) => {
@@ -14,7 +15,7 @@ const GameInfoScreen = ({route, navigation}) => {
     if (from === 'home' && count === 1) {
       navigation.dispatch(state => {
         const routes = [
-          {name: 'Games', stale: false, type: 'stack'},
+          {name: ScreenName.GAMES_SCREEN, stale: false, type: 'stack'},
           ...state.routes,
         ];
 

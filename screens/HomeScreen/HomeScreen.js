@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {
-  NativeBaseProvider,
   Box,
   Center,
   Avatar,
@@ -8,6 +7,7 @@ import {
   FlatList,
   useToast,
   ScrollView,
+  Spinner,
 } from 'native-base';
 import {useColor} from '../../Context/ColorContext';
 import {useDispatch, useSelector} from 'react-redux';
@@ -15,6 +15,8 @@ import {selectAuth} from '../../features/authSlice';
 import HorizontalCard from '../../components/HorizontalCard';
 import {fetchHomeItemData, selectItem} from '../../features/itemSlice';
 import {Dimensions} from 'react-native';
+import {TYPE} from '../../constants';
+import {TOAST} from './constants';
 
 const HomeScreen = ({navigation}) => {
   const windowHeight = Dimensions.get('window').height;
@@ -31,7 +33,7 @@ const HomeScreen = ({navigation}) => {
   useEffect(() => {
     if (click === true) {
       toast.show({
-        title: 'Logged in successfully',
+        title: TOAST.TITLE,
         status: 'success',
         duration: 2000,
         placement: 'top',
@@ -40,12 +42,13 @@ const HomeScreen = ({navigation}) => {
   }, [click]);
 
   useEffect(() => {
-    dispatch(fetchHomeItemData({type: 'anime'}));
-    dispatch(fetchHomeItemData({type: 'game'}));
+    dispatch(fetchHomeItemData({type: TYPE.ANIME}));
+    dispatch(fetchHomeItemData({type: TYPE.GAME}));
   }, []);
 
   const {name} = useSelector(selectAuth);
-  const {homeScreenAnimeData, homeScreenGamesData} = useSelector(selectItem);
+  const {homeScreenAnimeData, homeScreenGamesData, homeStatus} =
+    useSelector(selectItem);
   return (
     <ScrollView flex={1} scrollEnabled={true} bg={theme.homeScreenbg}>
       <Box
@@ -83,29 +86,37 @@ const HomeScreen = ({navigation}) => {
           <Text my={4} fontSize={'md'} bold mx={2} color={theme.text}>
             Trending Animes
           </Text>
-          <FlatList
-            data={homeScreenAnimeData}
-            renderItem={({item}) => (
-              <HorizontalCard navigation={navigation} item={item} />
-            )}
-            keyExtractor={item => item.id}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          />
+          {homeStatus === 'loading' ? (
+            <Spinner size="lg" />
+          ) : (
+            <FlatList
+              data={homeScreenAnimeData}
+              renderItem={({item}) => (
+                <HorizontalCard navigation={navigation} item={item} />
+              )}
+              keyExtractor={item => item.id}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
+          )}
         </Box>
         <Box>
           <Text my={4} fontSize={'md'} bold mx={2} color={theme.text}>
             Trending Games
           </Text>
-          <FlatList
-            data={homeScreenGamesData}
-            renderItem={({item}) => (
-              <HorizontalCard navigation={navigation} item={item} />
-            )}
-            keyExtractor={item => item.id}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          />
+          {homeStatus === 'loading' ? (
+            <Spinner size="lg" />
+          ) : (
+            <FlatList
+              data={homeScreenGamesData}
+              renderItem={({item}) => (
+                <HorizontalCard navigation={navigation} item={item} />
+              )}
+              keyExtractor={item => item.id}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
+          )}
         </Box>
       </Box>
     </ScrollView>

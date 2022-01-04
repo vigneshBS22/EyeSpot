@@ -11,8 +11,8 @@ import {
 } from 'native-base';
 import {useColor} from '../Context/ColorContext';
 import {Rating} from 'react-native-ratings';
-import {useDispatch} from 'react-redux';
-import {addItem} from '../features/itemSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {addItem, selectItem} from '../features/itemSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
   emptyValidator,
@@ -21,6 +21,7 @@ import {
 } from '../utils/validators';
 import useFieldUpdate from '../utils/useFieldUpdate';
 import ImagePicker from 'react-native-image-crop-picker';
+import {TYPE} from '../constants';
 
 export default function ItemModal({type}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -29,6 +30,7 @@ export default function ItemModal({type}) {
     state: {theme},
   } = useColor();
   const dispatch = useDispatch();
+  const {status} = useSelector(selectItem);
 
   const [rating, setRating] = useState(3);
   const name = useFieldUpdate('', nameValidator, 'register');
@@ -48,7 +50,7 @@ export default function ItemModal({type}) {
     });
   };
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     if (type === 'game') {
       if (
         !name.error &&
@@ -72,9 +74,12 @@ export default function ItemModal({type}) {
         language.changeHandler('');
         setRating(3);
         setImageUri('');
-      } else console.log('Validation Failed');
+        setSubmit(false);
+      } else {
+        console.log('Validation Failed');
+        setSubmit(true);
+      }
     } else {
-      console.log(imageUri);
       if (
         !name.error &&
         !description.error &&
@@ -93,16 +98,18 @@ export default function ItemModal({type}) {
             episodes: episodes.value,
           }),
         );
-        setModalVisible(false);
+        setSubmit(false);
         name.changeHandler('');
         description.changeHandler('');
         language.changeHandler('');
         episodes.changeHandler('');
         setRating(3);
         setImageUri('');
-      } else console.log('Validation Failed');
+      } else {
+        console.log('Validation Failed');
+        setSubmit(true);
+      }
     }
-    setSubmit(true);
   };
 
   return (
@@ -158,7 +165,7 @@ export default function ItemModal({type}) {
                 {language.error}
               </FormControl.ErrorMessage>
             </FormControl>
-            {type === 'anime' && (
+            {type === TYPE.ANIME && (
               <FormControl isInvalid={submit && !!episodes.error}>
                 <FormControl.Label>
                   <Text color={theme.text}>Episodes</Text>
@@ -198,23 +205,14 @@ export default function ItemModal({type}) {
             )}
           </Modal.Body>
           <Modal.Footer bg={theme.bg}>
-            <Button.Group space={2}>
-              <Button
-                variant="ghost"
-                colorScheme="blueGray"
-                onPress={() => {
-                  setModalVisible(false);
-                }}>
-                Cancel
-              </Button>
-              <Button
-                colorScheme="indigo"
-                onPress={() => {
-                  onSubmit();
-                }}>
-                Save
-              </Button>
-            </Button.Group>
+            <Button
+              isLoading={status === 'loading'}
+              colorScheme="indigo"
+              onPress={() => {
+                onSubmit();
+              }}>
+              Save
+            </Button>
           </Modal.Footer>
         </Modal.Content>
       </Modal>

@@ -24,7 +24,7 @@ import EmailScreen from '../../screens/PasswordResetScreens/EmailScreen';
 
 export const RootNavigator = () => {
   const dispatch = useDispatch();
-  const {login, click, error, error_msg} = useSelector(selectAuth);
+  const {login, error, error_msg} = useSelector(selectAuth);
   const {
     state: {color},
   } = useColor();

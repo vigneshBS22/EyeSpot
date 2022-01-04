@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchNextItemData, selectItem} from '../features/itemSlice';
 import GameCard from '../components/GameCard';
 import AnimeCard from '../components/AnimeCard';
+import {TYPE} from '../constants';
 
 export default function FetchNextItems({data, navigation, type}) {
   const {lastAnimeItem, animeLastVisible, lastGameItem, gameLastVisible} =
@@ -13,7 +14,7 @@ export default function FetchNextItems({data, navigation, type}) {
     if (!lastAnimeItem) {
       dispatch(
         fetchNextItemData({
-          type: 'anime',
+          type: TYPE.ANIME,
           startAfter: animeLastVisible,
           lastItem: lastAnimeItem,
         }),
@@ -25,7 +26,7 @@ export default function FetchNextItems({data, navigation, type}) {
     if (!lastGameItem) {
       dispatch(
         fetchNextItemData({
-          type: 'game',
+          type: TYPE.GAME,
           startAfter: gameLastVisible,
           lastItem: lastGameItem,
         }),
@@ -33,7 +34,7 @@ export default function FetchNextItems({data, navigation, type}) {
     }
   };
 
-  return type === 'anime' ? (
+  return type === TYPE.ANIME ? (
     <FlatList
       data={data}
       renderItem={({item}) => <AnimeCard navigation={navigation} item={item} />}
