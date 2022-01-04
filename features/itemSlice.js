@@ -1,7 +1,8 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-
+import {TYPE} from '../constants';
+import ImageResizer from 'react-native-image-resizer';
 export const fetchItemData = createAsyncThunk(
   'item/fetchItemData',
   async ({type, itemsPerLoad = 3}) => {
@@ -192,7 +193,7 @@ export const addItem = createAsyncThunk(
   ) => {
     try {
       const imageUri = await ThunkApi.dispatch(uploadImage(image_url));
-      if (type === 'anime') {
+      if (type === TYPE.ANIME) {
         await firestore().collection('Items').add({
           name: name,
           description: description,
@@ -234,7 +235,7 @@ export const updateItemData = createAsyncThunk(
         .collection('Items')
         .doc(itemId)
         .update({average_rating: average_rating, total_ratings: +count + 1});
-      await ThunkApi.dispatch(fetchItemData({type: type}));
+      ThunkApi.dispatch(fetchItemData({type: type}));
     } catch (err) {
       console.log('here' + err);
     }
@@ -244,20 +245,25 @@ export const updateItemData = createAsyncThunk(
 export const uploadImage = createAsyncThunk(
   'item/uploadImage',
   async image_url => {
-    const uploadUri = image_url;
-    let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
-
-    // Add timestamp to File Name
-    const extension = filename.split('.').pop();
-    const name = filename.split('.').slice(0, -1).join('.');
-    filename = name + Date.now() + '.' + extension;
-    const storageRef = storage().ref(`photos/${filename}`);
-    const task = storageRef.putFile(uploadUri);
     try {
+      const resize = await ImageResizer.createResizedImage(
+        image_url,
+        400,
+        300,
+        'PNG',
+        50,
+      );
+      const uploadUri = resize.uri;
+      let filename = uploadUri.substring(uploadUri.lastIndexOf('/') + 1);
+
+      // Add timestamp to File Name
+      const extension = filename.split('.').pop();
+      const name = filename.split('.').slice(0, -1).join('.');
+      filename = name + Date.now() + '.' + extension;
+      const storageRef = storage().ref(`photos/${filename}`);
+      const task = storageRef.putFile(uploadUri);
       await task;
-
       const url = await storageRef.getDownloadURL();
-
       return url;
     } catch (err) {
       throw err;
@@ -273,6 +279,7 @@ export const itemSlice = createSlice({
     homeScreenAnimeData: [],
     homeScreenGamesData: [],
     status: 'success',
+    homeStatus: 'success',
     error: '',
     animeLastVisible: {},
     gameLastVisible: {},
@@ -287,7 +294,7 @@ export const itemSlice = createSlice({
       state.status = 'loading';
     },
     [fetchItemData.fulfilled]: (state, action) => {
-      if (action.payload.type === 'anime') {
+      if (action.payload.type === TYPE.ANIME) {
         state.animeData = action.payload.items;
         state.animeLastVisible = action.payload.lastVisible;
         state.lastAnimeItem = false;
@@ -306,7 +313,7 @@ export const itemSlice = createSlice({
       state.status = 'loading';
     },
     [fetchNextItemData.fulfilled]: (state, action) => {
-      if (action.payload.type === 'anime') {
+      if (action.payload.type === TYPE.ANIME) {
         state.animeData = [...state.animeData, ...action.payload.items];
         state.animeLastVisible = action.payload.lastVisible;
         state.lastAnimeItem = action.payload.lastItem;
@@ -325,7 +332,7 @@ export const itemSlice = createSlice({
       state.status = 'loading';
     },
     [searchData.fulfilled]: (state, action) => {
-      if (action.payload.type === 'anime') {
+      if (action.payload.type === TYPE.ANIME) {
         state.animeData = action.payload.resultSet;
       } else {
         state.gamesData = action.payload.resultSet;
@@ -342,7 +349,7 @@ export const itemSlice = createSlice({
       state.status = 'loading';
     },
     [searchNextItems.fulfilled]: (state, action) => {
-      if (action.payload.type === 'anime') {
+      if (action.payload.type === TYPE.ANIME) {
         state.animeData = [...state.animeData, ...action.payload.resultSet];
       } else {
         state.gamesData = [...state.gamesData, ...action.payload.resultSet];
@@ -356,19 +363,25 @@ export const itemSlice = createSlice({
       state.error = action.error;
     },
     [fetchHomeItemData.pending]: (state, action) => {
-      state.status = 'loading';
+      state.homeStatus = 'loading';
     },
     [fetchHomeItemData.fulfilled]: (state, action) => {
-      if (action.payload.type === 'anime') {
+      if (action.payload.type === TYPE.ANIME) {
         state.homeScreenAnimeData = action.payload.items;
       } else {
         state.homeScreenGamesData = action.payload.items;
       }
-      state.status = 'success';
+      state.homeStatus = 'success';
     },
     [fetchHomeItemData.rejected]: (state, action) => {
-      state.status = 'success';
+      state.homeStatus = 'success';
       state.error = action.error;
+    },
+    [addItem.pending]: state => {
+      state.status = 'loading';
+    },
+    [addItem.fulfilled]: state => {
+      state.status = 'success';
     },
   },
 });
