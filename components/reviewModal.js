@@ -7,6 +7,7 @@ import {selectAuth} from '../features/authSlice';
 import {updateItemData} from '../features/itemSlice';
 import {checkReview, addReview, selectReview} from '../features/reviewSlice';
 import {Dimensions} from 'react-native';
+import {BUTTON_NAME, ERROR_MESSAGE} from './constants';
 
 export default function CommentModal({item, setClick, rating, setRating}) {
   const windowHeight = Dimensions.get('window').height;
@@ -77,7 +78,7 @@ export default function CommentModal({item, setClick, rating, setRating}) {
                 onChangeText={text => setReview(text)}
               />
               <FormControl.ErrorMessage>
-                Review must not be empty
+                {ERROR_MESSAGE.REVIEW}
               </FormControl.ErrorMessage>
             </FormControl>
             <Text color={theme.text} mt={4}>
@@ -127,7 +128,7 @@ export default function CommentModal({item, setClick, rating, setRating}) {
           _focusVisible={{background: theme.primary}}
           shadow={theme.shadow}>
           <Text color={'white'} bold>
-            Add review
+            {BUTTON_NAME.REVIEW}
           </Text>
         </Button>
       )}
