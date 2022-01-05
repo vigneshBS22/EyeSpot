@@ -1,5 +1,5 @@
 import {Box, Center, FlatList, Spinner, Text} from 'native-base';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useColor} from '../Context/ColorContext';
 import Comment from './Comment';
 import Modal from './reviewModal';
@@ -21,7 +21,7 @@ export default function ItemDiscussion({route}) {
 
   const dispatch = useDispatch();
 
-  const getNextReviews = () => {
+  const getNextReviews = useCallback(() => {
     if (!lastReview) {
       dispatch(
         fetchNextReviewData({
@@ -31,7 +31,7 @@ export default function ItemDiscussion({route}) {
         }),
       );
     }
-  };
+  }, [lastReview, reviewLastVisible]);
 
   useEffect(() => {
     dispatch(fetchReviewData({item_id: item.id}));
@@ -79,7 +79,7 @@ export default function ItemDiscussion({route}) {
         data={reviews}
         renderItem={({item}) => <Comment comment={item} />}
         keyExtractor={item => item.id}
-        onEndReached={() => getNextReviews()}
+        onEndReached={getNextReviews}
         onEndReachedThreshold={0.01}
         scrollEventThrottle={150}
         ListFooterComponent={!lastReview && <Spinner />}

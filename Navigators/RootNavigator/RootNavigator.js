@@ -21,12 +21,14 @@ import {HomeStack, AuthStack} from '../../constants';
 import PasswordScreen from '../../screens/PasswordResetScreens/PasswordScreen';
 import linking from '../../linking';
 import EmailScreen from '../../screens/PasswordResetScreens/EmailScreen';
+import {Appearance, useColorScheme} from 'react-native';
 
 export const RootNavigator = () => {
   const dispatch = useDispatch();
   const {login, error, error_msg} = useSelector(selectAuth);
   const {
     state: {color},
+    dispatch: colorDispatch,
   } = useColor();
 
   // Handle user state changes
@@ -63,6 +65,16 @@ export const RootNavigator = () => {
       'linear-gradient': require('react-native-linear-gradient').default,
     },
   };
+
+  let scheme = useColorScheme();
+
+  Appearance.addChangeListener(res => {
+    scheme = res.colorScheme;
+  });
+
+  useEffect(() => {
+    colorDispatch({type: 'SET_COLOR', payload: scheme});
+  }, [scheme]);
 
   return (
     <NativeBaseProvider config={config}>

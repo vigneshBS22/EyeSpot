@@ -5,12 +5,14 @@ import {fetchNextItemData, selectItem} from '../features/itemSlice';
 import GameCard from '../components/GameCard';
 import AnimeCard from '../components/AnimeCard';
 import {TYPE} from '../constants';
+import {useCallback} from 'react';
 
 export default function FetchNextItems({data, navigation, type}) {
   const {lastAnimeItem, animeLastVisible, lastGameItem, gameLastVisible} =
     useSelector(selectItem);
   const dispatch = useDispatch();
-  const getNextAnimeItems = async () => {
+
+  const getNextAnimeItems = useCallback(() => {
     if (!lastAnimeItem) {
       dispatch(
         fetchNextItemData({
@@ -20,9 +22,9 @@ export default function FetchNextItems({data, navigation, type}) {
         }),
       );
     }
-  };
+  }, [lastAnimeItem, animeLastVisible]);
 
-  const getNextGameItems = async () => {
+  const getNextGameItems = useCallback(() => {
     if (!lastGameItem) {
       dispatch(
         fetchNextItemData({
@@ -32,14 +34,14 @@ export default function FetchNextItems({data, navigation, type}) {
         }),
       );
     }
-  };
+  }, [lastGameItem, gameLastVisible]);
 
   return type === TYPE.ANIME ? (
     <FlatList
       data={data}
       renderItem={({item}) => <AnimeCard navigation={navigation} item={item} />}
       keyExtractor={item => item.id}
-      onEndReached={() => getNextAnimeItems()}
+      onEndReached={getNextAnimeItems}
       onEndReachedThreshold={0.01}
       scrollEventThrottle={150}
       ListFooterComponent={!lastAnimeItem && <Spinner />}
@@ -49,7 +51,7 @@ export default function FetchNextItems({data, navigation, type}) {
       data={data}
       renderItem={({item}) => <GameCard navigation={navigation} item={item} />}
       keyExtractor={item => item.id}
-      onEndReached={() => getNextGameItems()}
+      onEndReached={getNextGameItems}
       onEndReachedThreshold={0.01}
       scrollEventThrottle={150}
       ListFooterComponent={!lastGameItem && <Spinner />}

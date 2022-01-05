@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
 const useFieldUpdate = (
   initialValue,
@@ -9,9 +9,9 @@ const useFieldUpdate = (
 ) => {
   const [value, setValue] = useState(initialValue);
   const [error, setError] = useState('');
-  const changeHandler = text => {
+  const changeHandler = useCallback(text => {
     setValue(text);
-  };
+  }, []);
 
   // validator must return the message if its not valid
   useEffect(() => {

@@ -1,5 +1,6 @@
 import React, {createContext, useContext, useReducer} from 'react';
 import {useColorScheme} from 'react-native';
+import {COLOR_MODE} from '../constants';
 
 export const ColorContext = createContext();
 export function useColor() {
@@ -7,8 +8,7 @@ export function useColor() {
 }
 
 export function ColorProvider({children}) {
-  const scheme = useColorScheme();
-
+  let scheme = useColorScheme();
   const lightTheme = {
     bg: 'white',
     text: 'black',
@@ -47,8 +47,17 @@ export function ColorProvider({children}) {
       case 'TOGGLE_COLOR':
         return {
           ...state,
-          color: state.color === 'light' ? 'dark' : 'light',
-          theme: state.color === 'light' ? darkTheme : lightTheme,
+          color:
+            state.color === COLOR_MODE.LIGHT
+              ? COLOR_MODE.DARK
+              : COLOR_MODE.LIGHT,
+          theme: state.color === COLOR_MODE.LIGHT ? darkTheme : lightTheme,
+        };
+      case 'SET_COLOR':
+        return {
+          ...state,
+          color: action.payload,
+          theme: action.payload === COLOR_MODE.LIGHT ? lightTheme : darkTheme,
         };
       default:
         return state;
@@ -57,7 +66,7 @@ export function ColorProvider({children}) {
 
   const [state, dispatch] = useReducer(reducerFunc, {
     color: scheme,
-    theme: lightTheme,
+    theme: scheme === COLOR_MODE.LIGHT ? lightTheme : darkTheme,
   });
 
   return (

@@ -69,7 +69,6 @@ export default function ItemModal({type}) {
             rating: rating,
           }),
         );
-        setModalVisible(false);
         name.changeHandler('');
         description.changeHandler('');
         language.changeHandler('');
