@@ -50,7 +50,8 @@ export default function AnimeInfoCard({item, navigation}) {
               p={3}
               onPress={() =>
                 navigation.navigate(ScreenName.ANIME_REVIEW_SCREEN, {
-                  item: item,
+                  id: item.id,
+                  type: item.type,
                 })
               }>
               Discussion

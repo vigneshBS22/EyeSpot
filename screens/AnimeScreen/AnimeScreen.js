@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {NativeBaseProvider, FlatList, Spinner, Center} from 'native-base';
-import Card from '../../components/AnimeCard';
 import Searchbar from '../../components/Searchbar';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchItemData, searchData, selectItem} from '../../features/itemSlice';

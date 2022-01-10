@@ -236,8 +236,26 @@ export const updateItemData = createAsyncThunk(
         .doc(itemId)
         .update({average_rating: average_rating, total_ratings: +count + 1});
       ThunkApi.dispatch(fetchItemData({type: type}));
+      ThunkApi.dispatch(fetchHomeItemData({type: type}));
     } catch (err) {
       throw err;
+    }
+  },
+);
+
+export const updateCommentData = createAsyncThunk(
+  'item/updateItemData',
+  async ({changeRating, avgRating, count, itemId, type}, ThunkApi) => {
+    const average_rating = (avgRating * count + changeRating) / count;
+    try {
+      await firestore()
+        .collection('Items')
+        .doc(itemId)
+        .update({average_rating: average_rating});
+      ThunkApi.dispatch(fetchItemData({type: type}));
+      ThunkApi.dispatch(fetchHomeItemData({type: type}));
+    } catch (err) {
+      console.log(err);
     }
   },
 );
@@ -294,6 +312,7 @@ export const itemSlice = createSlice({
       state.status = 'loading';
     },
     [fetchItemData.fulfilled]: (state, action) => {
+      console.log('coming');
       if (action.payload.type === TYPE.ANIME) {
         state.animeData = action.payload.items;
         state.animeLastVisible = action.payload.lastVisible;

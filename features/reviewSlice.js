@@ -86,6 +86,23 @@ export const addReview = createAsyncThunk(
         rating: rating,
         created_at: firestore.Timestamp.now(),
       });
+      await ThunkApi.dispatch(checkReview({item_id, user_id}));
+      ThunkApi.dispatch(fetchReviewData({item_id}));
+    } catch (err) {
+      console.log(err);
+    }
+  },
+);
+
+export const updateReview = createAsyncThunk(
+  'review/updateReview',
+  async ({review_id, message, rating, item_id}, ThunkApi) => {
+    try {
+      firestore().collection('Reviews').doc(review_id).update({
+        message: message,
+        rating: rating,
+        created_at: firestore.Timestamp.now(),
+      });
       ThunkApi.dispatch(fetchReviewData({item_id}));
     } catch (err) {
       console.log(err);
@@ -128,6 +145,9 @@ export const reviewSlice = createSlice({
   reducers: {
     clearReviews: state => {
       state.reviews = [];
+      state.reviewLastVisible = {};
+      state.lastReview = false;
+      state.user = [];
     },
   },
   extraReducers: {

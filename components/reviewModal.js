@@ -9,7 +9,7 @@ import {checkReview, addReview, selectReview} from '../features/reviewSlice';
 import {Dimensions} from 'react-native';
 import {BUTTON_NAME, ERROR_MESSAGE} from './constants';
 
-export default function CommentModal({item, setClick, rating, setRating}) {
+export default function CommentModal({item, rating, setRating}) {
   const windowHeight = Dimensions.get('window').height;
   const [modalVisible, setModalVisible] = useState(false);
   const initialRef = useRef(null);
@@ -27,7 +27,7 @@ export default function CommentModal({item, setClick, rating, setRating}) {
     dispatch(checkReview({item_id: item.id, user_id: user_id}));
   }, [modalVisible]);
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     setSubmit(true);
     if (review !== '') {
       dispatch(
@@ -48,7 +48,6 @@ export default function CommentModal({item, setClick, rating, setRating}) {
           type: item.type,
         }),
       );
-      setClick(true);
       setModalVisible(false);
       setReview('');
     }

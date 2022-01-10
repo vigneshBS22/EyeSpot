@@ -1,5 +1,13 @@
 import {CommonActions} from '@react-navigation/native';
-import {Box, AspectRatio, Center, Image, Text, Pressable} from 'native-base';
+import {
+  Box,
+  AspectRatio,
+  Center,
+  Image,
+  Text,
+  Pressable,
+  Icon,
+} from 'native-base';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {TYPE} from '../constants';
@@ -7,6 +15,7 @@ import {useColor} from '../Context/ColorContext';
 import {ScreenName as AnimeScreenName} from '../Navigators/AnimeNavigator/constants';
 import {ScreenName as GamesScreenName} from '../Navigators/GameNavigator/constants';
 import {ScreenName as AuthScreenName} from '../Navigators/AuthNavigator/constants';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function HorizontalCard({navigation, item}) {
   const {
@@ -77,7 +86,15 @@ export default function HorizontalCard({navigation, item}) {
             px="3"
             py="1.5"
             borderRadius={5}>
-            <Text color={theme.text}>{item.critics_rating}*</Text>
+            <Text color={theme.text}>
+              {item.critics_rating}
+              <Icon
+                ml="2"
+                size="5"
+                as={<Ionicons name="star" />}
+                color={'yellow.400'}
+              />
+            </Text>
           </Center>
         </Box>
         <Center py={2} rounded={'xl'}>

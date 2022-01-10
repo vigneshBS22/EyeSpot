@@ -48,7 +48,9 @@ export default function GameInfoCard({item, navigation}) {
               p={3}
               onPress={() =>
                 navigation.navigate(ScreenName.GAME_REVIEW_SCREEN, {
-                  item,
+                  id: item.id,
+                  type: item.type,
+                  from: 'animeScreen',
                 })
               }>
               Discussion

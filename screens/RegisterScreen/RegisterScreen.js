@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Input,
   FormControl,
@@ -19,6 +19,7 @@ import {
 } from '../../utils/validators';
 import useFieldUpdate from '../../utils/useFieldUpdate';
 import Overlay from '../../components/Overlay';
+import {useIsFocused} from '@react-navigation/native';
 
 export const Form = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,18 @@ export const Form = () => {
   const password = useFieldUpdate('', passwordValidator, 'register');
   const name = useFieldUpdate('', nameValidator, 'register');
   const [submitForm, setSubmitForm] = useState(false);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    return () => {
+      if (isFocused) {
+        email.changeHandler('');
+        password.changeHandler('');
+        name.changeHandler('');
+      }
+    };
+  }, [isFocused]);
+
   const onSubmit = () => {
     if (!email.error && !password.error && !name.error) {
       dispatch(updateEnteredName(name.value));

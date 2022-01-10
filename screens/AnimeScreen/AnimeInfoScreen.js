@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {NativeBaseProvider} from 'native-base';
 import {useColor} from '../../Context/ColorContext';
 import AnimeInfoCard from '../../components/AnimeInfoCard';
@@ -6,10 +6,6 @@ import {CommonActions} from '@react-navigation/native';
 import {ScreenName} from '../../Navigators/AnimeNavigator/constants';
 let count = 1;
 const AnimeInfoScreen = ({route, navigation}) => {
-  const {
-    state: {theme},
-  } = useColor();
-
   useEffect(() => {
     if (from === 'home' && count === 1) {
       // adding anime home screen to history of navigator state so that back button is present.
