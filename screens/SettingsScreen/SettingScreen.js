@@ -10,7 +10,7 @@ import {
   Divider,
   Icon,
 } from 'native-base';
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {useColor} from '../../Context/ColorContext';
 import {useDispatch, useSelector} from 'react-redux';
@@ -24,6 +24,7 @@ const SettingScreen = ({navigation}) => {
   } = useColor();
 
   const {loginType, name} = useSelector(selectAuth);
+  const [systemTheme, setSystemTheme] = useState(true);
 
   const dispatch_redux = useDispatch();
   return (
@@ -60,16 +61,33 @@ const SettingScreen = ({navigation}) => {
         </HStack>
         <HStack alignItems="center" space={4} justifyContent={'space-between'}>
           <Text color={theme.text} p={2}>
-            Dark mode
+            Mobile theme
           </Text>
           <Switch
             size="sm"
-            isChecked={color === 'dark'}
+            isChecked={systemTheme}
             onToggle={() => {
-              dispatch({type: 'TOGGLE_COLOR'});
+              setSystemTheme(!systemTheme);
             }}
           />
         </HStack>
+        {!systemTheme && (
+          <HStack
+            alignItems="center"
+            space={4}
+            justifyContent={'space-between'}>
+            <Text color={theme.text} p={2}>
+              Dark mode
+            </Text>
+            <Switch
+              size="sm"
+              isChecked={color === 'dark'}
+              onToggle={() => {
+                dispatch({type: 'TOGGLE_COLOR'});
+              }}
+            />
+          </HStack>
+        )}
         {loginType === 'email' && (
           <HStack
             p={2}
