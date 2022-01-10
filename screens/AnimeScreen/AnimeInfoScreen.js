@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {NativeBaseProvider} from 'native-base';
-import {useColor} from '../../Context/ColorContext';
 import AnimeInfoCard from '../../components/AnimeInfoCard';
 import {CommonActions} from '@react-navigation/native';
 import {ScreenName} from '../../Navigators/AnimeNavigator/constants';

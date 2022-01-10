@@ -1,7 +1,6 @@
 import {
   Box,
   AspectRatio,
-  Image,
   HStack,
   Button,
   Center,

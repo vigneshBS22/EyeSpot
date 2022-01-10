@@ -1,5 +1,5 @@
 import {Box, Center, FlatList, Spinner, Text} from 'native-base';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useColor} from '../Context/ColorContext';
 import Comment from './Comment';
 import Modal from './reviewModal';
