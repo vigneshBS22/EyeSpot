@@ -5,7 +5,7 @@ import {TYPE} from '../constants';
 import ImageResizer from 'react-native-image-resizer';
 export const fetchItemData = createAsyncThunk(
   'item/fetchItemData',
-  async ({type, itemsPerLoad = 3}) => {
+  async ({type, itemsPerLoad = 10}) => {
     try {
       let items = [];
       const snapshot = await firestore()

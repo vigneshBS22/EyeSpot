@@ -66,11 +66,11 @@ export default function ItemDiscussion({route}) {
       <Box>
         <Center>
           <Text fontSize={'6xl'} bold color={theme.text}>
-            {item.average_rating.toFixed(2)}
+            {item.average_rating.toFixed(1)}
           </Text>
           <Rating
             readonly={true}
-            startingValue={item.average_rating.toFixed(2)}
+            startingValue={item.average_rating.toFixed(1)}
             imageSize={30}
             tintColor={theme.itemDiscussionBg}
             type={'custom'}
