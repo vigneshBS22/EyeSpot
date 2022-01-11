@@ -312,7 +312,6 @@ export const itemSlice = createSlice({
       state.status = 'loading';
     },
     [fetchItemData.fulfilled]: (state, action) => {
-      console.log('coming');
       if (action.payload.type === TYPE.ANIME) {
         state.animeData = action.payload.items;
         state.animeLastVisible = action.payload.lastVisible;

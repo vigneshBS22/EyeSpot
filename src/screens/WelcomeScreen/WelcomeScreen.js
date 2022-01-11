@@ -27,7 +27,7 @@ const WelcomeScreen = ({navigation}) => {
   }, [click]);
   return (
     <ImageBackground
-      source={require('../../assets/games_animes.png')}
+      source={require('../../../assets/games_animes.png')}
       resizeMode="cover"
       style={styles.container}>
       <Center>

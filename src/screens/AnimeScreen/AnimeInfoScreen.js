@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {NativeBaseProvider} from 'native-base';
 import AnimeInfoCard from '../../components/AnimeInfoCard';
 import {CommonActions} from '@react-navigation/native';
