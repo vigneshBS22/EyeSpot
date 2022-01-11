@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mini_project</string>
+    <string name="app_name">EyeSpot</string>
     <string name="facebook_app_id">@string/FACEBOOK_SDK_API</string>
     <string name="fb_login_protocol_scheme">fb@string/FACEBOOK_SDK_API</string>
 </resources>

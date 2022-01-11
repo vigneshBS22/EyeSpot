@@ -2,9 +2,9 @@ import React from 'react';
 
 import {NativeBaseProvider} from 'native-base';
 import {Provider} from 'react-redux';
-import {store} from './store/store';
-import {RootNavigator} from './Navigators/RootNavigator/RootNavigator';
-import {ColorProvider} from './Context/ColorContext';
+import {store} from './src/store/store';
+import {RootNavigator} from './src/Navigators/RootNavigator/RootNavigator';
+import {ColorProvider} from './src/Context/ColorContext';
 
 export default function App() {
   return (
