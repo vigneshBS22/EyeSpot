@@ -1,13 +1,5 @@
 import {CommonActions} from '@react-navigation/native';
-import {
-  Box,
-  AspectRatio,
-  Center,
-  Image,
-  Text,
-  Pressable,
-  Icon,
-} from 'native-base';
+import {Box, AspectRatio, Center, Text, Pressable, Icon} from 'native-base';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {TYPE} from '../constants';
@@ -43,12 +35,14 @@ export default function HorizontalCard({navigation, item}) {
     if (item.type === TYPE.ANIME) {
       navigation.navigate(AuthScreenName.ANIME_SCREEN, {
         screen: AnimeScreenName.ANIME_INFO_SCREEN,
-        params: {item, name: item.name, from: 'home'},
+        params: {item, name: item.name},
+        initial: false,
       });
     } else {
       navigation.navigate(AuthScreenName.GAMES_SCREEN, {
         screen: GamesScreenName.GAMES_INFO_SCREEN,
-        params: {item, name: item.name, from: 'home'},
+        params: {item, name: item.name},
+        initial: false,
       });
     }
   };
