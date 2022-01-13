@@ -11,10 +11,9 @@ import {
   Icon,
 } from 'native-base';
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {useColor} from '../../Context/ColorContext';
 import {useDispatch, useSelector} from 'react-redux';
-import {logoutAsync, selectAuth, updateClick} from '../../features/authSlice';
+import {logoutAsync, selectAuth, updateClick} from '../../store/authSlice';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SettingScreen = ({navigation}) => {

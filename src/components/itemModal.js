@@ -12,7 +12,7 @@ import {
 import {useColor} from '../Context/ColorContext';
 import {Rating} from 'react-native-ratings';
 import {useDispatch, useSelector} from 'react-redux';
-import {addItem, selectItem} from '../features/itemSlice';
+import {addItem, selectItem} from '../store/itemSlice';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
   emptyValidator,

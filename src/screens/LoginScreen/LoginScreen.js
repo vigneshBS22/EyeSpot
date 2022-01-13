@@ -17,7 +17,7 @@ import {useColor} from '../../Context/ColorContext';
 import GoogleIcon from '../../components/GoogleIcon';
 import FacebookIcon from '../../components/FacebookIcon';
 import {useDispatch} from 'react-redux';
-import {emailLoginAsync, updateClick} from '../../features/authSlice';
+import {emailLoginAsync, updateClick} from '../../store/authSlice';
 import {emailValidator, passwordValidator} from '../../utils/validators';
 import useFieldUpdate from '../../utils/useFieldUpdate';
 import Overlay from '../../components/Overlay';

@@ -1,7 +1,7 @@
 import {FlatList, Spinner} from 'native-base';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchNextItemData, selectItem} from '../features/itemSlice';
+import {fetchNextItemData, selectItem} from '../store/itemSlice';
 import GameCard from '../components/GameCard';
 import AnimeCard from '../components/AnimeCard';
 import {TYPE} from '../constants';

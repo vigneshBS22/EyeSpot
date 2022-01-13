@@ -3,8 +3,8 @@ import {Modal, Button, Input, FormControl, Text, Box, Icon} from 'native-base';
 import {useColor} from '../Context/ColorContext';
 import {Rating} from 'react-native-ratings';
 import {useDispatch} from 'react-redux';
-import {updateCommentData} from '../features/itemSlice';
-import {updateReview} from '../features/reviewSlice';
+import {updateCommentData} from '../store/itemSlice';
+import {updateReview} from '../store/reviewSlice';
 import {ERROR_MESSAGE} from './constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
