@@ -2,7 +2,7 @@ import {Box, FormControl, Input, Button, useToast} from 'native-base';
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useColor} from '../../Context/ColorContext';
-import {resetPassword, resetUserPasswordAsync} from '../../features/authSlice';
+import {resetPassword, resetUserPasswordAsync} from '../../store/authSlice';
 import useFieldUpdate from '../../utils/useFieldUpdate';
 import {passwordValidator} from '../../utils/validators';
 

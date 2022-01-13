@@ -3,7 +3,7 @@ import {Text, Button, Center, useToast} from 'native-base';
 import {useColor} from '../../Context/ColorContext';
 import {ScreenName} from '../../Navigators/RootNavigator/constants';
 import {useSelector} from 'react-redux';
-import {selectAuth} from '../../features/authSlice';
+import {selectAuth} from '../../store/authSlice';
 import {ImageBackground} from 'react-native';
 import {styles} from './styles';
 

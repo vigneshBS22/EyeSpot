@@ -4,7 +4,7 @@ import {TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {GoogleIconSVG} from '../constants';
 import {useColor} from '../Context/ColorContext';
-import {googleLoginAsync, updateClick} from '../features/authSlice';
+import {googleLoginAsync, updateClick} from '../store/authSlice';
 
 const GoogleIcon = () => {
   const {

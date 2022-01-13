@@ -11,9 +11,9 @@ import {
 } from 'native-base';
 import {useColor} from '../../Context/ColorContext';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectAuth} from '../../features/authSlice';
-import HorizontalCard from '../../components/HorizontalCard';
-import {fetchHomeItemData, selectItem} from '../../features/itemSlice';
+import {selectAuth} from '../../store/authSlice';
+import HorizontalCard from '../../components//HorizontalCard';
+import {fetchHomeItemData, selectItem} from '../../store/itemSlice';
 import {Dimensions} from 'react-native';
 import {TYPE} from '../../constants';
 import {TOAST} from './constants';

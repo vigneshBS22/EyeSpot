@@ -3,9 +3,9 @@ import {Modal, Button, Input, FormControl, Text, Box} from 'native-base';
 import {useColor} from '../Context/ColorContext';
 import {Rating} from 'react-native-ratings';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectAuth} from '../features/authSlice';
-import {updateItemData} from '../features/itemSlice';
-import {checkReview, addReview, selectReview} from '../features/reviewSlice';
+import {selectAuth} from '../store/authSlice';
+import {updateItemData} from '../store/itemSlice';
+import {checkReview, addReview, selectReview} from '../store/reviewSlice';
 import {Dimensions} from 'react-native';
 import {BUTTON_NAME, ERROR_MESSAGE} from './constants';
 

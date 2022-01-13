@@ -11,7 +11,7 @@ import {
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useColor} from '../../Context/ColorContext';
 import {useDispatch} from 'react-redux';
-import {emailSignupAsync, updateEnteredName} from '../../features/authSlice';
+import {emailSignupAsync, updateEnteredName} from '../../store/authSlice';
 import {
   emailValidator,
   nameValidator,

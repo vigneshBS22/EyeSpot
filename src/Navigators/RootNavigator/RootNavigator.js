@@ -9,7 +9,7 @@ import {
   loginAsync,
   updateError,
   updateUser,
-} from '../../features/authSlice';
+} from '../../store/authSlice';
 import WelcomeScreen from '../../screens/WelcomeScreen/WelcomeScreen';
 import {LoginTabScreen} from '../LoginNavigator/LoginNavigators';
 import {HomeTabScreen} from '../AuthNavigator/AuthNavigator';

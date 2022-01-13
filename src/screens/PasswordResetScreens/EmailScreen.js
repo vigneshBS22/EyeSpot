@@ -2,7 +2,7 @@ import {Box, FormControl, Input, Button, useToast} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useColor} from '../../Context/ColorContext';
-import {selectAuth, sendEmailAsync} from '../../features/authSlice';
+import {selectAuth, sendEmailAsync} from '../../store/authSlice';
 import useFieldUpdate from '../../utils/useFieldUpdate';
 import {emailValidator} from '../../utils/validators';
 

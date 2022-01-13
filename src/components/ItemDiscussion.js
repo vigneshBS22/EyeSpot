@@ -9,9 +9,9 @@ import {
   fetchNextReviewData,
   fetchReviewData,
   clearReviews,
-} from '../features/reviewSlice';
+} from '../store/reviewSlice';
 import {Rating} from 'react-native-ratings';
-import {selectItem} from '../features/itemSlice';
+import {selectItem} from '../store/itemSlice';
 
 export default function ItemDiscussion({route}) {
   const {

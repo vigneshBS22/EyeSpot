@@ -1,7 +1,7 @@
 import {Center, Modal, Spinner} from 'native-base';
 import React from 'react';
 import {useSelector} from 'react-redux';
-import {selectAuth} from '../features/authSlice';
+import {selectAuth} from '../store/authSlice';
 
 export default function Overlay() {
   const {status} = useSelector(selectAuth);

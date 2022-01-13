@@ -3,7 +3,7 @@ import React from 'react';
 import {Rating} from 'react-native-ratings';
 import {useSelector} from 'react-redux';
 import {useColor} from '../Context/ColorContext';
-import {selectReview} from '../features/reviewSlice';
+import {selectReview} from '../store/reviewSlice';
 import UpdateModal from './updateModal';
 
 export default function Comment({
